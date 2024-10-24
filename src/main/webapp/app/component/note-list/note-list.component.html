@@ -1,5 +1,5 @@
 <ul>
   @for (note of notes; track note.id) {
-    <li [routerLink]="note.id.toString()">{{ note.name }} of type {{ note.type }}</li>
+    <li [routerLink]="[note.id, 'view']">{{ note.name }} of type {{ note.type }}</li>
   }
 </ul>

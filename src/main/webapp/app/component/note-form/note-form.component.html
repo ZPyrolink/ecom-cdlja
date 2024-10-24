@@ -1,0 +1,13 @@
+<form (ngSubmit)="submit()">
+  <label for="name">Name</label>
+  <input type="text" name="name" id="name" [(ngModel)]="note.name" minlength="0" required />
+
+  <label for="type"></label>
+  <select name="type" id="type" [(ngModel)]="note.type" required>
+    @for (t of NoteType | keyvalue; track t) {
+      <option [value]="t.value">{{ t.key }}</option>
+    }
+  </select>
+
+  <button type="submit">Submit</button>
+</form>
