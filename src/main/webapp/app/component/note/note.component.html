@@ -1,0 +1,12 @@
+<div>
+  @if (note) {
+    <h1>{{ note.name }}</h1>
+    <h2>{{ note.type }}</h2>
+
+    <ul>
+      @for (line of lines; track line.id) {
+        <li>{{ line.content }}</li>
+      }
+    </ul>
+  }
+</div>

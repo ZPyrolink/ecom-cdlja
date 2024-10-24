@@ -50,6 +50,9 @@ public class CacheConfiguration {
             createCache(cm, fr.cdlja.weebsport.domain.User.class.getName());
             createCache(cm, fr.cdlja.weebsport.domain.Authority.class.getName());
             createCache(cm, fr.cdlja.weebsport.domain.User.class.getName() + ".authorities");
+            createCache(cm, fr.cdlja.weebsport.domain.Note.class.getName());
+            createCache(cm, fr.cdlja.weebsport.domain.Note.class.getName() + ".lines");
+            createCache(cm, fr.cdlja.weebsport.domain.Line.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

@@ -1,0 +1,27 @@
+{
+  "annotations": {
+    "changelogDate": "20241018134921"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "NoteType",
+      "fieldValues": "NOTE,REMINDER"
+    }
+  ],
+  "name": "Note",
+  "relationships": [
+    {
+      "otherEntityName": "line",
+      "relationshipName": "lines",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

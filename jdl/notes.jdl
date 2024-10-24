@@ -1,0 +1,17 @@
+entity Note {
+  name String
+  type NoteType
+}
+
+entity Line {
+  content String
+}
+
+enum NoteType {
+  NOTE,
+  REMINDER
+}
+
+relationship OneToMany {
+  Note{lines} to Line
+}

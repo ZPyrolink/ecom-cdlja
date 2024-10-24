@@ -1,0 +1,25 @@
+{
+  "weebSportApp": {
+    "line": {
+      "home": {
+        "title": "Lines",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Line",
+        "createOrEditLabel": "Créer ou éditer un Line",
+        "notFound": "Aucun Line trouvé"
+      },
+      "created": "Un nouveau Line a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Line avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Line avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Line {{ id }} ?"
+      },
+      "detail": {
+        "title": "Line"
+      },
+      "id": "ID",
+      "content": "Content",
+      "note": "Note"
+    }
+  }
+}
