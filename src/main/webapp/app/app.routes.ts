@@ -37,6 +37,11 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import(`./entities/entity.routes`),
   },
+  {
+    path: 'test',
+    loadComponent: () => import('./header/header.component'),
+    title: 'test',
+  },
   ...errorRoute,
 ];
 
