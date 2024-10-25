@@ -1,19 +1,21 @@
-import { Component, OnInit, Renderer2, RendererFactory2, inject } from '@angular/core';
+import { Component, inject, OnInit, Renderer2, RendererFactory2 } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import dayjs from 'dayjs/esm';
 
 import { AccountService } from 'app/core/auth/account.service';
 import { AppPageTitleStrategy } from 'app/app-page-title-strategy';
-import FooterComponent from '../footer/footer.component';
 import PageRibbonComponent from '../profiles/page-ribbon.component';
+import FooterComponent from '../footer/footer.component';
+import HeaderComponent from '../header/header.component';
 
 @Component({
   standalone: true,
   selector: 'jhi-main',
   templateUrl: './main.component.html',
+  styleUrl: './main.component.scss',
   providers: [AppPageTitleStrategy],
-  imports: [RouterOutlet, FooterComponent, PageRibbonComponent],
+  imports: [RouterOutlet, FooterComponent, PageRibbonComponent, FooterComponent, HeaderComponent],
 })
 export default class MainComponent implements OnInit {
   private renderer: Renderer2;

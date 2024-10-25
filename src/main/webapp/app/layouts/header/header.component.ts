@@ -4,10 +4,10 @@ import { RouterModule } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
 
 @Component({
-  selector: 'jhi-footer',
+  selector: 'jhi-header',
   standalone: true,
-  templateUrl: './footer.component.html',
-  styleUrl: './footer.component.scss',
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.scss',
   imports: [SharedModule, RouterModule, NgOptimizedImage],
 })
-export default class FooterComponent {}
+export default class HeaderComponent {}
