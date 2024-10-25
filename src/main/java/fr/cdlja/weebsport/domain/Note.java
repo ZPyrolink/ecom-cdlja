@@ -33,7 +33,7 @@ public class Note implements Serializable {
     @Column(name = "type")
     private NoteType type;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "note")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "note", cascade = CascadeType.ALL)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "note" }, allowSetters = true)
     private Set<Line> lines = new HashSet<>();

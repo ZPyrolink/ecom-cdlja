@@ -14,6 +14,7 @@ import { EntityResponseType } from '../../entities/user/service/user.service';
   imports: [FormsModule, KeyValuePipe],
   templateUrl: './note-form.component.html',
   styleUrl: './note-form.component.scss',
+  providers: [ActivatedRoute],
 })
 export class NoteFormComponent implements OnInit {
   note: NewNote | PartialUpdateNote = {

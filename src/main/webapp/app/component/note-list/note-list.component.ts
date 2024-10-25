@@ -9,6 +9,7 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
   templateUrl: './note-list.component.html',
   styleUrl: './note-list.component.scss',
+  providers: [NoteService],
 })
 export class NoteListComponent implements OnInit {
   notes: INote[] = [];
@@ -17,5 +18,10 @@ export class NoteListComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.query().subscribe(next => (this.notes = next.body ?? []));
+  }
+
+  remove(note: INote): void {
+    this.service.delete(note.id).subscribe();
+    this.notes = this.notes.filter(n => n !== note);
   }
 }
