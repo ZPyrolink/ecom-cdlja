@@ -1,8 +1,14 @@
-<ul>
-  @for (note of notes; track note.id) {
-    <li [routerLink]="[note.id, 'view']">
-      {{ note.name }} of type {{ note.type }}
-      <button (click)="remove(note)">Remove</button>
-    </li>
-  }
-</ul>
+<div>
+  <h1>Notes</h1>
+  <table>
+    @for (note of notes; track note.id) {
+      <tr>
+        <td [routerLink]="[note.id, 'view']">{{ note.name }} of type {{ note.type }}</td>
+        <td [routerLink]="['form', 'note', note.id]"><fa-icon icon="edit" /></td>
+        <td (click)="remove(note)"><fa-icon icon="remove" /></td>
+      </tr>
+    }
+  </table>
+
+  <fa-icon icon="pen-alt" [routerLink]="['form', 'note']" />
+</div>
