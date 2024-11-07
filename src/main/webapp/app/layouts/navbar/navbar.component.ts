@@ -1,8 +1,5 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-
-import { StateStorageService } from 'app/core/auth/state-storage.service';
 import SharedModule from 'app/shared/shared.module';
 import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
 import { VERSION } from 'app/app.constants';
@@ -31,8 +28,6 @@ export default class NavbarComponent implements OnInit {
   entitiesNavbarItems: NavbarItem[] = [];
 
   private loginService = inject(LoginService);
-  private translateService = inject(TranslateService);
-  private stateStorageService = inject(StateStorageService);
   private profileService = inject(ProfileService);
   private router = inject(Router);
 
@@ -50,21 +45,21 @@ export default class NavbarComponent implements OnInit {
     });
   }
 
-  changeLanguage(languageKey: string): void {
+  /*  changeLanguage(languageKey: string): void {
     this.stateStorageService.storeLocale(languageKey);
     this.translateService.use(languageKey);
-  }
+  }*/
 
-  collapseNavbar(): void {
+  /*  collapseNavbar(): void {
     this.isNavbarCollapsed.set(true);
-  }
+  }*/
 
   login(): void {
     this.router.navigate(['/login']);
   }
 
   logout(): void {
-    this.collapseNavbar();
+    // this.collapseNavbar();
     this.loginService.logout();
     this.router.navigate(['']);
   }

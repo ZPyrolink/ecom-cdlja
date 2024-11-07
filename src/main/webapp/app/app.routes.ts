@@ -4,12 +4,27 @@ import { errorRoute } from './layouts/error/error.route';
 const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./listing-product/listing-product.component'),
+    loadComponent: () => import('./component/listing-product/listing-product.component'),
     title: 'WeebSport',
   },
   {
     path: 'home',
-    loadComponent: () => import('./home/home.component'),
+    loadComponent: () => import('./component/home/home.component'),
+    title: 'WeebSport',
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./login/login.component'),
+    title: 'WeebSport',
+  },
+  {
+    path: 'basket',
+    loadComponent: () => import('./component/basket/basket.component'),
+    title: 'WeebSport',
+  },
+  {
+    path: 'setting',
+    loadComponent: () => import('./component/setting/setting.component'),
     title: 'WeebSport',
   },
   /*  {
