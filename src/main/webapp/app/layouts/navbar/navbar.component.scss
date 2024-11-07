@@ -48,6 +48,10 @@
 
 .search-icon-left img,
 .search-icon-right img {
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
   height: 1.1rem;
 }
 
