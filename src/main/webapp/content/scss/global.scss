@@ -239,3 +239,16 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   --text-search-color: #5a5760;
   --text-color: #333;
 }
+
+.container-center {
+  display: flex;
+  flex-direction: column;
+  min-height: 92vh;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
