@@ -1,0 +1,130 @@
+enum Type {
+  JOGGER,
+  TEESHIRT,
+  BRA,
+  LEGGING,
+  SHORT,
+  SWEAT
+}
+
+enum Color{
+  GREEN,
+  BLACK,
+  BLUE,
+  RED,
+  PINK,
+  BEIGE,
+  WHITE,
+  ORANGE,
+  BROWN,
+  GRAY,
+  YELLOW,
+  PURPLE
+}
+
+enum Sort{
+  ASCENDING,
+  DESCENDING
+}
+
+enum Size{
+  XXS,
+  XS,
+  S,
+  M,
+  L,
+  XL,
+  XXL,
+  FOUR,
+  SIX,
+  EIGHT,
+  TEN,
+  TWELVE,
+  FOURTEEN
+}
+
+enum Category{
+  VIDEOGAME,
+  ANIME
+}
+
+enum Gender{
+  MAN,
+  WOMAN,
+  UNISEX,
+  CHILD
+}
+
+enum MeansOfPayment{
+  CB,
+  ONLINEPAYMENT
+}
+
+enum Status{
+  BASKET,
+  PAID
+}
+
+entity Clothe {
+  type Type
+  theme String
+  gender Gender
+  price Float
+  description String
+}
+
+entity Stock{
+  color Color
+  size Size
+  quantity Integer
+}
+
+entity OrderLine{
+  quantity Integer
+  amount_line Float
+}
+
+entity Order{
+  status Status
+  date Date
+  amount Float
+  meanOfPayment MeansOfPayment
+
+}
+
+entity SubscribedClients{
+  lastname String,
+  firstname String,
+  birthday Date,
+  email String,
+  passworld String,
+  address String,
+  banckCard String,
+  phone String,
+  points Integer
+}
+relationship ManyToOne{
+  Order{subclient} to SubscribedClients{historique}
+}
+
+relationship ManyToMany{
+  SubscribedClients{favoris} to Order
+
+}
+
+relationship OneToOne{
+  SubscribedClients{basket} to Order{subclient}
+}
+relationship  ManyToOne{
+  OrderLine{order} to Order{orderline}
+}
+
+relationship OneToOne {
+  OrderLine{order} to Stock
+}
+
+relationship OneToOne {
+  Stock{clothe} to Clothe
+}
+
+
