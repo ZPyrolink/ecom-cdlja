@@ -1,0 +1,19 @@
+.first-choice {
+  border-bottom: black 1px solid;
+  padding: 4px;
+}
+
+.clothing-option {
+  padding-left: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.clothing-option label {
+  display: flex;
+  align-items: center;
+}
+
+.clothing-option input {
+  margin-right: 10px; /* Espacement entre la case à cocher et le texte */
+}
