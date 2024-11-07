@@ -1,5 +1,10 @@
-<div class="filter-menu">
-  <div class="panel-content">
-    <p>Contenu du panneau latéral</p>
+<div class="first-choice">
+  <div>Type de Vêtement</div>
+
+  <div *ngFor="let type of typesOfClothes" class="clothing-option">
+    <label>
+      <input type="checkbox" [value]="type" />
+      {{ type }}
+    </label>
   </div>
 </div>

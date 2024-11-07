@@ -247,3 +247,7 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   align-items: center;
   justify-content: center;
 }
+
+* {
+  font-family: system-ui;
+}
