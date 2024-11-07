@@ -46,6 +46,18 @@
   transform: translateY(-50%);
 }
 
+.search-icon-left:hover img,
+.search-icon-right:hover img {
+  transform: scale(1.1);
+  opacity: 0.8;
+}
+
+.search-icon-left:hover,
+.search-icon-right:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+}
+
 .search-icon-left img,
 .search-icon-right img {
   cursor: pointer;
