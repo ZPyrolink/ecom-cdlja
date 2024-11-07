@@ -7,6 +7,11 @@ const routes: Routes = [
     loadComponent: () => import('./listing-product/listing-product.component'),
     title: 'WeebSport',
   },
+  {
+    path: 'home',
+    loadComponent: () => import('./home/home.component'),
+    title: 'WeebSport',
+  },
   /*  {
     path: '',
     loadComponent: () => import('./home/home.component'),
