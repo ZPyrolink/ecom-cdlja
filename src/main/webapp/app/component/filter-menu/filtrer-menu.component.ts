@@ -8,10 +8,4 @@ import { NgIf } from '@angular/common';
   templateUrl: './filter-menu.component.html',
   styleUrl: './filter-menu.component.scss',
 })
-export default class FilterMenuComponent {
-  isVisible = false;
-
-  toggleVisibility(): void {
-    this.isVisible = !this.isVisible;
-  }
-}
+export default class FilterMenuComponent {}
