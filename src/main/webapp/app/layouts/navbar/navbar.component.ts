@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import SharedModule from 'app/shared/shared.module';
 import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
@@ -13,7 +13,12 @@ import { FormsModule } from '@angular/forms';
   imports: [RouterModule, SharedModule, HasAnyAuthorityDirective, ActiveMenuDirective, FormsModule],
 })
 export default class NavbarComponent {
+  @Output() panelToggle = new EventEmitter<void>();
   searchQuery = '';
+
+  openPanel(): void {
+    this.panelToggle.emit();
+  }
 
   onSearch(): void {
     // eslint-disable-next-line no-console

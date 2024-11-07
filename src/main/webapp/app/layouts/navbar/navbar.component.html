@@ -5,7 +5,7 @@
   <div class="search-bar">
     <div class="search-container">
       <span class="search-icon-left">
-        <img src="../../../content/images/MenuIcon.png" alt="Menu" />
+        <img src="../../../content/images/MenuIcon.png" alt="Menu" (click)="openPanel()" />
       </span>
       <input type="text" placeholder="Entrez votre recherche ici" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()" />
       <span class="search-icon-right">
