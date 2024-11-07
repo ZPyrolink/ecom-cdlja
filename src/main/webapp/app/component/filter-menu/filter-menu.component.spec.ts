@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { FilterMenuComponent } from './filtrer-menu.component';
+import FilterMenuComponent from './filtrer-menu.component';
 
 describe('FilterMenuComponent', () => {
   let component: FilterMenuComponent;
