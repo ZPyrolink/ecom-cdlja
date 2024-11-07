@@ -7,7 +7,7 @@ import { AccountService } from 'app/core/auth/account.service';
 import { AppPageTitleStrategy } from 'app/app-page-title-strategy';
 import PageRibbonComponent from '../profiles/page-ribbon.component';
 import FooterComponent from '../footer/footer.component';
-import HeaderComponent from '../header/header.component';
+import NavbarComponent from '../navbar/navbar.component';
 
 @Component({
   standalone: true,
@@ -15,7 +15,7 @@ import HeaderComponent from '../header/header.component';
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
   providers: [AppPageTitleStrategy],
-  imports: [RouterOutlet, FooterComponent, PageRibbonComponent, FooterComponent, HeaderComponent],
+  imports: [RouterOutlet, FooterComponent, NavbarComponent, PageRibbonComponent],
 })
 export default class MainComponent implements OnInit {
   private renderer: Renderer2;

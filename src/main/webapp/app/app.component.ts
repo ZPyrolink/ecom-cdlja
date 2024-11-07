@@ -8,8 +8,6 @@ import locale from '@angular/common/locales/en';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { fontAwesomeIcons } from './config/font-awesome-icons';
 import MainComponent from './layouts/main/main.component';
-import HeaderComponent from './layouts/header/header.component';
-import FooterComponent from './layouts/footer/footer.component';
 
 @Component({
   standalone: true,
@@ -17,8 +15,6 @@ import FooterComponent from './layouts/footer/footer.component';
   template: '<jhi-main></jhi-main>',
   imports: [
     MainComponent,
-    HeaderComponent,
-    FooterComponent,
     // jhipster-needle-angular-add-module JHipster will add new module here
   ],
 })

@@ -11,7 +11,6 @@ h1,
 h2,
 h3,
 h4 {
-  height: 100%;
   font-weight: 300;
 }
 
@@ -238,41 +237,5 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   --gray2: #e6e6e6;
   --gray3: #d9d9d9;
   --text-search-color: #5a5760;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body,
-html {
-  height: 100%;
-  width: 100%;
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.main {
-  flex: 1; /* Cela permet au contenu principal de prendre toute la place restante */
-  padding: 20px;
-}
-
-html,
-body {
-  height: 100%; /* Assurez-vous que le html et le body prennent 100% de la hauteur */
-  margin: 0; /* Enlevez les marges par défaut */
-}
-
-jhi-app {
-  display: flex; /* Utilisez flexbox pour permettre à l'élément de s'étendre */
-  flex-direction: column; /* Permet d'organiser le contenu en colonne, si nécessaire */
-  height: 100%; /* Assurez-vous que jhi-app prend 100% de la hauteur de son parent */
-  width: 100%; /* Assurez-vous que jhi-app prend 100% de la largeur */
-  background-color: #3e8acc;
+  --text-color: #333;
 }
