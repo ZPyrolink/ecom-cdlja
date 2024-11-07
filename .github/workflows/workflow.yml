@@ -31,7 +31,7 @@ jobs:
       - name: Prettify Code
         run: |
           cd src
-          npm run prettier . --check
+          npx prettier . --check
       - name: Linter Code
         run: |
           cd src 
