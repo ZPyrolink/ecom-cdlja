@@ -8,7 +8,7 @@ import { AppPageTitleStrategy } from 'app/app-page-title-strategy';
 import PageRibbonComponent from '../profiles/page-ribbon.component';
 import FooterComponent from '../footer/footer.component';
 import NavbarComponent from '../navbar/navbar.component';
-import { FilterMenuComponent } from '../../component/filter-menu/filtrer-menu.component';
+import FilterMenuComponent from '../../component/filter-menu/filtrer-menu.component';
 
 @Component({
   standalone: true,
@@ -16,7 +16,7 @@ import { FilterMenuComponent } from '../../component/filter-menu/filtrer-menu.co
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
   providers: [AppPageTitleStrategy],
-  imports: [RouterOutlet, FooterComponent, NavbarComponent, PageRibbonComponent],
+  imports: [RouterOutlet, FooterComponent, NavbarComponent, PageRibbonComponent, FilterMenuComponent],
 })
 export default class MainComponent implements OnInit {
   @ViewChild(FilterMenuComponent) filterMenu: FilterMenuComponent | undefined;
