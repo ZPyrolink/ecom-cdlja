@@ -11,4 +11,18 @@ import { ClothesTypeEnum } from '../../enums/clothes-type-enum';
 })
 export default class FilterMenuComponent {
   typesOfClothes = Object.values(ClothesTypeEnum);
+  selectedItems: string[] = [];
+
+  toggleSelection(type: string, event: Event): void {
+    const checkbox = event.target as HTMLInputElement;
+    if (checkbox.checked) {
+      this.selectedItems.push(type);
+    } else {
+      this.selectedItems = this.selectedItems.filter(item => item !== type);
+    }
+  }
+
+  removeItem(item: string): void {
+    this.selectedItems = this.selectedItems.filter(selected => selected !== item);
+  }
 }
