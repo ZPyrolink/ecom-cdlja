@@ -8,7 +8,7 @@ import { NgForOf } from '@angular/common';
   templateUrl: './checkbox-list.component.html',
   styleUrl: './checkbox-list.component.scss',
 })
-export class CheckboxListComponent {
+export default class CheckboxListComponent {
   @Input() items: string[] = [];
   @Input() selectedItems: string[] = [];
   @Output() toggleSelection = new EventEmitter<string>();
@@ -17,7 +17,7 @@ export class CheckboxListComponent {
     return this.selectedItems.includes(item);
   }
 
-  onToggleSelection(item: string, event: Event): void {
+  onToggleSelection(item: string): void {
     this.toggleSelection.emit(item);
   }
 }

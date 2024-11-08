@@ -1,13 +1,14 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { NgForOf } from '@angular/common';
 
 @Component({
   selector: 'jhi-selected-items',
   standalone: true,
-  imports: [],
+  imports: [NgForOf],
   templateUrl: './selected-items.component.html',
   styleUrl: './selected-items.component.scss',
 })
-export class SelectedItemsComponent {
+export default class SelectedItemsComponent {
   @Input() selectedItems: string[] = [];
   @Output() removeItem = new EventEmitter<string>();
 
