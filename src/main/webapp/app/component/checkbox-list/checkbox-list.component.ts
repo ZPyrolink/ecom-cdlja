@@ -13,11 +13,9 @@ export default class CheckboxListComponent {
   @Input() selectedItems: string[] = [];
   @Output() toggleSelection = new EventEmitter<string>();
 
-  isChecked(item: string): boolean {
-    return this.selectedItems.includes(item);
-  }
-
-  onToggleSelection(item: string): void {
-    this.toggleSelection.emit(item);
+  onToggleSelection(type: string, event: Event): void {
+    const checkbox = event.target as HTMLInputElement;
+    this.toggleSelection.emit(type);
+    checkbox.checked = this.selectedItems.includes(type);
   }
 }
