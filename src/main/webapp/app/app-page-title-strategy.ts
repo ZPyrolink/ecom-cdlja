@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { RouterStateSnapshot, TitleStrategy } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -11,8 +11,6 @@ export class AppPageTitleStrategy extends TitleStrategy {
     if (!pageTitle) {
       pageTitle = 'global.title';
     }
-    this.translateService.get(pageTitle).subscribe(title => {
-      document.title = title;
-    });
+    document.title = pageTitle;
   }
 }
