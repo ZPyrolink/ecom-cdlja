@@ -14,11 +14,8 @@ import { FormsModule } from '@angular/forms';
 })
 export default class NavbarComponent {
   searchQuery = '';
-
   isVisible = false;
-
   @Output() visibilityChange = new EventEmitter<boolean>();
-
   openPanel(): void {
     this.isVisible = !this.isVisible;
     this.visibilityChange.emit(this.isVisible);

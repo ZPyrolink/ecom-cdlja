@@ -24,5 +24,7 @@ export default class FilterMenuComponent {
 
   removeItem(item: string): void {
     this.selectedItems = this.selectedItems.filter(selected => selected !== item);
+    const checkbox = document.getElementById(`checkbox-${item}`) as HTMLInputElement;
+    checkbox.checked = false;
   }
 }
