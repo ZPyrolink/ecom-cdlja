@@ -241,6 +241,12 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   --background-color: #ffffff;
 }
 
+.container-center {
+  display: flex;
+  flex-direction: column;
+  height: 85vh;
+}
+
 .content {
   flex: 1;
   display: flex;
@@ -250,4 +256,8 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
 
 * {
   font-family: system-ui;
+}
+
+.page {
+  background-color: var(--gray1);
 }
