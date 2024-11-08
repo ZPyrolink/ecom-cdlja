@@ -103,10 +103,6 @@ Generic styles
   opacity: 1;
 }
 
-.footer {
-  border-top: 1px solid rgba(0, 0, 0, 0.125);
-}
-
 .hand,
 [jhisortby] {
   cursor: pointer;
@@ -234,3 +230,29 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   }
 }
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+/* Couleur global */
+:root {
+  --gray1: #e5e5ea;
+  --gray2: #e6e6e6;
+  --gray3: #d9d9d9;
+  --text-search-color: #5a5760;
+  --text-color: #333;
+}
+
+.container-center {
+  display: flex;
+  flex-direction: column;
+  height: 85vh;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page {
+  background-color: var(--gray1);
+}
