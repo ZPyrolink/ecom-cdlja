@@ -1,0 +1,36 @@
+.clothing-option {
+  display: flex;
+  align-items: center;
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+
+  input[type='checkbox'] {
+    margin-right: 8px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 19px;
+    height: 19px;
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+    vertical-align: middle;
+
+    &:checked {
+      background-color: black;
+    }
+
+    &:checked::before {
+      content: '';
+      position: absolute;
+      left: 5px;
+      width: 6px;
+      height: 15px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
+}

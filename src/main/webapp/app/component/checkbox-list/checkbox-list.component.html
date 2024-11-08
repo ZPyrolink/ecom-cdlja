@@ -1,6 +1,6 @@
 <div *ngFor="let item of items" class="clothing-option">
   <label>
-    <input type="checkbox" [checked]="isChecked(item)" (change)="onToggleSelection(item, $event)" />
+    <input type="checkbox" [id]="'checkbox-' + item" [checked]="isChecked(item)" (change)="onToggleSelection(item)" />
     <span class="label">{{ item }}</span>
   </label>
 </div>

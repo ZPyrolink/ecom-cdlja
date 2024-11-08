@@ -1,0 +1,25 @@
+.selected-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+  margin-top: 8px;
+
+  .selected-item {
+    background-color: var(--gray4);
+    padding: 1px 8px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+
+      &:hover {
+        color: #333;
+      }
+    }
+  }
+}
