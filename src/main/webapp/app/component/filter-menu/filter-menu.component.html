@@ -1,8 +1,38 @@
-<div class="choice">
-  <div>Type de Vêtement</div>
-  <div class="proposition">
-    <jhi-selected-items [selectedItems]="selectedItems" (removeItem)="removeItem($event)"></jhi-selected-items>
-    <jhi-checkbox-list [items]="typesOfClothes" [selectedItems]="selectedItems" (toggleSelection)="toggleSelection($event)">
-    </jhi-checkbox-list>
+<div>
+  <div class="first-choice">
+    <div>Type de Vêtement</div>
+    <div class="proposition">
+      <jhi-selected-items
+        [selectedItems]="selectedItemsClothes"
+        (removeItem)="removeItem(selectedItemsClothes, $event)"
+      ></jhi-selected-items>
+      <jhi-checkbox-list
+        [items]="typesOfClothes"
+        [selectedItems]="selectedItemsClothes"
+        (toggleSelection)="toggleSelection(selectedItemsClothes, $event)"
+      >
+      </jhi-checkbox-list>
+    </div>
+  </div>
+
+  <div class="secondary-choice">
+    <div>Thèmes</div>
+    <div class="proposition">
+      <jhi-selected-items [selectedItems]="selectedItemsThemes" (removeItem)="removeItem(selectedItemsThemes, $event)"></jhi-selected-items>
+      <div class="secondary-title">Jeux Vidéos</div>
+      <jhi-checkbox-list
+        [items]="typesOfGames"
+        [selectedItems]="selectedItemsThemes"
+        (toggleSelection)="toggleSelection(selectedItemsThemes, $event)"
+      >
+      </jhi-checkbox-list>
+      <div class="secondary-title">Animés</div>
+      <jhi-checkbox-list
+        [items]="typesOfAnime"
+        [selectedItems]="selectedItemsThemes"
+        (toggleSelection)="toggleSelection(selectedItemsThemes, $event)"
+      >
+      </jhi-checkbox-list>
+    </div>
   </div>
 </div>

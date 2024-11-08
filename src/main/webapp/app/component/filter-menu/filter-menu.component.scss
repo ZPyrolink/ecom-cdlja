@@ -1,8 +1,20 @@
-.choice {
+.container {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid black;
+}
+
+.first-choice {
   border-bottom: 1px solid black;
   padding: 14px;
   max-height: 230px;
   overflow-y: auto;
+}
+
+.secondary-choice {
+  padding: 14px;
+  overflow-y: auto;
+  height: 500px;
 }
 
 .proposition {
