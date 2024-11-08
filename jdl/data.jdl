@@ -6,7 +6,6 @@ enum Type {
   SHORT,
   SWEAT
 }
-
 enum Color{
   GREEN,
   BLACK,
@@ -81,50 +80,53 @@ entity Stock{
 
 entity OrderLine{
   quantity Integer
-  amount_line Float
+  amountline Float
 }
 
-entity Order{
+entity Order {
   status Status
-  date Date
+  date LocalDate
   amount Float
   meanOfPayment MeansOfPayment
 
 }
-
 entity SubscribedClients{
   lastname String,
   firstname String,
-  birthday Date,
   email String,
+  address String
+  birthday LocalDate,
   passworld String,
-  address String,
   banckCard String,
   phone String,
   points Integer
 }
-relationship ManyToOne{
-  Order{subclient} to SubscribedClients{historique}
-}
-
 relationship ManyToMany{
-  SubscribedClients{favoris} to Order
+  SubscribedClients{favoris} to Clothe
 
 }
+relationship ManyToOne {
+  Order{client} to SubscribedClients{historique}
+}
 
+//un client à une commande en cours son panier
 relationship OneToOne{
-  SubscribedClients{basket} to Order{subclient}
+  SubscribedClients{basket} to Order
 }
+// une commande contient plusieurs lignes de commande
 relationship  ManyToOne{
   OrderLine{order} to Order{orderline}
 }
 
-relationship OneToOne {
-  OrderLine{order} to Stock
+//un article peut se trouver dans plusieurs lignes de commandes
+relationship ManyToOne {
+  OrderLine{stock} to Stock
 }
 
-relationship OneToOne {
+// un vetements à plusieurs articles
+relationship ManyToOne {
   Stock{clothe} to Clothe
 }
+
 
 

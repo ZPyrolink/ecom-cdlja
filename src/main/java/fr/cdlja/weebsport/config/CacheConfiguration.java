@@ -50,6 +50,15 @@ public class CacheConfiguration {
             createCache(cm, fr.cdlja.weebsport.domain.User.class.getName());
             createCache(cm, fr.cdlja.weebsport.domain.Authority.class.getName());
             createCache(cm, fr.cdlja.weebsport.domain.User.class.getName() + ".authorities");
+            createCache(cm, fr.cdlja.weebsport.domain.Clothe.class.getName());
+            createCache(cm, fr.cdlja.weebsport.domain.Clothe.class.getName() + ".subscribedClients");
+            createCache(cm, fr.cdlja.weebsport.domain.Stock.class.getName());
+            createCache(cm, fr.cdlja.weebsport.domain.OrderLine.class.getName());
+            createCache(cm, fr.cdlja.weebsport.domain.Order.class.getName());
+            createCache(cm, fr.cdlja.weebsport.domain.Order.class.getName() + ".orderlines");
+            createCache(cm, fr.cdlja.weebsport.domain.SubscribedClients.class.getName());
+            createCache(cm, fr.cdlja.weebsport.domain.SubscribedClients.class.getName() + ".favorises");
+            createCache(cm, fr.cdlja.weebsport.domain.SubscribedClients.class.getName() + ".historiques");
             // jhipster-needle-ehcache-add-entry
         };
     }

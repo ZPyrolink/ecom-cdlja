@@ -1,0 +1,9 @@
+{
+  "weebSportApp": {
+    "MeansOfPayment": {
+      "null": "",
+      "CB": "CB",
+      "ONLINEPAYMENT": "ONLINEPAYMENT"
+    }
+  }
+}

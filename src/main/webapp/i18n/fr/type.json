@@ -1,0 +1,13 @@
+{
+  "weebSportApp": {
+    "Type": {
+      "null": "",
+      "JOGGER": "JOGGER",
+      "TEESHIRT": "TEESHIRT",
+      "BRA": "BRA",
+      "LEGGING": "LEGGING",
+      "SHORT": "SHORT",
+      "SWEAT": "SWEAT"
+    }
+  }
+}

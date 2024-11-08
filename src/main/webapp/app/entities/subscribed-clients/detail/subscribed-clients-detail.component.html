@@ -1,0 +1,85 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (subscribedClients(); as subscribedClientsRef) {
+      <div>
+        <h2 data-cy="subscribedClientsDetailsHeading">
+          <span jhiTranslate="weebSportApp.subscribedClients.detail.title">Subscribed Clients</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ subscribedClientsRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.subscribedClients.lastname">Lastname</span></dt>
+          <dd>
+            <span>{{ subscribedClientsRef.lastname }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.subscribedClients.firstname">Firstname</span></dt>
+          <dd>
+            <span>{{ subscribedClientsRef.firstname }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.subscribedClients.birthday">Birthday</span></dt>
+          <dd>
+            <span>{{ subscribedClientsRef.birthday | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.subscribedClients.email">Email</span></dt>
+          <dd>
+            <span>{{ subscribedClientsRef.email }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.subscribedClients.passworld">Passworld</span></dt>
+          <dd>
+            <span>{{ subscribedClientsRef.passworld }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.subscribedClients.address">Address</span></dt>
+          <dd>
+            <span>{{ subscribedClientsRef.address }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.subscribedClients.banckCard">Banck Card</span></dt>
+          <dd>
+            <span>{{ subscribedClientsRef.banckCard }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.subscribedClients.phone">Phone</span></dt>
+          <dd>
+            <span>{{ subscribedClientsRef.phone }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.subscribedClients.points">Points</span></dt>
+          <dd>
+            <span>{{ subscribedClientsRef.points }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.subscribedClients.basket">Basket</span></dt>
+          <dd>
+            @if (subscribedClients()!.basket) {
+              <div>
+                <a [routerLink]="['/order', subscribedClients()!.basket?.id, 'view']">{{ subscribedClientsRef.basket?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.subscribedClients.favoris">Favoris</span></dt>
+          <dd>
+            @for (favoris of subscribedClientsRef.favorises; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/clothe', favoris.id, 'view']">{{ favoris?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/subscribed-clients', subscribedClientsRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,29 @@
+{
+  "weebSportApp": {
+    "clothe": {
+      "home": {
+        "title": "Clothes",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Clothe",
+        "createOrEditLabel": "Create or edit a Clothe",
+        "notFound": "No Clothes found"
+      },
+      "created": "A new Clothe is created with identifier {{ param }}",
+      "updated": "A Clothe is updated with identifier {{ param }}",
+      "deleted": "A Clothe is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Clothe {{ id }}?"
+      },
+      "detail": {
+        "title": "Clothe"
+      },
+      "id": "ID",
+      "type": "Type",
+      "theme": "Theme",
+      "gender": "Gender",
+      "price": "Price",
+      "description": "Description",
+      "subscribedClients": "Subscribed Clients"
+    }
+  }
+}
