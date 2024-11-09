@@ -48,8 +48,8 @@ public class Clothe implements Serializable {
     private String description;
 
     @ElementCollection
-    @CollectionTable(name = "clothe_categories", joinColumns = @JoinColumn(name = "article_id"))
-    @Column(name = "image_url")
+    @CollectionTable(name = "clothe_categories", joinColumns = @JoinColumn(name = "clothe_id"))
+    @Column(name = "category")
     private Set<Category> Categories;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
