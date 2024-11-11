@@ -1,16 +1,16 @@
 .clothing-option {
   display: flex;
   align-items: center;
-  padding-bottom: 4px;
-  margin-bottom: 4px;
+  padding-bottom: 2px;
+  margin-bottom: 2px;
 
   input[type='checkbox'] {
-    margin-right: 8px;
+    margin-right: 6px;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    width: 19px;
-    height: 19px;
+    width: 16px;
+    height: 16px;
     border: 1px solid black;
     background-color: white;
     border-radius: 4px;
@@ -26,8 +26,8 @@
       content: '';
       position: absolute;
       left: 5px;
-      width: 6px;
-      height: 15px;
+      width: 5px;
+      height: 12px;
       border: solid white;
       border-width: 0 2px 2px 0;
       transform: rotate(45deg);

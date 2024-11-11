@@ -3,11 +3,12 @@ import { NgForOf, NgIf } from '@angular/common';
 import { ClothesTypeEnum } from '../../enums/clothes-type-enum';
 import SelectedItemsComponent from '../selected-items/selected-items.component';
 import CheckboxListComponent from '../checkbox-list/checkbox-list.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'jhi-filter-menu',
   standalone: true,
-  imports: [NgIf, NgForOf, SelectedItemsComponent, CheckboxListComponent],
+  imports: [NgIf, NgForOf, SelectedItemsComponent, CheckboxListComponent, ReactiveFormsModule, FormsModule],
   templateUrl: './filter-menu.component.html',
   styleUrl: './filter-menu.component.scss',
 })
@@ -30,8 +31,8 @@ export default class FilterMenuComponent {
   ];
 
   selectedItemsClothes: string[] = [];
-  selectedItemsThemes: string[] = []; // Partagé entre typesOfGames et typesOfAnime
-
+  selectedItemsThemes: string[] = [];
+  searchQuery = '';
   toggleSelection(selectedItems: string[], type: string): void {
     const index = selectedItems.indexOf(type);
     if (index === -1) {
@@ -46,5 +47,10 @@ export default class FilterMenuComponent {
     if (index !== -1) {
       selectedItems.splice(index, 1);
     }
+  }
+
+  onSearch(): void {
+    // eslint-disable-next-line no-console
+    console.log(this.searchQuery);
   }
 }
