@@ -1,11 +1,8 @@
-<div>
+<div class="sidebar">
   <div class="first-choice">
     <div>Type de Vêtement</div>
+    <jhi-selected-items [selectedItems]="selectedItemsClothes" (removeItem)="removeItem(selectedItemsClothes, $event)"></jhi-selected-items>
     <div class="proposition">
-      <jhi-selected-items
-        [selectedItems]="selectedItemsClothes"
-        (removeItem)="removeItem(selectedItemsClothes, $event)"
-      ></jhi-selected-items>
       <jhi-checkbox-list
         [items]="typesOfClothes"
         [selectedItems]="selectedItemsClothes"
@@ -16,17 +13,24 @@
   </div>
 
   <div class="secondary-choice">
-    <div>Thèmes</div>
-    <div class="proposition">
-      <jhi-selected-items [selectedItems]="selectedItemsThemes" (removeItem)="removeItem(selectedItemsThemes, $event)"></jhi-selected-items>
-      <div class="secondary-title">Jeux Vidéos</div>
+    <div class="themes-header">
+      <div class="title">Thèmes</div>
+      <div class="search-bar">
+        <input type="text" placeholder="Rechercher" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()" />
+      </div>
+    </div>
+    <jhi-selected-items [selectedItems]="selectedItemsThemes" (removeItem)="removeItem(selectedItemsThemes, $event)"></jhi-selected-items>
+    <div class="secondary-title">Jeux Vidéos</div>
+    <div class="scroll-section">
       <jhi-checkbox-list
         [items]="typesOfGames"
         [selectedItems]="selectedItemsThemes"
         (toggleSelection)="toggleSelection(selectedItemsThemes, $event)"
       >
       </jhi-checkbox-list>
-      <div class="secondary-title">Animés</div>
+    </div>
+    <div class="secondary-title">Animés</div>
+    <div class="scroll-section">
       <jhi-checkbox-list
         [items]="typesOfAnime"
         [selectedItems]="selectedItemsThemes"
