@@ -1,0 +1,20 @@
+<div class="filter-container">
+  <div class="filter-buttons">
+    Filtre
+    <button (click)="onFilter('couleur')">Couleur</button>
+    <button (click)="onFilter('taille')">Taille</button>
+    <button (click)="onFilter('prix')">Prix</button>
+    <button (click)="onFilter('genre')">Genre</button>
+  </div>
+
+  <div class="dropdown">
+    <li class="sort">
+      <span class="text">Trier par <span class="arrow">&#9660;</span></span>
+      <ul class="sous">
+        <li (click)="onOptionClick('Pertinence')">Pertinence</li>
+        <li (click)="onOptionClick('Prix : Ordre croissant')">Prix : Ordre croissant</li>
+        <li (click)="onOptionClick('Prix : Ordre décroissant')">Prix : Ordre décroissant</li>
+      </ul>
+    </li>
+  </div>
+</div>
