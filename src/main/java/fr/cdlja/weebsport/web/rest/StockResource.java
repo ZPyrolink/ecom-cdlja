@@ -11,6 +11,10 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -142,10 +146,16 @@ public class StockResource {
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of stocks in body.
      */
-    @GetMapping("")
-    public List<Stock> getAllStocks() {
-        LOG.debug("REST request to get all Stocks");
-        return stockRepository.findAll();
+    public ResponseEntity<Page<Stock>> getAllStocks(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = "id") String sortBy
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending()); // Création d'un Pageable
+
+        Page<Stock> stocksPage = stockRepository.findAll(pageable); // Récupération de la page de stocks
+
+        return ResponseEntity.ok(stocksPage); // Retour de la page dans la réponse
     }
 
     /**

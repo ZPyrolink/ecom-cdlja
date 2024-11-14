@@ -30,9 +30,6 @@ public class SubscribedClients extends AbstractClient implements Serializable {
     @Column(name = "birthday")
     private LocalDate birthday;
 
-    @Column(name = "passworld")
-    private String passworld;
-
     @Column(name = "banck_card")
     private String banckCard;
 
@@ -62,6 +59,10 @@ public class SubscribedClients extends AbstractClient implements Serializable {
     @JsonIgnoreProperties(value = { "client", "orderlines", "subscribedClients" }, allowSetters = true)
     private Set<Order> historiques = new HashSet<>();
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(unique = true)
+    private User user;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -82,16 +83,6 @@ public class SubscribedClients extends AbstractClient implements Serializable {
         return "Abonné";
     }
 
-    public SubscribedClients lastname(String lastname) {
-        this.setLastname(lastname);
-        return this;
-    }
-
-    public SubscribedClients firstname(String firstname) {
-        this.setFirstname(firstname);
-        return this;
-    }
-
     public LocalDate getBirthday() {
         return this.birthday;
     }
@@ -108,19 +99,6 @@ public class SubscribedClients extends AbstractClient implements Serializable {
     public SubscribedClients email(String email) {
         this.setEmail(email);
         return this;
-    }
-
-    public String getPassworld() {
-        return this.passworld;
-    }
-
-    public SubscribedClients passworld(String passworld) {
-        this.setPassworld(passworld);
-        return this;
-    }
-
-    public void setPassworld(String passworld) {
-        this.passworld = passworld;
     }
 
     public SubscribedClients address(String address) {
@@ -258,11 +236,11 @@ public class SubscribedClients extends AbstractClient implements Serializable {
     public String toString() {
         return "SubscribedClients{" +
             "id=" + getId() +
-            ", lastname='" + getLastname() + "'" +
-            ", firstname='" + getFirstname() + "'" +
+            ", lastname='" + user.getLastName() + "'" +
+            ", firstname='" + user.getFirstName() + "'" +
             ", birthday='" + getBirthday() + "'" +
             ", email='" + getEmail() + "'" +
-            ", passworld='" + getPassworld() + "'" +
+            ", passworld_cripted='" + user.getPassword() + "'" +
             ", address='" + getAddress() + "'" +
             ", banckCard='" + getBanckCard() + "'" +
             ", phone='" + getPhone() + "'" +

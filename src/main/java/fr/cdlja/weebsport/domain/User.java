@@ -93,6 +93,9 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
 
+    @OneToOne
+    private SubscribedClients subscribedClients;
+
     public Long getId() {
         return id;
     }
