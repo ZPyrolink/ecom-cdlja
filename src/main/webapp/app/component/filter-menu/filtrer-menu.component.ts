@@ -14,7 +14,26 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 })
 export default class FilterMenuComponent {
   typesOfClothes = Object.values(ClothesTypeEnum);
-  typesOfGames = ['Jeu 1', 'Jeu 2', 'Jeu 3', 'Jeu 4', 'Jeu 5', 'Jeu 6', 'Jeu 7', 'Jeu 8', 'Jeu 9', 'Jeu 10', 'Jeu 11', 'Jeu 12'];
+  typesOfGames = [
+    'Jeu 1',
+    'Jeu 2',
+    'Jeu 3',
+    'Jeu 4',
+    'Jeu 5',
+    'Jeu 6',
+    'Jeu 7',
+    'Jeu 8',
+    'Jeu 9',
+    'Jeu 10',
+    'Jeu 11',
+    'Jeu 12',
+    'Jeu 13',
+    'Jeu 14',
+    'Jeu 15',
+    'Jeu 16',
+    'Jeu 17',
+    'Jeu 18',
+  ];
   typesOfAnime = [
     'Anime 1',
     'Anime 2',
@@ -28,6 +47,11 @@ export default class FilterMenuComponent {
     'Anime 10',
     'Anime 11',
     'Anime 12',
+    'Anime 13',
+    'Anime 14',
+    'Anime 15',
+    'Anime 16',
+    'Anime 17',
   ];
 
   selectedItemsClothes: string[] = [];
