@@ -1,20 +1,29 @@
-<div class="filter-container">
-  <div class="filter-buttons">
-    Filtre
-    <button (click)="onFilter('couleur')">Couleur</button>
-    <button (click)="onFilter('taille')">Taille</button>
-    <button (click)="onFilter('prix')">Prix</button>
-    <button (click)="onFilter('genre')">Genre</button>
+<div class="all">
+  <div class="filter-container">
+    <div class="filter-buttons">
+      Filtre
+      <button (click)="onFilter('couleur')">Couleur</button>
+      <button (click)="onFilter('taille')">Taille</button>
+      <button (click)="onFilter('prix')">Prix</button>
+      <button (click)="onFilter('genre')">Genre</button>
+    </div>
+
+    <div class="dropdown">
+      <li class="sort">
+        <span class="text">Trier par <span class="arrow">&#9660;</span></span>
+        <ul class="sous">
+          <li (click)="onOptionClick('Pertinence')">Pertinence</li>
+          <li (click)="onOptionClick('Prix : Ordre croissant')">Prix : Ordre croissant</li>
+          <li (click)="onOptionClick('Prix : Ordre décroissant')">Prix : Ordre décroissant</li>
+        </ul>
+      </li>
+    </div>
   </div>
 
-  <div class="dropdown">
-    <li class="sort">
-      <span class="text">Trier par <span class="arrow">&#9660;</span></span>
-      <ul class="sous">
-        <li (click)="onOptionClick('Pertinence')">Pertinence</li>
-        <li (click)="onOptionClick('Prix : Ordre croissant')">Prix : Ordre croissant</li>
-        <li (click)="onOptionClick('Prix : Ordre décroissant')">Prix : Ordre décroissant</li>
-      </ul>
-    </li>
+  <div class="filter">
+    <jhi-color-filter *ngIf="showColorFilter == 'couleur'"></jhi-color-filter>
+    <jhi-size-filter *ngIf="showColorFilter === 'taille'"></jhi-size-filter>
+    <jhi-price-filter *ngIf="showColorFilter === 'prix'"></jhi-price-filter>
+    <jhi-gender-filter *ngIf="showColorFilter === 'genre'"></jhi-gender-filter>
   </div>
 </div>
