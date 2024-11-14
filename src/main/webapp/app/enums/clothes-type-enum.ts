@@ -1,7 +1,8 @@
 export enum ClothesTypeEnum {
-  TEE_SHIRT = 'Tee-Shirt',
-  PULL = 'Pull',
-  JOGGING = 'Jogging',
-  LEGGING = 'Legging',
-  SHORT = 'Short',
+  TeeShirt = 'Tee-Shirt',
+  Pull = 'Pull',
+  Jogger = 'Jogging',
+  Legging = 'Legging',
+  Short = 'Short',
+  Brassiere = 'Brassière',
 }
