@@ -9,5 +9,16 @@
     }
   </select>
 
+  <div>
+    <h1>Content</h1>
+    <ul>
+      @for (line of content; track line) {
+        <li>
+          <input type="text" name="c{{ line.id }}" id="c{{ line.id }}" [(ngModel)]="line.content" />
+        </li>
+      }
+    </ul>
+  </div>
+
   <button type="submit">Submit</button>
 </form>
