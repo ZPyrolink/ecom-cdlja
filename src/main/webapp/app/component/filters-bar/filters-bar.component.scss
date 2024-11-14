@@ -1,13 +1,18 @@
+.all {
+  padding: 20px;
+}
+
 .filter-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: gray solid 1px;
 }
 
 .filter-buttons {
   display: flex;
   gap: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 2px;
 }
 
 .filter-buttons button {
@@ -78,5 +83,9 @@
 }
 
 .text {
-  padding-bottom: 10px;
+  padding-bottom: 2px;
+}
+
+.filter {
+  margin-top: 5px;
 }
