@@ -3,12 +3,12 @@
   justify-content: center;
   overflow-x: auto;
   white-space: nowrap;
-  gap: 10px; /* Espacement plus large entre les éléments */
+  gap: 10px;
 }
 
 .color-button {
   border: none;
-  padding: 8px 16px; /* Amélioration du padding pour une meilleure présentation */
+  padding: 2px 16px;
   border-radius: 8px;
   background-color: var(--gray4);
   color: #757575;
@@ -18,16 +18,16 @@
   cursor: pointer;
   transition:
     background-color 0.3s,
-    transform 0.2s ease; /* Transition pour une meilleure interaction */
+    transform 0.2s ease;
 }
 
 .color-button:hover {
-  background-color: #dcdcdc; /* Change la couleur de fond au survol */
-  transform: scale(1.05); /* Légère animation d'agrandissement au survol */
+  background-color: var(--gray3);
+  transform: scale(1.05);
 }
 
 .color-button span {
-  margin-left: 8px; /* Espacement entre l'icône et le texte */
+  margin-left: 8px;
   display: none;
 }
 
@@ -41,13 +41,13 @@
 }
 
 .color-image {
-  width: 24px; /* Taille de l'image ajustée */
-  height: 24px;
-  object-fit: cover; /* Garantit que l'image couvre bien l'espace sans déformation */
-  border-radius: 50%; /* Rend l'image circulaire */
-  margin-right: 8px; /* Espacement entre l'image et le texte */
+  width: 15px;
+  height: 15px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 8px;
 }
 
 .color-button.selected .color-image {
-  opacity: 0.8; /* Rend l'image légèrement transparente lorsqu'elle est sélectionnée */
+  opacity: 0.8;
 }
