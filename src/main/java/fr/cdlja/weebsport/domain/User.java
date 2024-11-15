@@ -60,7 +60,7 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     //si le compte est activé ou pas
     @NotNull
     @Column(nullable = false)
-    private boolean activated = false;
+    private boolean activated = true;
 
     //langue utilisé ici anglais
     @Size(min = 2, max = 10)

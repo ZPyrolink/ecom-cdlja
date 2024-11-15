@@ -54,6 +54,7 @@ public class AccountResource {
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
      * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.
      */
+    //enregistre un nouveau client lors de la créassion de compte
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
@@ -64,6 +65,7 @@ public class AccountResource {
         mailService.sendActivationEmail(user);
     }
 
+    //on active par défaut donc non used
     /**
      * {@code GET  /activate} : activate the registered user.
      *
@@ -120,6 +122,7 @@ public class AccountResource {
         );
     }
 
+    //on ne veut pas toucher aux mdp donc non used
     /**
      * {@code POST  /account/change-password} : changes the current user's password.
      *
