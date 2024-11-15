@@ -1,6 +1,6 @@
 <div class="color-container">
   <button *ngFor="let color of colors" (click)="toggleColor(color.name)" [class.selected]="isSelected(color.name)" class="color-button">
-    <img [src]="color.image" class="color-image" alt="" />
+    <img [src]="color.image" class="color-image" alt="{{ color.name }}" />
     <span *ngIf="isSelected(color.name)">✔</span> {{ color.name }}
   </button>
 </div>
