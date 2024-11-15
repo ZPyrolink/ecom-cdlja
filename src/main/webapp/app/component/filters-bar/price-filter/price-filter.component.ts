@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'jhi-price-filter',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, NgStyle],
   templateUrl: './price-filter.component.html',
   styleUrl: './price-filter.component.scss',
 })
