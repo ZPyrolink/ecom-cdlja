@@ -57,10 +57,12 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @Column(length = 254, unique = true)
     private String email;
 
+    //si le compte est activé ou pas
     @NotNull
     @Column(nullable = false)
     private boolean activated = false;
 
+    //langue utilisé ici anglais
     @Size(min = 2, max = 10)
     @Column(name = "lang_key", length = 10)
     private String langKey;
@@ -69,6 +71,7 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @Column(name = "image_url", length = 256)
     private String imageUrl;
 
+    //
     @Size(max = 20)
     @Column(name = "activation_key", length = 20)
     @JsonIgnore

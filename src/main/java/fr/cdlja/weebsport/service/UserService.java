@@ -53,6 +53,7 @@ public class UserService {
         this.cacheManager = cacheManager;
     }
 
+    //active le compte à partir d'une clé d'activation
     public Optional<User> activateRegistration(String key) {
         LOG.debug("Activating user for activation key {}", key);
         return userRepository
@@ -67,6 +68,7 @@ public class UserService {
             });
     }
 
+    //modifie le mot de passe
     public Optional<User> completePasswordReset(String newPassword, String key) {
         LOG.debug("Reset user password for reset key {}", key);
         return userRepository

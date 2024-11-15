@@ -1,10 +1,13 @@
 package fr.cdlja.weebsport.domain;
 
 import fr.cdlja.weebsport.domain.enumeration.MeansOfPayment;
+import jakarta.persistence.Column;
 
 public abstract class AbstractClient {
 
+    @Column(unique = true, nullable = false)
     private String email;
+
     private String address;
     MeansOfPayment meansOfPayment;
 

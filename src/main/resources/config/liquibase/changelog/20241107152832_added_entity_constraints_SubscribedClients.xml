@@ -30,5 +30,12 @@
                                  referencedColumnNames="id"
                                  referencedTableName="clothe"
                                  />
+
+      <addForeignKeyConstraint baseColumnNames="user_email"
+                               baseTableName="subscribed_clients"
+                               constraintName="fk_subscribed_clients__email"
+                               referencedColumnNames="email"
+                               referencedTableName="jhi_user"
+      />
     </changeSet>
 </databaseChangeLog>

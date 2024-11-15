@@ -14,12 +14,6 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="lastname" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="firstname" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
             <column name="birthday" type="date">
                 <constraints nullable="true" />
             </column>
@@ -79,8 +73,6 @@
                   tableName="subscribed_clients"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="lastname" type="string"/>
-            <column name="firstname" type="string"/>
             <column name="birthday" type="date"/>
             <column name="email" type="string"/>
             <column name="passworld" type="string"/>
