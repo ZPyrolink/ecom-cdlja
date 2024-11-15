@@ -1,1 +1,6 @@
-<p>price-filter works!</p>
+<div class="price-slider-container">
+  <label>Prix : {{ minValue }}€ - {{ maxValue }}€</label>
+  <input type="range" class="slider" [min]="0" [max]="100" [value]="minValue" (input)="updateMin($event)" #minSlider />
+  <input type="range" class="slider" [min]="0" [max]="100" [value]="maxValue" (input)="updateMax($event)" #maxSlider />
+  <div class="slider-range" [ngStyle]="{ left: minValue + '%', right: 100 - maxValue + '%' }"></div>
+</div>

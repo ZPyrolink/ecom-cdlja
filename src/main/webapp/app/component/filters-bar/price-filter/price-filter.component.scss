@@ -1,0 +1,59 @@
+.price-slider-container {
+  position: relative;
+  width: 100%;
+  height: 50px;
+}
+
+.slider {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: absolute;
+  width: 100%;
+  height: 10px;
+  background: transparent;
+  z-index: 1;
+}
+
+.slider::-webkit-slider-runnable-track {
+  background: transparent;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #4caf50;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #4caf50;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.slider-range {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 10px;
+  background-color: #4caf50;
+  z-index: 0;
+}
+
+label {
+  position: absolute;
+  top: -30px; /* Ajustez la position du label */
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
+}
+
+.truc {
+  height: 500px;
+}
