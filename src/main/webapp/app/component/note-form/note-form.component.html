@@ -1,9 +1,22 @@
-<form (ngSubmit)="submit()">
+<form (ngSubmit)="submit()" [formGroup]="noteForm">
+  <div id="errors">
+    @if (showErrors && !noteForm.valid) {
+      <h1>Le formulaire est invalide</h1>
+      <ul>
+        @for (error of noteForm.controls | keyvalue; track error.key) {
+          @if (error.value.invalid) {
+            <li>{{ error.key }}</li>
+          }
+        }
+      </ul>
+      <p>{{ noteForm.errors }}</p>
+    }
+  </div>
   <label for="name">Name</label>
-  <input type="text" name="name" id="name" [(ngModel)]="note.name" minlength="0" required />
+  <input type="text" name="name" id="name" formControlName="name" [(ngModel)]="note.name" />
 
-  <label for="type"></label>
-  <select name="type" id="type" [(ngModel)]="note.type" required>
+  <label for="type">Type</label>
+  <select name="type" id="type" formControlName="type" [(ngModel)]="note.type">
     @for (t of NoteType | keyvalue; track t) {
       <option [value]="t.value">{{ t.key }}</option>
     }
@@ -15,10 +28,13 @@
       @for (line of content; track line) {
         <li>
           <input type="text" name="c{{ line.id }}" id="c{{ line.id }}" [(ngModel)]="line.content" />
+          <fa-icon icon="remove" (click)="removeLine(line)" />
         </li>
       }
     </ul>
+    <button type="button" (click)="addNote()">Ajouter une ligne</button>
   </div>
 
+  <button type="reset">Clear</button>
   <button type="submit">Submit</button>
 </form>
