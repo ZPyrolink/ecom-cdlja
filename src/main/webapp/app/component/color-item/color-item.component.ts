@@ -1,16 +1,15 @@
-import { Component } from '@angular/core';
-import { NgForOf, NgIf, NgOptimizedImage } from '@angular/common';
-import { ColorEnum } from '../../../enums/color-enum';
+import { Component, Input } from '@angular/core';
+import { NgForOf, NgIf } from '@angular/common';
 
 @Component({
-  selector: 'jhi-color-filter',
+  selector: 'jhi-color-item',
   standalone: true,
   imports: [NgForOf, NgIf],
-  templateUrl: './color-filter.component.html',
-  styleUrl: './color-filter.component.scss',
+  templateUrl: './color-item.component.html',
+  styleUrl: './color-item.component.scss',
 })
-export class ColorFilterComponent {
-  colors = Object.values(ColorEnum);
+export class ColorItemComponent {
+  @Input() colors: { name: string; image: string }[] = [];
   selectedColors: string[] = [];
 
   toggleColor(color: string): void {
