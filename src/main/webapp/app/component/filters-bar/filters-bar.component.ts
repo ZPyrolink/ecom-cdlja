@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgForOf, NgIf } from '@angular/common';
+import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { ColorItemComponent } from '../color-item/color-item.component';
 import { PriceFilterComponent } from './price-filter/price-filter.component';
 import { GenderFilterComponent } from './gender-filter/gender-filter.component';
@@ -10,23 +10,29 @@ import { SizeEnum } from '../../enums/size-enum';
 @Component({
   selector: 'jhi-filters-bar',
   standalone: true,
-  imports: [NgForOf, NgIf, ColorItemComponent, PriceFilterComponent, GenderFilterComponent, SizeItemComponent],
+  imports: [NgForOf, NgIf, ColorItemComponent, PriceFilterComponent, GenderFilterComponent, SizeItemComponent, NgClass],
   templateUrl: './filters-bar.component.html',
   styleUrl: './filters-bar.component.scss',
 })
 export class FiltersBarComponent {
-  showColorFilter: string | undefined = undefined;
+  showColorFilter: string | undefined;
   protected readonly Object = Object;
   protected readonly ColorEnum = ColorEnum;
   protected readonly SizeEnum = SizeEnum;
 
   onFilter(filterType: string): void {
+    // eslint-disable-next-line no-console
+    console.log(filterType, '1Option sélectionnée:', this.showColorFilter === filterType);
+
     if (this.showColorFilter === filterType) {
       this.showColorFilter = undefined;
       // eslint-disable-next-line no-console
-      console.log('Option sélectionnée:', this.showColorFilter);
+      console.log('2Option sélectionnée:', this.showColorFilter);
+    } else {
+      this.showColorFilter = filterType;
     }
-    this.showColorFilter = filterType;
+    // eslint-disable-next-line no-console
+    console.log('4Option sélectionnée:', this.showColorFilter);
   }
 
   onOptionClick(option: string): void {
