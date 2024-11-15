@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SizeFilterComponent } from './size-filter.component';
+import { SizeItemComponent } from './size-item.component';
 
-describe('SizeFilterComponent', () => {
-  let component: SizeFilterComponent;
-  let fixture: ComponentFixture<SizeFilterComponent>;
+describe('SizeItemComponent', () => {
+  let component: SizeItemComponent;
+  let fixture: ComponentFixture<SizeItemComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SizeFilterComponent],
+      imports: [SizeItemComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SizeFilterComponent);
+    fixture = TestBed.createComponent(SizeItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
