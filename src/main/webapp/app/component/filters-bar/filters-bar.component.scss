@@ -1,5 +1,6 @@
 .all {
   padding: 20px;
+  font-size: 20px;
 }
 
 .filter-container {
@@ -16,8 +17,7 @@
 }
 
 .filter-buttons button {
-  padding: 2px 4px;
-  font-size: 14px;
+  padding: 0px 2px;
   cursor: pointer;
   border-radius: 8px;
   background-color: var(--background-color);
