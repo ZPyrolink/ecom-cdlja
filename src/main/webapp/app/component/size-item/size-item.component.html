@@ -1,0 +1,5 @@
+<div class="container">
+  <button class="sizeButton" *ngFor="let size of sizes" [class.selected]="isSelected(size)" (click)="toggleSize(size)">
+    {{ size }}
+  </button>
+</div>

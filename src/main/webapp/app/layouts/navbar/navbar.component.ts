@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import SharedModule from 'app/shared/shared.module';
 import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
@@ -14,6 +14,12 @@ import { FormsModule } from '@angular/forms';
 })
 export default class NavbarComponent {
   searchQuery = '';
+  isVisible = false;
+  @Output() visibilityChange = new EventEmitter<boolean>();
+  openPanel(): void {
+    this.isVisible = !this.isVisible;
+    this.visibilityChange.emit(this.isVisible);
+  }
 
   onSearch(): void {
     // eslint-disable-next-line no-console

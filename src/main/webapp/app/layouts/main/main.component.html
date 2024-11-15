@@ -1,11 +1,12 @@
 <jhi-page-ribbon></jhi-page-ribbon>
-<div class="container-center">
-  <div>
-    <header><jhi-navbar></jhi-navbar></header>
-    <router-outlet></router-outlet>
-  </div>
 
-  <div class="jh-card">
+<header>
+  <jhi-navbar (visibilityChange)="onVisibilityChange($event)"></jhi-navbar>
+</header>
+<div class="container-center">
+  <jhi-filter-menu *ngIf="isVisible" class="side-filter-menu"></jhi-filter-menu>
+
+  <div class="principal-page">
     <router-outlet></router-outlet>
   </div>
 </div>
