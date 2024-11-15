@@ -10,9 +10,14 @@ import { NgForOf, NgIf } from '@angular/common';
 })
 export class ColorItemComponent {
   @Input() colors: { name: string; image: string }[] = [];
+  @Input() multiSelect = true;
   selectedColors: string[] = [];
 
   toggleColor(color: string): void {
+    if (!this.multiSelect) {
+      this.selectedColors = [color];
+      return;
+    }
     const index = this.selectedColors.indexOf(color);
     if (index === -1) {
       this.selectedColors.push(color);

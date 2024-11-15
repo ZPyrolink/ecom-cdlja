@@ -21,7 +21,7 @@
   </div>
 
   <div class="filter">
-    <jhi-color-item [colors]="Object.values(ColorEnum)" *ngIf="showColorFilter == 'couleur'"></jhi-color-item>
+    <jhi-color-item [colors]="Object.values(ColorEnum)" [multiSelect]="false" *ngIf="showColorFilter == 'couleur'"></jhi-color-item>
     <jhi-size-filter *ngIf="showColorFilter === 'taille'"></jhi-size-filter>
     <jhi-price-filter *ngIf="showColorFilter === 'prix'"></jhi-price-filter>
     <jhi-gender-filter *ngIf="showColorFilter === 'genre'"></jhi-gender-filter>
