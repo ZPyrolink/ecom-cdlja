@@ -151,9 +151,7 @@ public class OrderResource {
     public List<Order> getAllOrders(@RequestParam(name = "filter", required = false) String filter) {
         if ("subscribedclients-is-null".equals(filter)) {
             LOG.debug("REST request to get all Orders where subscribedClients is null");
-            return StreamSupport.stream(orderRepository.findAll().spliterator(), false)
-                .filter(order -> order.getSubscribedClients() == null)
-                .toList();
+            return StreamSupport.stream(orderRepository.findAll().spliterator(), false).filter(order -> order.getClient() == null).toList();
         }
         LOG.debug("REST request to get all Orders");
         return orderRepository.findAll();

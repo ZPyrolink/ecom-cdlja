@@ -59,18 +59,4 @@ class OrderTest {
         assertThat(order.getOrderlines()).doesNotContain(orderLineBack);
         assertThat(orderLineBack.getOrder()).isNull();
     }
-
-    @Test
-    void subscribedClientsTest() {
-        Order order = getOrderRandomSampleGenerator();
-        SubscribedClients subscribedClientsBack = getSubscribedClientsRandomSampleGenerator();
-
-        order.setSubscribedClients(subscribedClientsBack);
-        assertThat(order.getSubscribedClients()).isEqualTo(subscribedClientsBack);
-        assertThat(subscribedClientsBack.getBasket()).isEqualTo(order);
-
-        order.subscribedClients(null);
-        assertThat(order.getSubscribedClients()).isNull();
-        assertThat(subscribedClientsBack.getBasket()).isNull();
-    }
 }

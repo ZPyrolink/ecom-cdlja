@@ -39,7 +39,7 @@ public class Stock implements Serializable {
     private Integer quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "clothe_id")
     @JsonIgnoreProperties(value = { "subscribedClients" }, allowSetters = true)
     private Clothe clothe;
 

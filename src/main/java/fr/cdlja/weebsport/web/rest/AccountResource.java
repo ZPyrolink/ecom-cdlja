@@ -86,6 +86,7 @@ public class AccountResource {
      * @return the current user.
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be returned.
      */
+    //recupère info user courant et ses authorités
     @GetMapping("/account")
     public AdminUserDTO getAccount() {
         return userService

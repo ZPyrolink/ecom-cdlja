@@ -96,7 +96,7 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
 
-    @OneToOne
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private SubscribedClients subscribedClients;
 
     public Long getId() {

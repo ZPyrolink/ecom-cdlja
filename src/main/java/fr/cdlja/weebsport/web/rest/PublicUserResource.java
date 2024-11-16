@@ -38,6 +38,7 @@ public class PublicUserResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body all users.
      */
+    // pour récupérer login et id de tous les utilisateurs
     @GetMapping("/users")
     public ResponseEntity<List<UserDTO>> getAllPublicUsers(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get all public User names");

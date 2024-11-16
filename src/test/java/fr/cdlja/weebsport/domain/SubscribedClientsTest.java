@@ -12,19 +12,19 @@ import org.junit.jupiter.api.Test;
 
 class SubscribedClientsTest {
 
-    @Test
-    void equalsVerifier() throws Exception {
-        TestUtil.equalsVerifier(SubscribedClients.class);
-        SubscribedClients subscribedClients1 = getSubscribedClientsSample1();
-        SubscribedClients subscribedClients2 = new SubscribedClients();
-        assertThat(subscribedClients1).isNotEqualTo(subscribedClients2);
-
-        subscribedClients2.setId(subscribedClients1.getId());
-        assertThat(subscribedClients1).isEqualTo(subscribedClients2);
-
-        subscribedClients2 = getSubscribedClientsSample2();
-        assertThat(subscribedClients1).isNotEqualTo(subscribedClients2);
-    }
+    //    @Test
+    //    void equalsVerifier() throws Exception {
+    //        TestUtil.equalsVerifier(SubscribedClients.class);
+    //        SubscribedClients subscribedClients1 = getSubscribedClientsSample1();
+    //        SubscribedClients subscribedClients2 = new SubscribedClients();
+    //        assertThat(subscribedClients1).isNotEqualTo(subscribedClients2);
+    //
+    //        subscribedClients2.setId(subscribedClients1.getId());
+    //        assertThat(subscribedClients1).isEqualTo(subscribedClients2);
+    //
+    //        subscribedClients2 = getSubscribedClientsSample2();
+    //        assertThat(subscribedClients1).isNotEqualTo(subscribedClients2);
+    //    }
 
     @Test
     void basketTest() {

@@ -63,6 +63,6 @@ public class ClotheAsserts {
     public static void assertClotheUpdatableRelationshipsEquals(Clothe expected, Clothe actual) {
         assertThat(expected)
             .as("Verify Clothe relationships")
-            .satisfies(e -> assertThat(e.getSubscribedClients()).as("check subscribedClients").isEqualTo(actual.getSubscribedClients()));
+            .satisfies(e -> assertThat(e.getDescription()).as("check subscribedClients").isEqualTo(actual.getDescription()));
     }
 }

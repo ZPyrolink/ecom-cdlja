@@ -52,15 +52,17 @@ public class AuthenticateController {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
     }
 
+    //verifie code et connect user
     @PostMapping("/authenticate")
     public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
             loginVM.getUsername(),
             loginVM.getPassword()
         );
-
+        //recupère username et authorities du l'utilisateur connecté et le donne au security controleur
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        //rememberme pour permettre à l'utilisateur de rester connecter
         String jwt = this.createToken(authentication, loginVM.isRememberMe());
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setBearerAuth(jwt);
@@ -73,6 +75,7 @@ public class AuthenticateController {
      * @param principal the authentication principal.
      * @return the login if the user is authenticated.
      */
+    //permet de savoir si
     @GetMapping(value = "/authenticate", produces = MediaType.TEXT_PLAIN_VALUE)
     public String isAuthenticated(Principal principal) {
         LOG.debug("REST request to check if the current user is authenticated");

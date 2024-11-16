@@ -24,26 +24,4 @@ class ClotheTest {
         clothe2 = getClotheSample2();
         assertThat(clothe1).isNotEqualTo(clothe2);
     }
-
-    @Test
-    void subscribedClientsTest() {
-        Clothe clothe = getClotheRandomSampleGenerator();
-        SubscribedClients subscribedClientsBack = getSubscribedClientsRandomSampleGenerator();
-
-        clothe.addSubscribedClients(subscribedClientsBack);
-        assertThat(clothe.getSubscribedClients()).containsOnly(subscribedClientsBack);
-        assertThat(subscribedClientsBack.getFavorises()).containsOnly(clothe);
-
-        clothe.removeSubscribedClients(subscribedClientsBack);
-        assertThat(clothe.getSubscribedClients()).doesNotContain(subscribedClientsBack);
-        assertThat(subscribedClientsBack.getFavorises()).doesNotContain(clothe);
-
-        clothe.subscribedClients(new HashSet<>(Set.of(subscribedClientsBack)));
-        assertThat(clothe.getSubscribedClients()).containsOnly(subscribedClientsBack);
-        assertThat(subscribedClientsBack.getFavorises()).containsOnly(clothe);
-
-        clothe.setSubscribedClients(new HashSet<>());
-        assertThat(clothe.getSubscribedClients()).doesNotContain(subscribedClientsBack);
-        assertThat(subscribedClientsBack.getFavorises()).doesNotContain(clothe);
-    }
 }

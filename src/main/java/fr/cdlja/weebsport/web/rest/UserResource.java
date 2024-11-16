@@ -136,6 +136,8 @@ public class UserResource {
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already in use.
      * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already in use.
      */
+    //modif info d'un utilisateurs login et/ou mail
+    // si existe un user qui à cela mais pas même id alors impossible sinon ubdate
     @PutMapping({ "/users", "/users/{login}" })
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<AdminUserDTO> updateUser(
@@ -165,8 +167,9 @@ public class UserResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body all users.
      */
+    //pour récupérer infos or mdp de tous les utilisateurs
     @GetMapping("/users")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    //@PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<List<AdminUserDTO>> getAllUsers(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get all User for an admin");
         if (!onlyContainsAllowedProperties(pageable)) {
@@ -188,6 +191,7 @@ public class UserResource {
      * @param login the login of the user to find.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the "login" user, or with status {@code 404 (Not Found)}.
      */
+    //recupère un utilisateur et son autorité
     @GetMapping("/users/{login}")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<AdminUserDTO> getUser(@PathVariable("login") @Pattern(regexp = Constants.LOGIN_REGEX) String login) {

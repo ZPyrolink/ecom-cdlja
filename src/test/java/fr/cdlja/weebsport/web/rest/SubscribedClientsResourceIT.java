@@ -102,11 +102,8 @@ class SubscribedClientsResourceIT {
      */
     public static SubscribedClients createEntity() {
         return new SubscribedClients()
-            .lastname(DEFAULT_LASTNAME)
-            .firstname(DEFAULT_FIRSTNAME)
             .birthday(DEFAULT_BIRTHDAY)
             .email(DEFAULT_EMAIL)
-            .passworld(DEFAULT_PASSWORLD)
             .address(DEFAULT_ADDRESS)
             .banckCard(DEFAULT_BANCK_CARD)
             .phone(DEFAULT_PHONE)
@@ -121,11 +118,8 @@ class SubscribedClientsResourceIT {
      */
     public static SubscribedClients createUpdatedEntity() {
         return new SubscribedClients()
-            .lastname(UPDATED_LASTNAME)
-            .firstname(UPDATED_FIRSTNAME)
             .birthday(UPDATED_BIRTHDAY)
             .email(UPDATED_EMAIL)
-            .passworld(UPDATED_PASSWORLD)
             .address(UPDATED_ADDRESS)
             .banckCard(UPDATED_BANCK_CARD)
             .phone(UPDATED_PHONE)
@@ -196,11 +190,8 @@ class SubscribedClientsResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(subscribedClients.getId().intValue())))
-            .andExpect(jsonPath("$.[*].lastname").value(hasItem(DEFAULT_LASTNAME)))
-            .andExpect(jsonPath("$.[*].firstname").value(hasItem(DEFAULT_FIRSTNAME)))
             .andExpect(jsonPath("$.[*].birthday").value(hasItem(DEFAULT_BIRTHDAY.toString())))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
-            .andExpect(jsonPath("$.[*].passworld").value(hasItem(DEFAULT_PASSWORLD)))
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
             .andExpect(jsonPath("$.[*].banckCard").value(hasItem(DEFAULT_BANCK_CARD)))
             .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE)))
@@ -236,11 +227,8 @@ class SubscribedClientsResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(subscribedClients.getId().intValue()))
-            .andExpect(jsonPath("$.lastname").value(DEFAULT_LASTNAME))
-            .andExpect(jsonPath("$.firstname").value(DEFAULT_FIRSTNAME))
             .andExpect(jsonPath("$.birthday").value(DEFAULT_BIRTHDAY.toString()))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
-            .andExpect(jsonPath("$.passworld").value(DEFAULT_PASSWORLD))
             .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS))
             .andExpect(jsonPath("$.banckCard").value(DEFAULT_BANCK_CARD))
             .andExpect(jsonPath("$.phone").value(DEFAULT_PHONE))
@@ -267,11 +255,8 @@ class SubscribedClientsResourceIT {
         // Disconnect from session so that the updates on updatedSubscribedClients are not directly saved in db
         em.detach(updatedSubscribedClients);
         updatedSubscribedClients
-            .lastname(UPDATED_LASTNAME)
-            .firstname(UPDATED_FIRSTNAME)
             .birthday(UPDATED_BIRTHDAY)
             .email(UPDATED_EMAIL)
-            .passworld(UPDATED_PASSWORLD)
             .address(UPDATED_ADDRESS)
             .banckCard(UPDATED_BANCK_CARD)
             .phone(UPDATED_PHONE)
@@ -355,12 +340,7 @@ class SubscribedClientsResourceIT {
         SubscribedClients partialUpdatedSubscribedClients = new SubscribedClients();
         partialUpdatedSubscribedClients.setId(subscribedClients.getId());
 
-        partialUpdatedSubscribedClients
-            .lastname(UPDATED_LASTNAME)
-            .firstname(UPDATED_FIRSTNAME)
-            .birthday(UPDATED_BIRTHDAY)
-            .phone(UPDATED_PHONE)
-            .points(UPDATED_POINTS);
+        partialUpdatedSubscribedClients.birthday(UPDATED_BIRTHDAY).phone(UPDATED_PHONE).points(UPDATED_POINTS);
 
         restSubscribedClientsMockMvc
             .perform(
@@ -392,11 +372,8 @@ class SubscribedClientsResourceIT {
         partialUpdatedSubscribedClients.setId(subscribedClients.getId());
 
         partialUpdatedSubscribedClients
-            .lastname(UPDATED_LASTNAME)
-            .firstname(UPDATED_FIRSTNAME)
             .birthday(UPDATED_BIRTHDAY)
             .email(UPDATED_EMAIL)
-            .passworld(UPDATED_PASSWORLD)
             .address(UPDATED_ADDRESS)
             .banckCard(UPDATED_BANCK_CARD)
             .phone(UPDATED_PHONE)

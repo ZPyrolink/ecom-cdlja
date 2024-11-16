@@ -47,11 +47,8 @@ public class SubscribedClientsAsserts {
     public static void assertSubscribedClientsUpdatableFieldsEquals(SubscribedClients expected, SubscribedClients actual) {
         assertThat(expected)
             .as("Verify SubscribedClients relevant properties")
-            .satisfies(e -> assertThat(e.getLastname()).as("check lastname").isEqualTo(actual.getLastname()))
-            .satisfies(e -> assertThat(e.getFirstname()).as("check firstname").isEqualTo(actual.getFirstname()))
             .satisfies(e -> assertThat(e.getBirthday()).as("check birthday").isEqualTo(actual.getBirthday()))
             .satisfies(e -> assertThat(e.getEmail()).as("check email").isEqualTo(actual.getEmail()))
-            .satisfies(e -> assertThat(e.getPassworld()).as("check passworld").isEqualTo(actual.getPassworld()))
             .satisfies(e -> assertThat(e.getAddress()).as("check address").isEqualTo(actual.getAddress()))
             .satisfies(e -> assertThat(e.getBanckCard()).as("check banckCard").isEqualTo(actual.getBanckCard()))
             .satisfies(e -> assertThat(e.getPhone()).as("check phone").isEqualTo(actual.getPhone()))

@@ -122,20 +122,11 @@ public class SubscribedClientsResource {
         Optional<SubscribedClients> result = subscribedClientsRepository
             .findById(subscribedClients.getId())
             .map(existingSubscribedClients -> {
-                if (subscribedClients.getLastname() != null) {
-                    existingSubscribedClients.setLastname(subscribedClients.getLastname());
-                }
-                if (subscribedClients.getFirstname() != null) {
-                    existingSubscribedClients.setFirstname(subscribedClients.getFirstname());
-                }
                 if (subscribedClients.getBirthday() != null) {
                     existingSubscribedClients.setBirthday(subscribedClients.getBirthday());
                 }
                 if (subscribedClients.getEmail() != null) {
                     existingSubscribedClients.setEmail(subscribedClients.getEmail());
-                }
-                if (subscribedClients.getPassworld() != null) {
-                    existingSubscribedClients.setPassworld(subscribedClients.getPassworld());
                 }
                 if (subscribedClients.getAddress() != null) {
                     existingSubscribedClients.setAddress(subscribedClients.getAddress());

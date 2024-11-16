@@ -35,7 +35,7 @@ public class OrderLine implements Serializable {
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "stock_id")
     @JsonIgnoreProperties(value = { "clothe" }, allowSetters = true)
     private Stock stock;
 

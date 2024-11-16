@@ -37,11 +37,11 @@ public class SubscribedClients extends AbstractClient implements Serializable {
     private String phone;
 
     @Column(name = "points")
-    private Integer points;
+    private Integer points = 0;
 
     @JsonIgnoreProperties(value = { "client", "orderlines", "subscribedClients" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(unique = true)
+    @JoinColumn(unique = true, name = "basket_id")
     private Order basket;
 
     @ManyToMany(fetch = FetchType.LAZY)
