@@ -14,14 +14,20 @@ export class PriceFilterComponent {
   maxValue = 100;
 
   updateMin(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    const min = parseInt(target.value, 10);
-    this.minValue = Math.min(min, this.maxValue - 1); // Assure que minValue reste inférieur à maxValue
+    const newValue = Number((event.target as HTMLInputElement).value);
+    if (newValue <= this.maxValue) {
+      this.minValue = newValue;
+    } else {
+      (event.target as HTMLInputElement).value = String(this.minValue);
+    }
   }
 
   updateMax(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    const max = parseInt(target.value, 10);
-    this.maxValue = Math.max(max, this.minValue + 1); // Assure que maxValue reste supérieur à minValue
+    const newValue = Number((event.target as HTMLInputElement).value);
+    if (newValue >= this.minValue) {
+      this.maxValue = newValue;
+    } else {
+      (event.target as HTMLInputElement).value = String(this.maxValue);
+    }
   }
 }
