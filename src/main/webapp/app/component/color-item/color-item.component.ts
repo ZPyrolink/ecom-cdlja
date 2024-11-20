@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgForOf, NgIf } from '@angular/common';
 
 @Component({
@@ -11,7 +11,8 @@ import { NgForOf, NgIf } from '@angular/common';
 export class ColorItemComponent {
   @Input() colors: { name: string; image: string }[] = [];
   @Input() multiSelect = true;
-  selectedColors: string[] = [];
+  @Output() selectionChange = new EventEmitter<string[]>();
+  @Input() selectedColors: string[] = [];
 
   toggleColor(color: string): void {
     if (!this.multiSelect) {
@@ -24,6 +25,7 @@ export class ColorItemComponent {
     } else {
       this.selectedColors.splice(index, 1);
     }
+    this.selectionChange.emit(this.selectedColors);
   }
 
   isSelected(color: string): boolean {
