@@ -6,6 +6,7 @@ import { GenderFilterComponent } from './gender-filter/gender-filter.component';
 import { ColorEnum } from '../../enums/color-enum';
 import { SizeItemComponent } from '../size-item/size-item.component';
 import { SizeEnum } from '../../enums/size-enum';
+import { GenderEnum } from '../../enums/gender-enum';
 
 @Component({
   selector: 'jhi-filters-bar',
@@ -19,6 +20,7 @@ export class FiltersBarComponent {
   protected readonly Object = Object;
   protected readonly ColorEnum = ColorEnum;
   protected readonly SizeEnum = SizeEnum;
+  protected readonly GenderEnum = GenderEnum;
 
   onFilter(filterType: string): void {
     // eslint-disable-next-line no-console
