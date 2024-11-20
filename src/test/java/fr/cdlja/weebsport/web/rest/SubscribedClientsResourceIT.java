@@ -60,8 +60,8 @@ class SubscribedClientsResourceIT {
     private static final String DEFAULT_ADDRESS = "AAAAAAAAAA";
     private static final String UPDATED_ADDRESS = "BBBBBBBBBB";
 
-    private static final String DEFAULT_BANCK_CARD = "AAAAAAAAAA";
-    private static final String UPDATED_BANCK_CARD = "BBBBBBBBBB";
+    private static final String DEFAULT_BANK_CARD = "AAAAAAAAAA";
+    private static final String UPDATED_BANK_CARD = "BBBBBBBBBB";
 
     private static final String DEFAULT_PHONE = "AAAAAAAAAA";
     private static final String UPDATED_PHONE = "BBBBBBBBBB";
@@ -105,7 +105,7 @@ class SubscribedClientsResourceIT {
             .birthday(DEFAULT_BIRTHDAY)
             .email(DEFAULT_EMAIL)
             .address(DEFAULT_ADDRESS)
-            .banckCard(DEFAULT_BANCK_CARD)
+            .bankCard(DEFAULT_BANK_CARD)
             .phone(DEFAULT_PHONE)
             .points(DEFAULT_POINTS);
     }
@@ -121,7 +121,7 @@ class SubscribedClientsResourceIT {
             .birthday(UPDATED_BIRTHDAY)
             .email(UPDATED_EMAIL)
             .address(UPDATED_ADDRESS)
-            .banckCard(UPDATED_BANCK_CARD)
+            .bankCard(UPDATED_BANK_CARD)
             .phone(UPDATED_PHONE)
             .points(UPDATED_POINTS);
     }
@@ -193,7 +193,7 @@ class SubscribedClientsResourceIT {
             .andExpect(jsonPath("$.[*].birthday").value(hasItem(DEFAULT_BIRTHDAY.toString())))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
-            .andExpect(jsonPath("$.[*].banckCard").value(hasItem(DEFAULT_BANCK_CARD)))
+            .andExpect(jsonPath("$.[*].bankCard").value(hasItem(DEFAULT_BANK_CARD)))
             .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE)))
             .andExpect(jsonPath("$.[*].points").value(hasItem(DEFAULT_POINTS)));
     }
@@ -230,7 +230,7 @@ class SubscribedClientsResourceIT {
             .andExpect(jsonPath("$.birthday").value(DEFAULT_BIRTHDAY.toString()))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
             .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS))
-            .andExpect(jsonPath("$.banckCard").value(DEFAULT_BANCK_CARD))
+            .andExpect(jsonPath("$.bankCard").value(DEFAULT_BANK_CARD))
             .andExpect(jsonPath("$.phone").value(DEFAULT_PHONE))
             .andExpect(jsonPath("$.points").value(DEFAULT_POINTS));
     }
@@ -258,7 +258,7 @@ class SubscribedClientsResourceIT {
             .birthday(UPDATED_BIRTHDAY)
             .email(UPDATED_EMAIL)
             .address(UPDATED_ADDRESS)
-            .banckCard(UPDATED_BANCK_CARD)
+            .bankCard(UPDATED_BANK_CARD)
             .phone(UPDATED_PHONE)
             .points(UPDATED_POINTS);
 
@@ -375,7 +375,7 @@ class SubscribedClientsResourceIT {
             .birthday(UPDATED_BIRTHDAY)
             .email(UPDATED_EMAIL)
             .address(UPDATED_ADDRESS)
-            .banckCard(UPDATED_BANCK_CARD)
+            .bankCard(UPDATED_BANK_CARD)
             .phone(UPDATED_PHONE)
             .points(UPDATED_POINTS);
 

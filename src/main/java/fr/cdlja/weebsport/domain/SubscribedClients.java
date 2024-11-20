@@ -30,8 +30,8 @@ public class SubscribedClients extends AbstractClient implements Serializable {
     @Column(name = "birthday")
     private LocalDate birthday;
 
-    @Column(name = "banck_card")
-    private String banckCard;
+    @Column(name = "bank_card")
+    private String bankCard;
 
     @Column(name = "phone")
     private String phone;
@@ -106,17 +106,17 @@ public class SubscribedClients extends AbstractClient implements Serializable {
         return this;
     }
 
-    public String getBanckCard() {
-        return this.banckCard;
+    public String getBankCard() {
+        return this.bankCard;
     }
 
-    public SubscribedClients banckCard(String banckCard) {
-        this.setBanckCard(banckCard);
+    public SubscribedClients bankCard(String bankCard) {
+        this.setBankCard(bankCard);
         return this;
     }
 
-    public void setBanckCard(String banckCard) {
-        this.banckCard = banckCard;
+    public void setBankCard(String bankCard) {
+        this.bankCard = bankCard;
     }
 
     public String getPhone() {
@@ -242,7 +242,7 @@ public class SubscribedClients extends AbstractClient implements Serializable {
             ", email='" + getEmail() + "'" +
             ", passworld_cripted='" + user.getPassword() + "'" +
             ", address='" + getAddress() + "'" +
-            ", banckCard='" + getBanckCard() + "'" +
+            ", bankCard='" + getBankCard() + "'" +
             ", phone='" + getPhone() + "'" +
             ", points=" + getPoints() +
             ", basket=" + getBasket() +

@@ -9,7 +9,6 @@ public abstract class AbstractClient {
     private String email;
 
     private String address;
-    MeansOfPayment meansOfPayment;
 
     public abstract String gettypeClient();
 
@@ -27,13 +26,5 @@ public abstract class AbstractClient {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public MeansOfPayment getMeansOfPayment() {
-        return meansOfPayment;
-    }
-
-    public void setMeansOfPayment(MeansOfPayment meansOfPayment) {
-        this.meansOfPayment = meansOfPayment;
     }
 }

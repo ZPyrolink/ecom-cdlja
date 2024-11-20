@@ -36,7 +36,7 @@ public class Order implements Serializable {
     private LocalDate date;
 
     @Column(name = "amount")
-    private Float amount;
+    private Float amount = 0F;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "mean_of_payment")

@@ -1,15 +1,21 @@
 package fr.cdlja.weebsport.web.rest;
 
+import fr.cdlja.weebsport.domain.Order;
+import fr.cdlja.weebsport.domain.SubscribedClients;
 import fr.cdlja.weebsport.domain.User;
 import fr.cdlja.weebsport.repository.UserRepository;
 import fr.cdlja.weebsport.security.SecurityUtils;
 import fr.cdlja.weebsport.service.MailService;
+import fr.cdlja.weebsport.service.SubscribedClientsService;
 import fr.cdlja.weebsport.service.UserService;
 import fr.cdlja.weebsport.service.dto.AdminUserDTO;
 import fr.cdlja.weebsport.service.dto.PasswordChangeDTO;
+import fr.cdlja.weebsport.service.dto.SubscribedClientDTO;
 import fr.cdlja.weebsport.web.rest.errors.*;
 import fr.cdlja.weebsport.web.rest.vm.KeyAndPasswordVM;
 import fr.cdlja.weebsport.web.rest.vm.ManagedUserVM;
+import fr.cdlja.weebsport.web.rest.vm.RegisterAccountVM;
+import io.undertow.util.BadRequestException;
 import jakarta.validation.Valid;
 import java.util.*;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +30,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 public class AccountResource {
+
+    private final SubscribedClientsService subscribedClientsService;
 
     private static class AccountResourceException extends RuntimeException {
 
@@ -40,10 +48,40 @@ public class AccountResource {
 
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    public AccountResource(
+        UserRepository userRepository,
+        UserService userService,
+        MailService mailService,
+        SubscribedClientsService subscribedClientsService
+    ) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.subscribedClientsService = subscribedClientsService;
+    }
+
+    // Logique métier pour créer les entités User et ClientAbonne et panié asso
+    @PostMapping("/client/signin")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createClient(@Valid @RequestBody RegisterAccountVM registerAccountVM) {
+        // Accès aux données de l'utilisateur
+        ManagedUserVM userm = registerAccountVM.getManagedUser();
+
+        // Accès aux données du client abonné
+        SubscribedClientDTO clientAbonned = registerAccountVM.getSubscribedClient();
+        if (isPasswordLengthInvalid(userm.getPassword())) {
+            throw new InvalidPasswordException();
+        }
+
+        User user = userService.registerUser(userm, userm.getPassword());
+        SubscribedClients subscribedClients = new SubscribedClients();
+        subscribedClients.setEmail(user.getEmail());
+        subscribedClients.setBirthday(clientAbonned.getBirthday());
+        subscribedClients.setPhone(clientAbonned.getPhoneNumber());
+        subscribedClients.setBankCard(clientAbonned.getBankCard());
+        Order o = subscribedClientsService.createBasket(subscribedClients);
+        subscribedClients.setBasket(o);
+        subscribedClientsService.registerClient(subscribedClients);
     }
 
     /**

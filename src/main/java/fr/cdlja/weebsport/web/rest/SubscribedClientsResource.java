@@ -131,8 +131,8 @@ public class SubscribedClientsResource {
                 if (subscribedClients.getAddress() != null) {
                     existingSubscribedClients.setAddress(subscribedClients.getAddress());
                 }
-                if (subscribedClients.getBanckCard() != null) {
-                    existingSubscribedClients.setBanckCard(subscribedClients.getBanckCard());
+                if (subscribedClients.getBankCard() != null) {
+                    existingSubscribedClients.setBankCard(subscribedClients.getBankCard());
                 }
                 if (subscribedClients.getPhone() != null) {
                     existingSubscribedClients.setPhone(subscribedClients.getPhone());
