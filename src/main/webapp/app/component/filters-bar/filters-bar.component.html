@@ -2,10 +2,10 @@
   <div class="filter-container">
     <div class="filter-buttons">
       Filtre
-      <button (click)="onFilter('couleur')">Couleur</button>
-      <button (click)="onFilter('taille')">Taille</button>
-      <button (click)="onFilter('prix')">Prix</button>
-      <button (click)="onFilter('genre')">Genre</button>
+      <button (click)="onFilter('color')">Couleur</button>
+      <button (click)="onFilter('size')">Taille</button>
+      <button (click)="onFilter('price')">Prix</button>
+      <button (click)="onFilter('gender')">Genre</button>
     </div>
 
     <div class="dropdown">
@@ -20,9 +20,32 @@
     </div>
   </div>
   <div [ngClass]="{ filter: showColorFilter !== undefined }">
-    <jhi-color-item [colors]="Object.values(ColorEnum)" [multiSelect]="true" *ngIf="showColorFilter === 'couleur'"></jhi-color-item>
-    <jhi-size-item [sizes]="Object.values(SizeEnum)" [multiSelect]="true" *ngIf="showColorFilter === 'taille'"></jhi-size-item>
-    <jhi-price-filter *ngIf="showColorFilter === 'prix'"></jhi-price-filter>
-    <jhi-size-item [sizes]="Object.values(GenderEnum)" [multiSelect]="true" *ngIf="showColorFilter === 'genre'"></jhi-size-item>
+    <jhi-color-item
+      [colors]="Object.values(ColorEnum)"
+      [multiSelect]="true"
+      [selectedColors]="selections['color']"
+      *ngIf="showColorFilter === 'color'"
+      (selectionChange)="updateSelection('color', $event)"
+    ></jhi-color-item>
+    <jhi-item
+      [items]="Object.values(SizeEnum)"
+      [multiSelect]="true"
+      [selectedItem]="selections['size']"
+      *ngIf="showColorFilter === 'size'"
+      (selectionChange)="updateSelection('size', $event)"
+    ></jhi-item>
+    <jhi-price-filter
+      [minValue]="selections['price'].min"
+      [maxValue]="selections['price'].max"
+      *ngIf="showColorFilter === 'price'"
+      (selectionChange)="updateSelection('price', $event)"
+    ></jhi-price-filter>
+    <jhi-item
+      [items]="Object.values(GenderEnum)"
+      [multiSelect]="true"
+      [selectedItem]="selections['gender']"
+      *ngIf="showColorFilter === 'gender'"
+      (selectionChange)="updateSelection('gender', $event)"
+    ></jhi-item>
   </div>
 </div>

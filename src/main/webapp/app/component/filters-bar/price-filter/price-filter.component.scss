@@ -2,13 +2,14 @@
   display: flex;
   align-items: center;
   width: 100%;
+  background-color: var(--gray4);
 
   .price-label {
     flex: 0 0 auto;
     margin-right: 10px;
     label {
       font-size: 1rem;
-      color: #333;
+      color: #757575;
     }
   }
 
@@ -40,7 +41,7 @@
         -webkit-appearance: none;
         width: 20px;
         height: 20px;
-        background-color: black;
+        background-color: var(--text-search-color);
         border: 2px solid #fff;
         border-radius: 50%;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -51,7 +52,7 @@
       &::-moz-range-thumb {
         width: 20px;
         height: 20px;
-        background-color: black;
+        background-color: var(--text-search-color);
         border: 2px solid #fff;
         border-radius: 50%;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -70,7 +71,7 @@
       top: 50%;
       transform: translateY(-50%);
       height: 6px;
-      background-color: black;
+      background-color: var(--text-search-color);
       border-radius: 3px;
       z-index: 0;
     }

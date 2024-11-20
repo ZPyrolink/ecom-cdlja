@@ -1,28 +1,35 @@
 import { Component } from '@angular/core';
-import { NgClass, NgForOf, NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { ColorItemComponent } from '../color-item/color-item.component';
 import { PriceFilterComponent } from './price-filter/price-filter.component';
-import { GenderFilterComponent } from './gender-filter/gender-filter.component';
 import { ColorEnum } from '../../enums/color-enum';
-import { SizeItemComponent } from '../size-item/size-item.component';
+import { ItemComponent } from '../item/item.component';
 import { SizeEnum } from '../../enums/size-enum';
 import { GenderEnum } from '../../enums/gender-enum';
+
+type FilterType = 'color' | 'size' | 'price' | 'gender';
 
 @Component({
   selector: 'jhi-filters-bar',
   standalone: true,
-  imports: [NgForOf, NgIf, ColorItemComponent, PriceFilterComponent, GenderFilterComponent, SizeItemComponent, NgClass],
+  imports: [NgIf, ColorItemComponent, PriceFilterComponent, ItemComponent, NgClass],
   templateUrl: './filters-bar.component.html',
   styleUrl: './filters-bar.component.scss',
 })
 export class FiltersBarComponent {
   showColorFilter: string | undefined;
+  selections: Record<FilterType, any> = {
+    color: [],
+    size: [],
+    price: { min: 0, max: 100 },
+    gender: [],
+  };
   protected readonly Object = Object;
   protected readonly ColorEnum = ColorEnum;
   protected readonly SizeEnum = SizeEnum;
   protected readonly GenderEnum = GenderEnum;
 
-  onFilter(filterType: string): void {
+  onFilter(filterType: FilterType): void {
     // eslint-disable-next-line no-console
     console.log(filterType, '1Option sélectionnée:', this.showColorFilter === filterType);
 
@@ -40,5 +47,9 @@ export class FiltersBarComponent {
   onOptionClick(option: string): void {
     // eslint-disable-next-line no-console
     console.log('Option sélectionnée:', option);
+  }
+
+  updateSelection(filterType: FilterType, selection: any): void {
+    this.selections[filterType] = selection;
   }
 }
