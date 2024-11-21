@@ -1,0 +1,19 @@
+<div class="pagination">
+  <button class="page-btn" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">&laquo;</button>
+
+  <button class="page-btn" [class.active]="currentPage === 1" (click)="changePage(1)">1</button>
+
+  <span *ngIf="showLeftDots" class="dots">...</span>
+
+  <button *ngFor="let page of middlePages" class="page-btn" [class.active]="page === currentPage" (click)="changePage(page)">
+    {{ page }}
+  </button>
+
+  <span *ngIf="showRightDots" class="dots">...</span>
+
+  <button *ngIf="totalPages > 1" class="page-btn" [class.active]="currentPage === totalPages" (click)="changePage(totalPages)">
+    {{ totalPages }}
+  </button>
+
+  <button class="page-btn" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">&raquo;</button>
+</div>
