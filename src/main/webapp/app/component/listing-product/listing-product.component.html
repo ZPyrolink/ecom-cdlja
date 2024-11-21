@@ -4,8 +4,10 @@
     <h2>Brassières</h2>
     <div class="grid-container">
       <div class="product-item">
-        <p class="product-name">Brassière</p>
-        <p class="product-price">20€</p>
+        @for (stock of stocks; track stock.id) {
+          <p class="product-name">stock.clothe.theme</p>
+          <p class="product-price">20€</p>
+        }
       </div>
       <div class="product-item">
         <p class="product-name">Brassière</p>
