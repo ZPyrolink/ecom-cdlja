@@ -1,4 +1,5 @@
 <div class="product-page">
+  <a href=""><img class="returnIcon" src="../../../content/images/ArrowCircleLeft.png" alt="Return" /></a>
   <div class="imagePart">
     <div class="imageList">
       <img
@@ -9,7 +10,7 @@
         [src]="url"
         alt="Image description"
         width="125"
-        height="100"
+        height="125"
       />
     </div>
     <img class="mainImage" [src]="selectedImage" alt="Image description" />
@@ -25,21 +26,17 @@
       <button
         class="colorButton"
         *ngFor="let color of productColors"
-        [class.selected]="color === productSelectedColor"
-        (click)="selectColor(color)"
+        [class.selected]="isColorSelected(color.name)"
+        (click)="selectColor(color.name)"
       >
-        {{ color }}
+        <img [src]="color.image" class="colorImage" alt="{{ color.name }}" />
+        {{ color.name }}
       </button>
     </div>
 
     <div class="sizeSelection">
       <h2>Taille : {{ productSelectedSize }}</h2>
-      <button
-        class="sizeButton"
-        *ngFor="let size of productSizes"
-        [class.selected]="size === productSelectedSize"
-        (click)="selectSize(size)"
-      >
+      <button *ngFor="let size of productSizes" (click)="selectSize(size)" [class.selected]="isSizeSelected(size)" class="sizeButton">
         {{ size }}
       </button>
     </div>

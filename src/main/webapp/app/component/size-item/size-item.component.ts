@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgClass, NgForOf } from '@angular/common';
 
 @Component({
@@ -11,21 +11,25 @@ import { NgClass, NgForOf } from '@angular/common';
 export class SizeItemComponent {
   @Input() sizes: string[] = [];
   @Input() multiSelect = true;
-  selectedSize: string[] = [];
+  @Output() selectedSize = new EventEmitter<string[]>();
+
+  private selectedSizes: string[] = [];
+
   toggleSize(size: string): void {
     if (!this.multiSelect) {
-      this.selectedSize = [size];
-      return;
-    }
-    const index = this.selectedSize.indexOf(size);
-    if (index === -1) {
-      this.selectedSize.push(size);
+      this.selectedSizes = [size];
     } else {
-      this.selectedSize.splice(index, 1);
+      const index = this.selectedSizes.indexOf(size);
+      if (index === -1) {
+        this.selectedSizes.push(size);
+      } else {
+        this.selectedSizes.splice(index, 1);
+      }
     }
+    this.selectedSize.emit(this.selectedSizes);
   }
 
   isSelected(size: string): boolean {
-    return this.selectedSize.includes(size);
+    return this.selectedSizes.includes(size);
   }
 }

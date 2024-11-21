@@ -1,30 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { ColorEnum } from '../../enums/color-enum';
+import { ColorItemComponent } from '../color-item/color-item.component';
+import { SizeItemComponent } from '../size-item/size-item.component';
+import { SizeEnum } from '../../enums/size-enum';
 
 @Component({
   selector: 'jhi-product',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ColorItemComponent, SizeItemComponent, NgOptimizedImage],
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss',
 })
 export default class ProductComponent implements OnInit {
   productId = 0;
-  selectedImage = 'https://lh3.googleusercontent.com/d/1QPYJR65rtJeeYaaWoQ7aKVOB8a1BYsu9';
+  selectedImage = 'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/ecom1.jpeg';
   imageUrls = [
-    'https://lh3.googleusercontent.com/d/1QPYJR65rtJeeYaaWoQ7aKVOB8a1BYsu9',
-    'https://lh3.googleusercontent.com/d/1i3VRotXQqgZgPKMVLd2O7Gtpw5SOFV0K',
-    'https://lh3.googleusercontent.com/d/1lJ5HkOfO89OIBEiFZdPpi4HdScaqCush',
-    'https://lh3.googleusercontent.com/d/1i3VRotXQqgZgPKMVLd2O7Gtpw5SOFV0K',
+    'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/ecom1.jpeg',
+    'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/ecom2.jpeg',
+    'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/ecom3.jpeg',
+    'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/ecom4.jpeg',
   ];
   productName = 'Product';
   productPrice = 25;
   productDescription = 'This is a product description';
-  productSelectedColor = 'red';
-  productColors = ['red', 'blue', 'green', 'yellow'];
-  productSelectedSize = 'S';
-  productSizes = ['S', 'M', 'L', 'XL'];
+  productSelectedColor = '';
+  productColors = [ColorEnum.Beige, ColorEnum.Noir, ColorEnum.Blanc, ColorEnum.Bleu];
+  productSelectedSize: SizeEnum | undefined = undefined;
+  productSizes = [SizeEnum.S, SizeEnum.M, SizeEnum.L, SizeEnum.XL];
 
   constructor(private route: ActivatedRoute) {}
 
@@ -35,20 +39,28 @@ export default class ProductComponent implements OnInit {
     });
   }
 
+  addToBasket(): void {
+    window.console.log('Add to basket');
+  }
+
   changeImage(imageUrl: string): void {
     window.console.log('Change image');
     this.selectedImage = imageUrl;
   }
 
-  selectColor(color: string): void {
-    this.productSelectedColor = color;
+  isColorSelected(color: string): boolean {
+    return this.productSelectedColor === color;
   }
 
-  selectSize(size: string): void {
-    this.productSelectedSize = size;
+  isSizeSelected(size: SizeEnum): boolean {
+    return this.productSelectedSize === size;
   }
 
-  addToBasket(): void {
-    window.console.log('Add to basket');
+  selectColor(selectedColor: string): void {
+    this.productSelectedColor = selectedColor;
+  }
+
+  selectSize(selectedSize: SizeEnum): void {
+    this.productSelectedSize = selectedSize;
   }
 }
