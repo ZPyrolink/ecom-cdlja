@@ -1,2 +1,17 @@
 <jhi-filters-bar></jhi-filters-bar>
-<div class="listing-product">lalal</div>
+<div class="listing-product">
+  <div class="product-list">
+    <h2>Brassières</h2>
+    <div class="grid-container">
+      <div class="product-item">
+        <p class="product-name">Brassière</p>
+        <p class="product-price">20€</p>
+      </div>
+      <div class="product-item">
+        <p class="product-name">Brassière</p>
+        <p class="product-price">20€</p>
+      </div>
+    </div>
+    <jhi-pagination [totalPages]="totalPages" [currentPage]="currentPage" (pageChanged)="onPageChange($event)"></jhi-pagination>
+  </div>
+</div>
