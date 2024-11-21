@@ -38,6 +38,9 @@ public class Order implements Serializable {
     @Column(name = "amount")
     private Float amount = 0F;
 
+    @Column(name = "deliveryadress")
+    private String deliveryAddress;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "mean_of_payment")
     private MeansOfPayment meanOfPayment;
@@ -81,6 +84,14 @@ public class Order implements Serializable {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+    }
+
+    public String getDeliveryAddress() {
+        return this.deliveryAddress;
     }
 
     public LocalDate getDate() {

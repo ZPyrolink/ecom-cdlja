@@ -1,14 +1,18 @@
 package fr.cdlja.weebsport.web.rest;
 
+import fr.cdlja.weebsport.config.Constants;
 import fr.cdlja.weebsport.domain.Order;
 import fr.cdlja.weebsport.domain.SubscribedClients;
 import fr.cdlja.weebsport.domain.User;
+import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
 import fr.cdlja.weebsport.repository.UserRepository;
+import fr.cdlja.weebsport.security.AuthoritiesConstants;
 import fr.cdlja.weebsport.security.SecurityUtils;
 import fr.cdlja.weebsport.service.MailService;
 import fr.cdlja.weebsport.service.SubscribedClientsService;
 import fr.cdlja.weebsport.service.UserService;
 import fr.cdlja.weebsport.service.dto.AdminUserDTO;
+import fr.cdlja.weebsport.service.dto.ClientWhithAdminDTO;
 import fr.cdlja.weebsport.service.dto.PasswordChangeDTO;
 import fr.cdlja.weebsport.service.dto.SubscribedClientDTO;
 import fr.cdlja.weebsport.web.rest.errors.*;
@@ -17,12 +21,16 @@ import fr.cdlja.weebsport.web.rest.vm.ManagedUserVM;
 import fr.cdlja.weebsport.web.rest.vm.RegisterAccountVM;
 import io.undertow.util.BadRequestException;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import java.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing the current user's account.
@@ -50,6 +58,7 @@ public class AccountResource {
 
     public AccountResource(
         UserRepository userRepository,
+        SubscribedClientsRepository subscribedClientsRepository,
         UserService userService,
         MailService mailService,
         SubscribedClientsService subscribedClientsService
@@ -76,12 +85,25 @@ public class AccountResource {
         User user = userService.registerUser(userm, userm.getPassword());
         SubscribedClients subscribedClients = new SubscribedClients();
         subscribedClients.setEmail(user.getEmail());
+        subscribedClients.setAddress(clientAbonned.getAddress());
         subscribedClients.setBirthday(clientAbonned.getBirthday());
         subscribedClients.setPhone(clientAbonned.getPhoneNumber());
         subscribedClients.setBankCard(clientAbonned.getBankCard());
         Order o = subscribedClientsService.createBasket(subscribedClients);
         subscribedClients.setBasket(o);
         subscribedClientsService.registerClient(subscribedClients);
+    }
+
+    @GetMapping("/client")
+    public ResponseEntity<ClientWhithAdminDTO> getConnectClient() {
+        AdminUserDTO adminUserDTO = userService
+            .getUserWithAuthorities()
+            .map(AdminUserDTO::new)
+            .orElseThrow(() -> new AccountResourceException("User could not be found"));
+        SubscribedClientDTO subscribedClientDTO = subscribedClientsService.getClientByEmail(adminUserDTO.getEmail());
+        ClientWhithAdminDTO clientWhithAdminDTO = new ClientWhithAdminDTO(subscribedClientDTO, adminUserDTO);
+
+        return ResponseEntity.ok(clientWhithAdminDTO);
     }
 
     /**

@@ -28,4 +28,6 @@ public interface SubscribedClientsRepository
     default Page<SubscribedClients> findAllWithEagerRelationships(Pageable pageable) {
         return this.fetchBagRelationships(this.findAll(pageable));
     }
+
+    Optional<SubscribedClients> findByEmail(String email);
 }
