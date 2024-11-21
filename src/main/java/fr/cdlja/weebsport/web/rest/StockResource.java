@@ -146,6 +146,7 @@ public class StockResource {
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of stocks in body.
      */
+    @GetMapping("")
     public ResponseEntity<Page<Stock>> getAllStocks(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "15") int size,

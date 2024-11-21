@@ -50,7 +50,7 @@ public class SubscribedClientsAsserts {
             .satisfies(e -> assertThat(e.getBirthday()).as("check birthday").isEqualTo(actual.getBirthday()))
             .satisfies(e -> assertThat(e.getEmail()).as("check email").isEqualTo(actual.getEmail()))
             .satisfies(e -> assertThat(e.getAddress()).as("check address").isEqualTo(actual.getAddress()))
-            .satisfies(e -> assertThat(e.getBankCard()).as("check banckCard").isEqualTo(actual.getBankCard()))
+            .satisfies(e -> assertThat(e.getBankCard()).as("check bankCard").isEqualTo(actual.getBankCard()))
             .satisfies(e -> assertThat(e.getPhone()).as("check phone").isEqualTo(actual.getPhone()))
             .satisfies(e -> assertThat(e.getPoints()).as("check points").isEqualTo(actual.getPoints()));
     }

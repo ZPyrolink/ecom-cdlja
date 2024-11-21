@@ -11,10 +11,7 @@ import fr.cdlja.weebsport.security.SecurityUtils;
 import fr.cdlja.weebsport.service.MailService;
 import fr.cdlja.weebsport.service.SubscribedClientsService;
 import fr.cdlja.weebsport.service.UserService;
-import fr.cdlja.weebsport.service.dto.AdminUserDTO;
-import fr.cdlja.weebsport.service.dto.ClientWhithAdminDTO;
-import fr.cdlja.weebsport.service.dto.PasswordChangeDTO;
-import fr.cdlja.weebsport.service.dto.SubscribedClientDTO;
+import fr.cdlja.weebsport.service.dto.*;
 import fr.cdlja.weebsport.web.rest.errors.*;
 import fr.cdlja.weebsport.web.rest.vm.KeyAndPasswordVM;
 import fr.cdlja.weebsport.web.rest.vm.ManagedUserVM;
@@ -101,7 +98,9 @@ public class AccountResource {
             .map(AdminUserDTO::new)
             .orElseThrow(() -> new AccountResourceException("User could not be found"));
         SubscribedClientDTO subscribedClientDTO = subscribedClientsService.getClientByEmail(adminUserDTO.getEmail());
-        ClientWhithAdminDTO clientWhithAdminDTO = new ClientWhithAdminDTO(subscribedClientDTO, adminUserDTO);
+        OrderDTO basketDTO = subscribedClientsService.getBasket(adminUserDTO.getEmail());
+        List<OrderDTO> historique = subscribedClientsService.getHistorique(adminUserDTO.getEmail());
+        ClientWhithAdminDTO clientWhithAdminDTO = new ClientWhithAdminDTO(subscribedClientDTO, adminUserDTO, basketDTO, historique);
 
         return ResponseEntity.ok(clientWhithAdminDTO);
     }

@@ -31,10 +31,10 @@
                                  referencedTableName="clothe"
                                  />
 
-      <addForeignKeyConstraint baseColumnNames="user_email"
+      <addForeignKeyConstraint baseColumnNames="user_id"
                                baseTableName="subscribed_clients"
-                               constraintName="fk_subscribed_clients__email"
-                               referencedColumnNames="email"
+                               constraintName="fk_subscribed_clients__id"
+                               referencedColumnNames="id"
                                referencedTableName="jhi_user"
       />
     </changeSet>

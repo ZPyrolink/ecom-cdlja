@@ -12,9 +12,16 @@ public class ClientWhithAdminDTO {
     private OrderDTO panier;
     private List<OrderDTO> historique = new ArrayList<OrderDTO>();
 
-    public ClientWhithAdminDTO(SubscribedClientDTO subscribedClientDTO, AdminUserDTO adminUserDTO) {
+    public ClientWhithAdminDTO(
+        SubscribedClientDTO subscribedClientDTO,
+        AdminUserDTO adminUserDTO,
+        OrderDTO panierDTO,
+        List<OrderDTO> historiqueDTO
+    ) {
         this.subscribedClient = subscribedClientDTO;
         this.adminUser = adminUserDTO;
+        this.panier = panierDTO;
+        this.historique = historiqueDTO;
     }
 
     public SubscribedClientDTO getSubscribedClient() {
