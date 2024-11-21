@@ -97,7 +97,7 @@ entity SubscribedClients{
   address String
   birthday LocalDate,
   passworld String,
-  banckCard String,
+  bankCard String,
   phone String,
   points Integer
 }

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -28,4 +29,7 @@ public interface SubscribedClientsRepository
     default Page<SubscribedClients> findAllWithEagerRelationships(Pageable pageable) {
         return this.fetchBagRelationships(this.findAll(pageable));
     }
+
+    @Query("SELECT sc FROM SubscribedClients sc WHERE sc.email = :email")
+    Optional<SubscribedClients> findByEmail(@Param("email") String email);
 }

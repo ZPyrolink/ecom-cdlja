@@ -10,7 +10,7 @@ export interface ISubscribedClients {
   email?: string | null;
   passworld?: string | null;
   address?: string | null;
-  banckCard?: string | null;
+  bankCard?: string | null;
   phone?: string | null;
   points?: number | null;
   basket?: IOrder | null;

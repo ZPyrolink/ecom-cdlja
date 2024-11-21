@@ -2,10 +2,12 @@ package fr.cdlja.weebsport.domain;
 
 import fr.cdlja.weebsport.domain.enumeration.MeansOfPayment;
 import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 
+@MappedSuperclass
 public abstract class AbstractClient {
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
     private String address;

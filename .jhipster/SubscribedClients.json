@@ -29,7 +29,7 @@
       "fieldType": "String"
     },
     {
-      "fieldName": "banckCard",
+      "fieldName": "bankCard",
       "fieldType": "String"
     },
     {

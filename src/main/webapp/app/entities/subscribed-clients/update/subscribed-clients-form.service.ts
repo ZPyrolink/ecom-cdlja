@@ -24,7 +24,7 @@ type SubscribedClientsFormGroupContent = {
   email: FormControl<ISubscribedClients['email']>;
   passworld: FormControl<ISubscribedClients['passworld']>;
   address: FormControl<ISubscribedClients['address']>;
-  banckCard: FormControl<ISubscribedClients['banckCard']>;
+  bankCard: FormControl<ISubscribedClients['bankCard']>;
   phone: FormControl<ISubscribedClients['phone']>;
   points: FormControl<ISubscribedClients['points']>;
   basket: FormControl<ISubscribedClients['basket']>;
@@ -54,7 +54,7 @@ export class SubscribedClientsFormService {
       email: new FormControl(subscribedClientsRawValue.email),
       passworld: new FormControl(subscribedClientsRawValue.passworld),
       address: new FormControl(subscribedClientsRawValue.address),
-      banckCard: new FormControl(subscribedClientsRawValue.banckCard),
+      bankCard: new FormControl(subscribedClientsRawValue.bankCard),
       phone: new FormControl(subscribedClientsRawValue.phone),
       points: new FormControl(subscribedClientsRawValue.points),
       basket: new FormControl(subscribedClientsRawValue.basket),

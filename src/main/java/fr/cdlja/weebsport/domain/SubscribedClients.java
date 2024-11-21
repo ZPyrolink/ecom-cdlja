@@ -60,7 +60,7 @@ public class SubscribedClients extends AbstractClient implements Serializable {
     private Set<Order> historiques = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_email", referencedColumnName = "email", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

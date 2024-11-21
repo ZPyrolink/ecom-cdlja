@@ -23,7 +23,7 @@ export const sampleWithFullData: ISubscribedClients = {
   email: 'Saige.Runte@yahoo.com',
   passworld: 'for midst draft',
   address: 'despite punctual',
-  banckCard: 'skeletal yippee',
+  bankCard: 'skeletal yippee',
   phone: '780-425-0607 x827',
   points: 8899,
 };
