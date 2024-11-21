@@ -1,1 +1,39 @@
-<p>basket works!</p>
+<div class="cart-page">
+  <!-- Titre -->
+  <h1>Panier</h1>
+
+  <!-- Liste des produits -->
+  <div class="product-list">
+    <div class="product-card" *ngFor="let product of products">
+      <img [src]="product.image" alt="{{ product.name }}" />
+      <div class="product-info">
+        <h3>{{ product.name }}</h3>
+        <p>Taille : {{ product.size }}</p>
+        <p>Couleur : {{ product.color }}</p>
+        <p>Prix : {{ product.price }} €</p>
+        <div class="quantity-control">
+          Quantité :
+          <button (click)="decreaseQuantity(product)">-</button>
+          <span>{{ product.quantity }}</span>
+          <button (click)="increaseQuantity(product)">+</button>
+        </div>
+        <div class="actions">
+          <button>Modifier</button>
+          <button>Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Résumé de la commande -->
+  <div class="order-summary">
+    <p>Prix : {{ totalPrice }} € TTC</p>
+    <p>Livraison : {{ deliveryPrice }} €</p>
+    <p>
+      <strong>Total de la commande : {{ totalOrderPrice }} €</strong>
+    </p>
+  </div>
+
+  <!-- Bouton Submit -->
+  <button class="submit-btn" (click)="submitOrder()">Submit</button>
+</div>
