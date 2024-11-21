@@ -1,0 +1,32 @@
+{
+  "annotations": {
+    "changelogDate": "20241107152829"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "color",
+      "fieldType": "Color",
+      "fieldValues": "GREEN,BLACK,BLUE,RED,PINK,BEIGE,WHITE,ORANGE,BROWN,GRAY,YELLOW,PURPLE"
+    },
+    {
+      "fieldName": "size",
+      "fieldType": "Size",
+      "fieldValues": "XXS,XS,S,M,L,XL,XXL,FOUR,SIX,EIGHT,TEN,TWELVE,FOURTEEN"
+    },
+    {
+      "fieldName": "quantity",
+      "fieldType": "Integer"
+    }
+  ],
+  "name": "Stock",
+  "relationships": [
+    {
+      "otherEntityName": "clothe",
+      "relationshipName": "clothe",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

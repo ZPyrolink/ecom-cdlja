@@ -1,0 +1,11 @@
+{
+  "weebSportApp": {
+    "Gender": {
+      "null": "",
+      "MAN": "MAN",
+      "WOMAN": "WOMAN",
+      "UNISEX": "UNISEX",
+      "CHILD": "CHILD"
+    }
+  }
+}

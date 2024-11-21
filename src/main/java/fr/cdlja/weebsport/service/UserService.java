@@ -53,6 +53,7 @@ public class UserService {
         this.cacheManager = cacheManager;
     }
 
+    //active le compte à partir d'une clé d'activation
     public Optional<User> activateRegistration(String key) {
         LOG.debug("Activating user for activation key {}", key);
         return userRepository
@@ -67,6 +68,7 @@ public class UserService {
             });
     }
 
+    //modifie le mot de passe
     public Optional<User> completePasswordReset(String newPassword, String key) {
         LOG.debug("Reset user password for reset key {}", key);
         return userRepository
@@ -97,18 +99,12 @@ public class UserService {
         userRepository
             .findOneByLogin(userDTO.getLogin().toLowerCase())
             .ifPresent(existingUser -> {
-                boolean removed = removeNonActivatedUser(existingUser);
-                if (!removed) {
-                    throw new UsernameAlreadyUsedException();
-                }
+                throw new UsernameAlreadyUsedException();
             });
         userRepository
             .findOneByEmailIgnoreCase(userDTO.getEmail())
             .ifPresent(existingUser -> {
-                boolean removed = removeNonActivatedUser(existingUser);
-                if (!removed) {
-                    throw new EmailAlreadyUsedException();
-                }
+                throw new EmailAlreadyUsedException();
             });
         User newUser = new User();
         String encryptedPassword = passwordEncoder.encode(password);
@@ -122,9 +118,7 @@ public class UserService {
         }
         newUser.setImageUrl(userDTO.getImageUrl());
         newUser.setLangKey(userDTO.getLangKey());
-        // new user is not active
-        newUser.setActivated(false);
-        // new user gets registration key
+        // clé d'activation non utile pour nous car automatiquement activé
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         Set<Authority> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
