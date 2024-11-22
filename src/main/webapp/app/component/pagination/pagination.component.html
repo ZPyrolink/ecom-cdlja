@@ -11,9 +11,9 @@
 
   <span *ngIf="showRightDots" class="dots">...</span>
 
-  <button *ngIf="totalPages > 1" class="page-btn" [class.active]="currentPage === totalPages" (click)="changePage(totalPages)">
-    {{ totalPages - 1 }}
+  <button *ngIf="this.endPage > 1" class="page-btn" [class.active]="currentPage === this.endPage" (click)="changePage(this.endPage)">
+    {{ this.endPage }}
   </button>
 
-  <button class="page-btn" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">&raquo;</button>
+  <button class="page-btn" (click)="changePage(currentPage + 1)" [disabled]="currentPage === this.endPage">&raquo;</button>
 </div>

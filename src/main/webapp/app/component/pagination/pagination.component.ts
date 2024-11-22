@@ -12,20 +12,22 @@ export class PaginationComponent {
   @Input() totalPages = 1;
   @Input() currentPage = 1;
   @Output() pageChanged = new EventEmitter<number>();
+  endPage = 0;
+
   get middlePages(): number[] {
     const range = 2;
     const pages = [];
 
     const startPage = Math.max(2, this.currentPage - range);
-    const endPage = this.totalPages - 1;
+    this.endPage = this.totalPages - 1;
 
-    if (startPage < endPage) {
-      for (let i = startPage; i < endPage; i++) {
+    if (startPage < this.endPage) {
+      for (let i = startPage; i < this.endPage; i++) {
         pages.push(i);
       }
     }
     // eslint-disable-next-line no-console
-    console.log('oco', pages);
+    console.log('oco', this.totalPages);
     return pages;
   }
   get showLeftDots(): boolean {
@@ -33,7 +35,7 @@ export class PaginationComponent {
   }
 
   get showRightDots(): boolean {
-    return this.currentPage < this.totalPages - 2;
+    return this.currentPage < this.endPage && this.endPage > 3;
   }
 
   changePage(page: number): void {
