@@ -8,7 +8,9 @@ import fr.cdlja.weebsport.repository.UserRepository;
 import fr.cdlja.weebsport.security.SecurityUtils;
 import fr.cdlja.weebsport.service.dto.OrderDTO;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
+@Service
 public class BasketService {
 
     public final SubscribedClientsService subscribedClientsService;
