@@ -26,8 +26,6 @@ export class PaginationComponent {
         pages.push(i);
       }
     }
-    // eslint-disable-next-line no-console
-    console.log('oco', this.totalPages);
     return pages;
   }
   get showLeftDots(): boolean {

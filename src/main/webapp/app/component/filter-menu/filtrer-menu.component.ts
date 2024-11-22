@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { ClothesTypeEnum } from '../../enums/clothes-type-enum';
 import SelectedItemsComponent from '../selected-items/selected-items.component';
@@ -13,7 +13,7 @@ import { FilterDataService } from './service/FilterDataService';
   templateUrl: './filter-menu.component.html',
   styleUrl: './filter-menu.component.scss',
 })
-export default class FilterMenuComponent {
+export default class FilterMenuComponent implements OnInit {
   typesOfClothes = Object.values(ClothesTypeEnum);
   typesOfGames = [
     'Jeu 1',
@@ -60,6 +60,15 @@ export default class FilterMenuComponent {
   searchQuery = '';
 
   constructor(private filterDataService: FilterDataService) {}
+  ngOnInit(): void {
+    this.filterDataService.getThemes().subscribe(themes => {
+      this.selectedItemsThemes = themes;
+    });
+    this.filterDataService.getClothes().subscribe(clothes => {
+      this.selectedItemsClothes = clothes;
+    });
+  }
+
   toggleSelection(selectedItems: string[], type: string): void {
     const index = selectedItems.indexOf(type);
     if (index === -1) {

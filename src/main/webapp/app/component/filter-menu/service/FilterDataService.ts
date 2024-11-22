@@ -10,7 +10,7 @@ export class FilterDataService {
 
   setClothes(clothes: string[]): void {
     // eslint-disable-next-line no-console
-    console.log(clothes);
+    console.log('lalal', clothes);
     this.clothesSubject.next(clothes);
   }
 
