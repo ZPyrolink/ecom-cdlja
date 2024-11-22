@@ -19,7 +19,7 @@ public class OrderLine implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator", sequenceName = "order_line_id_seq")
     @Column(name = "id")
     private Long id;
 

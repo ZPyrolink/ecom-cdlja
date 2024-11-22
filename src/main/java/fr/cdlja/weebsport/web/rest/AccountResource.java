@@ -19,6 +19,7 @@ import fr.cdlja.weebsport.web.rest.vm.RegisterAccountVM;
 import io.undertow.util.BadRequestException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
+import java.io.Console;
 import java.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -78,8 +79,19 @@ public class AccountResource {
         if (isPasswordLengthInvalid(userm.getPassword())) {
             throw new InvalidPasswordException();
         }
+        User user;
+        try {
+            LOG.info("Attempting to register user: {}", userm);
+            user = userService.registerUser(userm, userm.getPassword());
+            if (user == null) {
+                LOG.error("Failed to create user: {}", userm);
+                throw new RuntimeException("Erreur lors de la création de l'utilisateur. BOKI");
+            }
+        } catch (Exception e) {
+            // Log the error and throw a specific exception or return a custom responses
+            throw new RuntimeException("Create Client Exception catch" + e);
+        }
 
-        User user = userService.registerUser(userm, userm.getPassword());
         SubscribedClients subscribedClients = new SubscribedClients();
         subscribedClients.setEmail(user.getEmail());
         subscribedClients.setAddress(clientAbonned.getAddress());

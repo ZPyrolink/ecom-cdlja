@@ -23,7 +23,7 @@ public class SubscribedClients extends AbstractClient implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator", sequenceName = "client_id_seq")
     @Column(name = "id")
     private Long id;
 
@@ -31,7 +31,7 @@ public class SubscribedClients extends AbstractClient implements Serializable {
     private LocalDate birthday;
 
     @Column(name = "bank_card")
-    private String bankCard;
+    private String bankCard = "nonenregistre";
 
     @Column(name = "phone")
     private String phone;
