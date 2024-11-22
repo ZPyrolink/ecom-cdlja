@@ -27,12 +27,15 @@ public class SubscribedClientDTO {
 
     private String address;
 
+    private Integer points;
+
     public SubscribedClientDTO(SubscribedClients s) {
         this.email = s.getEmail();
         this.birthday = s.getBirthday();
         this.bankCard = s.getBankCard();
         this.phoneNumber = s.getPhone();
         this.address = s.getAddress();
+        this.points = s.getPoints();
     }
 
     public String getEmail() {
@@ -73,5 +76,13 @@ public class SubscribedClientDTO {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
     }
 }

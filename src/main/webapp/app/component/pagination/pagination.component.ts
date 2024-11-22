@@ -12,22 +12,28 @@ export class PaginationComponent {
   @Input() totalPages = 1;
   @Input() currentPage = 1;
   @Output() pageChanged = new EventEmitter<number>();
+  endPage = 0;
+
   get middlePages(): number[] {
     const range = 2;
     const pages = [];
-    for (let i = Math.max(2, this.currentPage - range); i <= Math.min(this.totalPages - 1, this.currentPage + range); i++) {
-      pages.push(i);
-    }
 
+    const startPage = Math.max(2, this.currentPage - range);
+    this.endPage = this.totalPages - 1;
+
+    if (startPage < this.endPage) {
+      for (let i = startPage; i < this.endPage; i++) {
+        pages.push(i);
+      }
+    }
     return pages;
   }
-
   get showLeftDots(): boolean {
     return this.currentPage > 3;
   }
 
   get showRightDots(): boolean {
-    return this.currentPage < this.totalPages - 2;
+    return this.currentPage < this.endPage && this.endPage > 3;
   }
 
   changePage(page: number): void {

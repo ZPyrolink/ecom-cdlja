@@ -1,6 +1,7 @@
 package fr.cdlja.weebsport.web.rest;
 
 import fr.cdlja.weebsport.domain.Clothe;
+import fr.cdlja.weebsport.domain.Stock;
 import fr.cdlja.weebsport.repository.ClotheRepository;
 import fr.cdlja.weebsport.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -11,6 +12,10 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -151,9 +156,16 @@ public class ClotheResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of clothes in body.
      */
     @GetMapping("")
-    public List<Clothe> getAllClothes() {
+    public ResponseEntity<Page<Clothe>> getAllClothes(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "15") int size,
+        @RequestParam(defaultValue = "id") String sortBy
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
         LOG.debug("REST request to get all Clothes");
-        return clotheRepository.findAll();
+        Page<Clothe> clothePage = clotheRepository.findAll(pageable);
+
+        return ResponseEntity.ok(clothePage);
     }
 
     /**

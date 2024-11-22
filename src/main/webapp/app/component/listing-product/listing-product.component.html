@@ -1,19 +1,28 @@
 <jhi-filters-bar></jhi-filters-bar>
 <div class="listing-product">
+  <h2>
+    <span *ngFor="let clothe of selectedItemsClothes">
+      {{ clothe }}
+    </span>
+    <span *ngFor="let them of selectedItemsThemes">
+      {{ them }}
+    </span>
+  </h2>
   <div class="product-list">
-    <h2>Brassières</h2>
-    <div class="grid-container">
-      <div class="product-item">
-        @for (stock of stocks; track stock.id) {
-          <p class="product-name">stock.clothe.theme</p>
-          <p class="product-price">20€</p>
-        }
-      </div>
-      <div class="product-item">
-        <p class="product-name">Brassière</p>
-        <p class="product-price">20€</p>
+    <div *ngIf="clothes.length > 0; else noClothes">
+      <div class="grid-container">
+        <div class="product-item" *ngFor="let clothe of clothes" (click)="goToProductDetails(clothe.id)">
+          <img src="{{ clothe.imageP }}" alt="{{ clothe.type }} {{ clothe.theme }}" />
+          <div class="product-info">
+            <p class="product-name">{{ clothe.type }} {{ clothe.theme }}</p>
+            <p class="product-price">{{ clothe.price }}€</p>
+          </div>
+        </div>
       </div>
     </div>
-    <jhi-pagination [totalPages]="totalPages" [currentPage]="currentPage" (pageChanged)="onPageChange($event)"></jhi-pagination>
+    <ng-template #noClothes>
+      <p>Aucun vêtement trouvé.</p>
+    </ng-template>
   </div>
 </div>
+<jhi-pagination [totalPages]="totalPages" [currentPage]="currentPage" (pageChanged)="onPageChange($event)"> </jhi-pagination>

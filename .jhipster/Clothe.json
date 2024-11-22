@@ -25,6 +25,10 @@
     {
       "fieldName": "description",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "imageP",
+      "fieldType": "String"
     }
   ],
   "name": "Clothe",
