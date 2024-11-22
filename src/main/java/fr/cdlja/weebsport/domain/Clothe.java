@@ -47,6 +47,9 @@ public class Clothe implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "imageP")
+    private String imageP;
+
     @ElementCollection
     @CollectionTable(name = "clothe_categories", joinColumns = @JoinColumn(name = "clothe_id"))
     @Column(name = "category")
@@ -155,6 +158,14 @@ public class Clothe implements Serializable {
         this.description = description;
     }
 
+    public String getImageP() {
+        return this.imageP;
+    }
+
+    public void imageP(String imageP) {
+        this.imageP = imageP;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -185,6 +196,7 @@ public class Clothe implements Serializable {
             ", price=" + getPrice() +
             ", description='" + getDescription() + "'" +
             ", categories='" + getCategories() + "'" +
+            ", imageP='" + getImageP() + "'" +
             "}";
     }
 }
