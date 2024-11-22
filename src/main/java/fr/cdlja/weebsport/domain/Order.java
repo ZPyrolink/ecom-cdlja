@@ -25,7 +25,7 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderSequenceGenerator")
     @SequenceGenerator(name = "orderSequenceGenerator", sequenceName = "order_id_seq")
-    @Column(name = "order_id", unique = true)
+    @Column(name = "id", unique = true)
     private Long id;
 
     @Enumerated(EnumType.STRING)
