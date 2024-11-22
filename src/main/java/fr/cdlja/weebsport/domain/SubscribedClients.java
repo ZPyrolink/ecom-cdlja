@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -22,8 +21,8 @@ public class SubscribedClients extends AbstractClient implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator", sequenceName = "client_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subscribedClientSequenceGenerator")
+    @SequenceGenerator(name = "subscribedClientSequenceGenerator", sequenceName = "client_id_seq")
     @Column(name = "id")
     private Long id;
 
