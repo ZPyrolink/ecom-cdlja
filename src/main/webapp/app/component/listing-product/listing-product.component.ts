@@ -15,16 +15,18 @@ import { ClotheService } from '../../entities/clothe/service/clothe.service';
 })
 export default class ListingProductComponent implements OnInit {
   totalPages = 1;
-  currentPage = 1; // Page courante
+  currentPage = 1;
   clothes: IClothe[] = []; // Tableau des stocks à afficher
 
   constructor(private service: ClotheService) {}
 
   ngOnInit(): void {
     this.service.query().subscribe(next => {
-      this.clothes = next.body ?? [];
+      this.clothes = next.body?.content ?? [];
+      this.totalPages = next.body?.totalPages ?? 1;
+      this.currentPage = next.body?.number ?? 1;
       // eslint-disable-next-line no-console
-      console.log('lalal', this.clothes);
+      console.log('lalal', next);
     });
   }
 }

@@ -5,7 +5,7 @@
     <div *ngIf="clothes.length > 0; else noClothes">
       <div class="grid-container">
         <div class="product-item" *ngFor="let clothe of clothes">
-          <img src="content/images/imageExemple.png" alt="{{ clothe.type }} {{ clothe.theme }}" />
+          <img src="{{ clothe.imageP }}" alt="{{ clothe.type }} {{ clothe.theme }}" />
           <div class="product-info">
             <p class="product-name">{{ clothe.type }} {{ clothe.theme }}</p>
             <p class="product-price">{{ clothe.price }}€</p>
@@ -18,3 +18,4 @@
     </ng-template>
   </div>
 </div>
+<jhi-pagination></jhi-pagination>
