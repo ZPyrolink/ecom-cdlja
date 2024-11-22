@@ -1,0 +1,54 @@
+.color-container {
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  white-space: nowrap;
+  gap: 10px;
+}
+
+.color-button {
+  border: none;
+  height: 33px;
+  padding: 2px 16px;
+  border-radius: 8px;
+  background-color: var(--gray4);
+  color: #757575;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    transform 0.2s ease;
+}
+
+.color-button:hover {
+  background-color: var(--gray3);
+  transform: scale(1.05);
+}
+
+.color-button span {
+  margin-left: 8px;
+  display: none;
+}
+
+.color-button.selected {
+  background-color: var(--gray5);
+  color: white;
+}
+
+.color-button.selected span {
+  display: inline;
+}
+
+.color-image {
+  width: 15px;
+  height: 15px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 8px;
+}
+
+.color-button.selected .color-image {
+  opacity: 0.8;
+}

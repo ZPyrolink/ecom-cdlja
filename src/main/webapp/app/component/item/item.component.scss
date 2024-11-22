@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  white-space: nowrap;
+  gap: 10px;
+  padding: 0 3px 3px;
+}
+
+.sizeButton {
+  background-color: var(--gray4);
+  color: #757575;
+  border: 0;
+  font-size: 13px;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-right: 10px;
+  cursor: pointer;
+  box-shadow:
+    0 2px 4px 0 rgba(0, 0, 0, 0.2),
+    0 1px 3px 0 rgba(0, 0, 0, 0.19);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.sizeButton.selected {
+  background-color: var(--gray5);
+  color: white;
+}
