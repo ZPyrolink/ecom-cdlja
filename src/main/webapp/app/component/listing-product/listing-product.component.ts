@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import SharedModule from '../../shared/shared.module';
 import { Router, RouterModule } from '@angular/router';
 import { FiltersBarComponent } from '../filters-bar/filters-bar.component';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { IClothe } from '../../entities/clothe/clothe.model';
 import { ClotheService } from '../../entities/clothe/service/clothe.service';
+import { FilterDataService } from '../filter-menu/service/FilterDataService';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'jhi-listing-product',
@@ -13,18 +15,36 @@ import { ClotheService } from '../../entities/clothe/service/clothe.service';
   styleUrl: './listing-product.component.scss',
   imports: [SharedModule, RouterModule, FiltersBarComponent, PaginationComponent],
 })
-export default class ListingProductComponent implements OnInit {
+export default class ListingProductComponent implements OnInit, OnDestroy {
   totalPages = 1;
   currentPage = 1;
-  clothes: IClothe[] = []; // Tableau des stocks à afficher
+  clothes: IClothe[] = [];
+  selectedItemsClothes: string[] = [];
+  selectedItemsThemes: string[] = [];
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private service: ClotheService,
     private router: Router,
+    private serviceFilter: FilterDataService,
   ) {}
 
   ngOnInit(): void {
     this.loadPage(this.currentPage);
+    this.subscriptions.add(
+      this.serviceFilter.getClothes().subscribe(clothes => {
+        this.selectedItemsClothes = clothes;
+      }),
+    );
+
+    this.subscriptions.add(
+      this.serviceFilter.getThemes().subscribe(themes => {
+        this.selectedItemsThemes = themes;
+      }),
+    );
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   loadPage(page: number): void {
