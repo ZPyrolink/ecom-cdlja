@@ -21,12 +21,22 @@ export default class ListingProductComponent implements OnInit {
   constructor(private service: ClotheService) {}
 
   ngOnInit(): void {
-    this.service.query().subscribe(next => {
+    this.loadPage(this.currentPage);
+  }
+
+  loadPage(page: number): void {
+    this.service.query({ page }).subscribe(next => {
       this.clothes = next.body?.content ?? [];
       this.totalPages = next.body?.totalPages ?? 1;
       this.currentPage = next.body?.number ?? 1;
       // eslint-disable-next-line no-console
-      console.log('lalal', next);
+      console.log('Data for page', page, next);
     });
+  }
+
+  onPageChange(page: number): void {
+    if (page !== this.currentPage) {
+      this.loadPage(page);
+    }
   }
 }

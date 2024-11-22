@@ -15,13 +15,20 @@ export class PaginationComponent {
   get middlePages(): number[] {
     const range = 2;
     const pages = [];
-    for (let i = Math.max(2, this.currentPage - range); i <= Math.min(this.totalPages - 1, this.currentPage + range); i++) {
-      pages.push(i);
+
+    // Calculer la plage des pages à afficher
+    const startPage = Math.max(2, this.currentPage - range);
+    const endPage = this.totalPages - 1;
+
+    // Si la plage commence avant la première page, ajuster la plage
+    if (startPage < endPage) {
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
     }
 
     return pages;
   }
-
   get showLeftDots(): boolean {
     return this.currentPage > 3;
   }
