@@ -39,6 +39,11 @@ public class SequenceUpdateService {
             String maxIdQuery = String.format("SELECT COALESCE(MAX(id), 0) FROM %s", tableName);
             Long maxId = ((Number) entityManager.createNativeQuery(maxIdQuery).getSingleResult()).longValue();
 
+            if (maxId == 0) {
+                log.info("Table '{}' vide. Aucune mise à jour nécessaire.", tableName);
+                return;
+            }
+
             // Calculer la prochaine valeur de la séquence
             nextValue = maxId + 1;
 

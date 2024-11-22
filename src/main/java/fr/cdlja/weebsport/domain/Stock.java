@@ -5,7 +5,6 @@ import fr.cdlja.weebsport.domain.enumeration.Color;
 import fr.cdlja.weebsport.domain.enumeration.Size;
 import jakarta.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -22,8 +21,8 @@ public class Stock implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stockSequenceGenerator")
+    @SequenceGenerator(name = "stockSequenceGenerator")
     @Column(name = "id")
     private Long id;
 
