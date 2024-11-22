@@ -30,18 +30,19 @@ public class BasketService {
         this.userRepository = userRepository;
     }
 
-    public void ajouterArticle(Long articleId) throws Exception {
+    public OrderDTO ajouterArticle(Long articleId) throws Exception {
         String userLogin = String.valueOf(SecurityUtils.getCurrentUserLogin());
         String userEmail =
             (userRepository.findOneByLogin(userLogin)).orElseThrow(() -> new Exception("User not found with login: " + userLogin)
                 ).getEmail();
         OrderDTO panierDTO = (subscribedClientsService.getBasket(userEmail));
         List<OrderLine> orderlines = orderLineRepository.getlines(panierDTO.getId());
-        Boolean isPresent = false;
+        boolean isPresent = false;
         for (OrderLine o : orderlines) {
             if ((o.getStock().getId()).equals(articleId)) {
                 o.setQuantity(1 + (o.getQuantity()));
-                isPresent = !isPresent;
+                isPresent = true;
+                orderLineRepository.save(o);
                 break;
             }
         }
@@ -53,9 +54,10 @@ public class BasketService {
             o.setOrder(orderLineRepository.getReferenceById(panierDTO.getId()).getOrder());
             orderLineRepository.save(o);
         }
+        return subscribedClientsService.getBasket(userEmail);
     }
 
-    public void supprimerArticle(Long articleId) throws Exception {
+    public OrderDTO supprimerArticle(Long articleId) throws Exception {
         String userLogin = String.valueOf(SecurityUtils.getCurrentUserLogin());
         String userEmail =
             (userRepository.findOneByLogin(userLogin)).orElseThrow(() -> new Exception("User not found with login: " + userLogin)
@@ -64,10 +66,13 @@ public class BasketService {
         List<OrderLine> orderlines = orderLineRepository.getlines(panierDTO.getId());
         for (OrderLine o : orderlines) {
             if ((o.getStock().getId()).equals(articleId)) {
-                if (o.getQuantity() > 1) o.setQuantity(-1 + (o.getQuantity()));
-                else orderLineRepository.delete(o);
+                if (o.getQuantity() > 1) {
+                    o.setQuantity(-1 + (o.getQuantity()));
+                    orderLineRepository.save(o);
+                } else orderLineRepository.delete(o);
                 break;
             }
         }
+        return subscribedClientsService.getBasket(userEmail);
     }
 }
