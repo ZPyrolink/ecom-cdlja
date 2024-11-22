@@ -14,6 +14,7 @@ export default class BasketComponent {
   products = [
     {
       name: 'Brassiere',
+      theme: 'Minecraft',
       size: 'Small',
       color: 'Rose',
       price: 20,
@@ -22,6 +23,7 @@ export default class BasketComponent {
     },
     {
       name: 'Brassiere',
+      theme: 'Minecraft',
       size: 'Small',
       color: 'Rose',
       price: 20,
@@ -30,6 +32,7 @@ export default class BasketComponent {
     },
     {
       name: 'Brassiere',
+      theme: 'Minecraft',
       size: 'Small',
       color: 'Rose',
       price: 20,
