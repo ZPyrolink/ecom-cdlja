@@ -32,11 +32,20 @@ public class BasketService {
 
     public OrderDTO ajouterArticle(Long articleId) throws Exception {
         String userLogin = String.valueOf(SecurityUtils.getCurrentUserLogin());
+        if (userLogin == null || userLogin.isEmpty()) {
+            throw new IllegalStateException("No subscribedUser actually logged in.");
+        }
         String userEmail =
             (userRepository.findOneByLogin(userLogin)).orElseThrow(() -> new Exception("User not found with login: " + userLogin)
                 ).getEmail();
         OrderDTO panierDTO = (subscribedClientsService.getBasket(userEmail));
+        if (panierDTO == null) {
+            throw new Exception("No basket found for user whose email is : " + userEmail);
+        }
         List<OrderLine> orderlines = orderLineRepository.getlines(panierDTO.getId());
+        if (orderlines == null) {
+            throw new Exception("Error retrieving order lines for basket : " + panierDTO.getId());
+        }
         boolean isPresent = false;
         for (OrderLine o : orderlines) {
             if ((o.getStock().getId()).equals(articleId)) {
@@ -59,11 +68,20 @@ public class BasketService {
 
     public OrderDTO supprimerArticle(Long articleId) throws Exception {
         String userLogin = String.valueOf(SecurityUtils.getCurrentUserLogin());
+        if (userLogin == null || userLogin.isEmpty()) {
+            throw new IllegalStateException("No subscribedUser actually logged in.");
+        }
         String userEmail =
             (userRepository.findOneByLogin(userLogin)).orElseThrow(() -> new Exception("User not found with login: " + userLogin)
                 ).getEmail();
         OrderDTO panierDTO = subscribedClientsService.getBasket(userEmail);
+        if (panierDTO == null) {
+            throw new Exception("No basket found for user whose email is : " + userEmail);
+        }
         List<OrderLine> orderlines = orderLineRepository.getlines(panierDTO.getId());
+        if (orderlines == null) {
+            throw new Exception("Error retrieving order lines for basket : " + panierDTO.getId());
+        }
         for (OrderLine o : orderlines) {
             if ((o.getStock().getId()).equals(articleId)) {
                 if (o.getQuantity() > 1) {
