@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import SharedModule from '../../shared/shared.module';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FiltersBarComponent } from '../filters-bar/filters-bar.component';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { IClothe } from '../../entities/clothe/clothe.model';
@@ -18,7 +18,10 @@ export default class ListingProductComponent implements OnInit {
   currentPage = 1;
   clothes: IClothe[] = []; // Tableau des stocks à afficher
 
-  constructor(private service: ClotheService) {}
+  constructor(
+    private service: ClotheService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.loadPage(this.currentPage);
@@ -38,5 +41,8 @@ export default class ListingProductComponent implements OnInit {
     if (page !== this.currentPage) {
       this.loadPage(page);
     }
+  }
+  goToProductDetails(id: number): void {
+    this.router.navigate(['/product', id]);
   }
 }
