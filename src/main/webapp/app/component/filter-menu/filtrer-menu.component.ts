@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { ClothesTypeEnum } from '../../enums/clothes-type-enum';
 import SelectedItemsComponent from '../selected-items/selected-items.component';
@@ -59,13 +59,18 @@ export default class FilterMenuComponent implements OnInit {
   selectedItemsThemes: string[] = [];
   searchQuery = '';
 
-  constructor(private filterDataService: FilterDataService) {}
+  constructor(
+    private filterDataService: FilterDataService,
+    private cdr: ChangeDetectorRef,
+  ) {}
   ngOnInit(): void {
     this.filterDataService.getThemes().subscribe(themes => {
       this.selectedItemsThemes = themes;
+      this.cdr.detectChanges();
     });
     this.filterDataService.getClothes().subscribe(clothes => {
       this.selectedItemsClothes = clothes;
+      this.cdr.detectChanges();
     });
   }
 

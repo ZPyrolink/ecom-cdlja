@@ -1,6 +1,13 @@
 <jhi-filters-bar></jhi-filters-bar>
 <div class="listing-product">
-  <h2>{{ selectedItemsThemes }}</h2>
+  <h2>
+    <span *ngFor="let clothe of selectedItemsClothes">
+      {{ clothe }}
+    </span>
+    <span *ngFor="let them of selectedItemsThemes">
+      {{ them }}
+    </span>
+  </h2>
   <div class="product-list">
     <div *ngIf="clothes.length > 0; else noClothes">
       <div class="grid-container">

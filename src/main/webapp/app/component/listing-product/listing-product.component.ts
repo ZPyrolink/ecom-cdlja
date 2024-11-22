@@ -31,17 +31,12 @@ export default class ListingProductComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadPage(this.currentPage);
-    this.subscriptions.add(
-      this.serviceFilter.getClothes().subscribe(clothes => {
-        this.selectedItemsClothes = clothes;
-      }),
-    );
-
-    this.subscriptions.add(
-      this.serviceFilter.getThemes().subscribe(themes => {
-        this.selectedItemsThemes = themes;
-      }),
-    );
+    this.serviceFilter.getThemes().subscribe(themes => {
+      this.selectedItemsThemes = themes;
+    });
+    this.serviceFilter.getClothes().subscribe(clothes => {
+      this.selectedItemsClothes = clothes;
+    });
   }
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
