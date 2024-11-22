@@ -1,0 +1,117 @@
+.login-page {
+  display: flex;
+}
+
+.return-button {
+  position: absolute;
+  top: 70px;
+  left: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  color: black;
+}
+
+.ws-logo {
+  height: 75%;
+  margin: 0 20px 0 0;
+  width: 15%;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 1px 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: -10px;
+  gap: 20px;
+
+  .separator {
+    width: 2px;
+    background-color: #ccc;
+    height: 90%;
+  }
+}
+
+.inscription-section {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+}
+
+.connexion-section {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+}
+
+h2 {
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    input {
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 12px;
+      height: 50%;
+    }
+  }
+}
+
+.inscription-inline {
+  display: flex;
+  gap: 5px;
+
+  div {
+    flex: 1;
+  }
+}
+
+.btn-primary {
+  background-color: black;
+  color: white;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #333;
+  }
+}
+
+.guest-mode {
+  margin-top: 20px;
+  text-align: center;
+
+  a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
