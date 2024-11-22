@@ -8,6 +8,8 @@ import { AppPageTitleStrategy } from 'app/app-page-title-strategy';
 import PageRibbonComponent from '../profiles/page-ribbon.component';
 import FooterComponent from '../footer/footer.component';
 import NavbarComponent from '../navbar/navbar.component';
+import FilterMenuComponent from '../../component/filter-menu/filtrer-menu.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -15,9 +17,10 @@ import NavbarComponent from '../navbar/navbar.component';
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
   providers: [AppPageTitleStrategy],
-  imports: [RouterOutlet, FooterComponent, NavbarComponent, PageRibbonComponent],
+  imports: [RouterOutlet, FooterComponent, NavbarComponent, PageRibbonComponent, FilterMenuComponent, NgIf],
 })
 export default class MainComponent implements OnInit {
+  isVisible = false;
   private renderer: Renderer2;
 
   private router = inject(Router);
@@ -39,5 +42,11 @@ export default class MainComponent implements OnInit {
       dayjs.locale(langChangeEvent.lang);
       this.renderer.setAttribute(document.querySelector('html'), 'lang', langChangeEvent.lang);
     });
+  }
+
+  onVisibilityChange(visible: boolean): void {
+    this.isVisible = visible;
+    // eslint-disable-next-line no-console
+    console.log(this.isVisible);
   }
 }

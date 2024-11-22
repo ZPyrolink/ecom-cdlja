@@ -1,0 +1,18 @@
+.container-center {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--background-color);
+  height: 80vh;
+}
+
+.side-filter-menu {
+  width: 30vw;
+  max-width: 350px;
+  background-color: var(--background-color);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.jh-card {
+  flex: 1;
+  padding: 20px;
+}
