@@ -1,0 +1,52 @@
+name: Deploy Java Application to EC2
+
+on:
+  push:
+    branches:
+      - "main"  # Déclenche le workflow lors des pushs sur la branche "main"
+
+env:
+  EC2_USER: ec2-user  # Utilisateur SSH sur ton serveur EC2
+  EC2_HOST: ${{ secrets.EC2_HOST }}  # L'adresse de ton serveur EC2 (stockée dans les secrets GitHub)
+  APP_DIR: /opt/weebSportApp  # Répertoire de déploiement sur le serveur EC2 
+  JAR_NAME: weebSportApp.jar  # Nom du fichier JAR généré
+
+permissions:
+  contents: read  # Permet à GitHub Actions de lire le contenu du repository
+
+jobs:
+  deploy:
+    name: Deploy WeebSport Application to EC2
+    runs-on: ubuntu-latest
+
+    steps:
+    # Étape 1: Vérifier le code source
+    - name: Checkout code
+      uses: actions/checkout@v4  # Récupérer le code depuis le dépôt GitHub
+
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.5.0
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Add EC2 host to known hosts
+      run: ssh-keyscan -H {EC2 Public IP} >> ~/.ssh/known_hosts
+
+    # Étape 3: Construire le jar à déployer
+    - name: Build the app
+      working-directory: ${{ env.APP_DIR }}			// ??
+      run: |
+        ./mvnw -Pprod clean verify  # Construire l'application backend avec le profil prod et générer le JAR, en incluant la construction du frontend
+
+    # Étape 4: Transférer le fichier JAR sur le serveur EC2
+    - name: Transfer JAR to EC2
+      run: |
+        scp -o StrictHostKeyChecking=no ${{ env.APP_DIR }}/target/${{ env.JAR_NAME }} $EC2_USER@$EC2_HOST:$APP_DIR/${{ env.JAR_NAME }}  # Copier le fichier JAR sur le serveur EC2
+
+    # Étape 5: Redémarrer l'application sur le serveur EC2
+    - name: Restart application on EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "
+          sudo systemctl stop weebSportAppService.service &&  # Arrêter le service de l'application en cours
+          sudo systemctl start weebSportAppService.service  # Démarrer à nouveau le service de l'application
+        "
