@@ -1,23 +1,66 @@
 import { Component } from '@angular/core';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { NgForOf } from '@angular/common';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'jhi-basket',
   standalone: true,
-  imports: [PaginationComponent, NgForOf],
+  imports: [PaginationComponent, NgForOf, FaIconComponent],
   templateUrl: './basket.component.html',
   styleUrl: './basket.component.scss',
 })
 export default class BasketComponent {
-  products = {
-    name: 'Brassiere',
-    size: 'Small',
-    color: 'Rose',
-    price: 20,
-    quantity: 1,
-    image: 'https://via.placeholder.com/150',
-  };
+  products = [
+    {
+      name: 'Brassiere',
+      size: 'Small',
+      color: 'Rose',
+      price: 20,
+      quantity: 1,
+      image: 'content/images/exemple.png',
+    },
+    {
+      name: 'Brassiere',
+      size: 'Small',
+      color: 'Rose',
+      price: 20,
+      quantity: 1,
+      image: 'content/images/exemple.png',
+    },
+    {
+      name: 'Brassiere',
+      size: 'Small',
+      color: 'Rose',
+      price: 20,
+      quantity: 1,
+      image: 'content/images/exemple.png',
+    },
+    {
+      name: 'Brassiere',
+      size: 'Small',
+      color: 'Rose',
+      price: 20,
+      quantity: 1,
+      image: 'content/images/exemple.png',
+    },
+    {
+      name: 'Brassiere',
+      size: 'Small',
+      color: 'Rose',
+      price: 20,
+      quantity: 1,
+      image: 'content/images/exemple.png',
+    },
+    {
+      name: 'Brassiere',
+      size: 'Small',
+      color: 'Rose',
+      price: 20,
+      quantity: 1,
+      image: 'content/images/exemple.png',
+    },
+  ];
   deliveryPrice = 5.99;
   totalPrice = 10;
 
