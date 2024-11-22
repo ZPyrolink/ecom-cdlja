@@ -1,0 +1,91 @@
+<div id="container">
+  <h1>Paiement</h1>
+  <form>
+    <div class="form-container">
+      <div class="column-1">
+        <h2>Livraison</h2>
+        <div class="delivery-inline">
+          <div class="cb">
+            <input id="residence" type="radio" name="type" checked />
+            <label for="residence">Livraison à domicile</label>
+          </div>
+          <div class="cb">
+            <input id="relay" type="radio" name="type" />
+            <label for="relay">Livraison en point relai</label>
+          </div>
+        </div>
+        <div class="delivery-inline">
+          <div class="form-group">
+            <label for="nom">Nom</label>
+            <input id="nom" type="text" placeholder="Nom" />
+          </div>
+          <div class="form-group">
+            <label for="prénom">Prénom</label>
+            <input id="prénom" type="text" placeholder="Prénom" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" type="text" placeholder="Email" />
+        </div>
+        <div class="inscription-inline">
+          <div class="form-group">
+            <label for="pays">Pays</label>
+            <input id="pays" type="text" placeholder="Pays" />
+          </div>
+          <div class="form-group">
+            <label for="ville">Ville</label>
+            <input id="ville" type="text" placeholder="Ville" />
+          </div>
+          <div class="form-group">
+            <label for="code-postal">Code Postal</label>
+            <input id="code-postal" type="text" placeholder="Code Postal" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="adresse">Addresse</label>
+          <input id="adresse" type="text" placeholder="Address" />
+        </div>
+        <div class="form-group">
+          <label for="phone-number">Numéro de téléphone</label>
+          <input id="phone-number" type="text" placeholder="Numéro de téléphone" />
+        </div>
+      </div>
+
+      <div class="separator"></div>
+
+      <div class="column-2">
+        <h3>Paiement express</h3>
+        <fa-icon [icon]="faCcApplePay" class="fa-3x" />
+
+        <div class="hDivider"></div>
+
+        <h3>Carte de crédit</h3>
+
+        <div class="form-group">
+          <label for="email-login">Nom sur la carte</label>
+          <input id="email-login" type="text" placeholder="Firstname Lastname" />
+        </div>
+        <div class="form-group">
+          <label for="password-login">N° de carte</label>
+          <input id="password-login" type="text" placeholder="1234 5678 9012 3456" />
+        </div>
+        <div class="delivery-inline">
+          <div class="form-group">
+            <label for="exp">Date d'expiration</label>
+            <input id="exp" type="text" placeholder="01/19" />
+          </div>
+          <div class="form-group">
+            <label for="crypt">Cryptogramme</label>
+            <input id="crypt" type="text" placeholder="000" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="delivery-sb">
+      <p>Total de la commande : {{ price | number: '1.2-2' }}€</p>
+      <button class="btn-primary">Payer</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,139 @@
+div {
+  display: flex;
+}
+
+#container {
+  padding-left: 25%;
+  flex-direction: column;
+}
+
+.form-container {
+  margin-top: 25px;
+  flex-direction: row;
+  align-items: center;
+  background-color: white;
+  border-radius: 8px;
+  gap: 20px;
+
+  .separator {
+    align-self: stretch;
+    width: 2px;
+    background-color: #ccc;
+  }
+
+  .hDivider {
+    align-self: stretch;
+    height: 2px;
+    background-color: #ccc;
+    margin-bottom: 15px;
+  }
+}
+
+form {
+  flex-direction: column;
+  width: 1000px;
+  gap: 5px;
+
+  padding: 10px 20px;
+
+  box-shadow: 1px 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  .cb > label {
+    margin-left: 10px;
+  }
+
+  .form-group {
+    flex-direction: column;
+
+    label {
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    input {
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 12px;
+      height: 50%;
+    }
+  }
+}
+
+.return-button {
+  position: absolute;
+  top: 70px;
+  left: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  color: black;
+}
+
+.ws-logo {
+  height: 75%;
+  margin: 0 20px 0 0;
+  width: 15%;
+}
+
+.column-1 {
+  flex-direction: column;
+  width: 500px;
+}
+
+.column-2 {
+  flex-direction: column;
+  width: 500px;
+}
+
+h2 {
+  text-align: center;
+}
+
+.delivery-inline {
+  gap: 5px;
+
+  div {
+    flex: 1;
+  }
+}
+
+.delivery-sb {
+  justify-content: space-between;
+
+  p {
+    align-content: center;
+    margin-bottom: 0;
+  }
+}
+
+.btn-primary {
+  background-color: black;
+  color: white;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #333;
+  }
+}
+
+.guest-mode {
+  margin-top: 20px;
+  text-align: center;
+
+  a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
