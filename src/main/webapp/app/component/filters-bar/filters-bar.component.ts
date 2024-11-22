@@ -30,18 +30,11 @@ export class FiltersBarComponent {
   protected readonly GenderEnum = GenderEnum;
 
   onFilter(filterType: FilterType): void {
-    // eslint-disable-next-line no-console
-    console.log(filterType, '1Option sélectionnée:', this.showColorFilter === filterType);
-
     if (this.showColorFilter === filterType) {
       this.showColorFilter = undefined;
-      // eslint-disable-next-line no-console
-      console.log('2Option sélectionnée:', this.showColorFilter);
     } else {
       this.showColorFilter = filterType;
     }
-    // eslint-disable-next-line no-console
-    console.log('4Option sélectionnée:', this.showColorFilter);
   }
 
   onOptionClick(option: string): void {
