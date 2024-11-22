@@ -16,17 +16,16 @@ export class PaginationComponent {
     const range = 2;
     const pages = [];
 
-    // Calculer la plage des pages à afficher
     const startPage = Math.max(2, this.currentPage - range);
     const endPage = this.totalPages - 1;
 
-    // Si la plage commence avant la première page, ajuster la plage
     if (startPage < endPage) {
-      for (let i = startPage; i <= endPage; i++) {
+      for (let i = startPage; i < endPage; i++) {
         pages.push(i);
       }
     }
-
+    // eslint-disable-next-line no-console
+    console.log('oco', pages);
     return pages;
   }
   get showLeftDots(): boolean {

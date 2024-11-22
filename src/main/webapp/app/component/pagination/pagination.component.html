@@ -12,7 +12,7 @@
   <span *ngIf="showRightDots" class="dots">...</span>
 
   <button *ngIf="totalPages > 1" class="page-btn" [class.active]="currentPage === totalPages" (click)="changePage(totalPages)">
-    {{ totalPages }}
+    {{ totalPages - 1 }}
   </button>
 
   <button class="page-btn" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">&raquo;</button>
