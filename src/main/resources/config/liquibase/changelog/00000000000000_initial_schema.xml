@@ -102,6 +102,21 @@
             <column name="user_id" type="numeric"/>
         </loadData>
         <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="${datetimeType}"/>
+
+      <!-- Ajuster les séquences après le chargement des données -->
+      <!-- Pour PostgreSQL -->
+      <sql dbms="postgresql">
+        SELECT setval('sequence_generator', (SELECT COALESCE(MAX(id), 0) + 1 FROM jhi_user));
+      </sql>
+
+      <!-- Pour H2 -->
+      <sql dbms="h2">
+        SET @NEW_START_VALUE = (SELECT COALESCE(MAX(id), 0) + 1 FROM jhi_user);
+      </sql>
+      <sql dbms="h2">
+        ALTER TABLE jhi_user ALTER COLUMN id RESTART WITH @NEW_START_VALUE;
+      </sql>
+
     </changeSet>
 
     <changeSet author="jhipster" id="00000000000002" context="test">
@@ -118,4 +133,6 @@
             <column name="local_date" type="date"/>
         </createTable>
     </changeSet>
+
+
 </databaseChangeLog>

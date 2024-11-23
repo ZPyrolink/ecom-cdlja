@@ -56,6 +56,7 @@ public class UserService {
     //active le compte à partir d'une clé d'activation
     public Optional<User> activateRegistration(String key) {
         LOG.debug("Activating user for activation key {}", key);
+
         return userRepository
             .findOneByActivationKey(key)
             .map(user -> {

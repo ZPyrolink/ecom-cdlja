@@ -9,6 +9,8 @@ import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
 import fr.cdlja.weebsport.service.dto.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class SubscribedClientsService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(SubscribedClientsService.class);
     private final SubscribedClientsRepository subscribedClientsRepository;
     private final OrderRepository orderRepository;
     private final OrderLineRepository orderLineRepository;
@@ -38,11 +41,24 @@ public class SubscribedClientsService {
     }
 
     public Order createBasket(SubscribedClients subscribedClient) {
+        if (subscribedClient == null) {
+            LOG.debug("pas de client ");
+            throw new IllegalArgumentException("Subscribed client is null");
+        }
+        if (subscribedClient.getAddress() == null) {
+            LOG.debug("pas d'adresse' ");
+            throw new IllegalArgumentException("Delivery address is null for client");
+        }
+
         Order order = new Order();
         //adresse de livraison par défaut
+        LOG.debug("B1 ");
         order.setDeliveryAddress(subscribedClient.getAddress());
+        LOG.debug("B2 ");
         order.setClient(subscribedClient);
+        LOG.debug("B2 ");
         order.setStatus(Status.BASKET);
+        LOG.debug("B3 ");
         return orderRepository.save(order);
     }
 

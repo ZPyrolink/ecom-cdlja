@@ -61,4 +61,18 @@
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
+
+    <changeSet id="20241107152828-1-sequence-adjustment" author="jhipster">
+      <!-- Pour PostgreSQL -->
+      <sql dbms="postgresql">
+        SELECT setval('order_id_seq', (SELECT COALESCE(MAX(id), 0) + 1 FROM jhi_order));
+        </sql>
+
+     <!-- Pour H2 -->
+      <sql dbms="h2">
+        ALTER TABLE jhi_order ALTER COLUMN id RESTART WITH (
+        SELECT COALESCE(MAX(id), 0) + 1 FROM jhi_order
+          );
+      </sql>
+    </changeSet>
 </databaseChangeLog>

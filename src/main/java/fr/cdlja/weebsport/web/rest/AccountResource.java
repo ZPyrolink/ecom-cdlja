@@ -91,15 +91,24 @@ public class AccountResource {
             // Log the error and throw a specific exception or return a custom responses
             throw new RuntimeException("Create Client Exception catch" + e);
         }
-
+        LOG.info("Utilisateur enregistré/ début création client");
         SubscribedClients subscribedClients = new SubscribedClients();
         subscribedClients.setEmail(user.getEmail());
         subscribedClients.setAddress(clientAbonned.getAddress());
         subscribedClients.setBirthday(clientAbonned.getBirthday());
         subscribedClients.setPhone(clientAbonned.getPhoneNumber());
         subscribedClients.setBankCard(clientAbonned.getBankCard());
-        Order o = subscribedClientsService.createBasket(subscribedClients);
+        LOG.info("création panier");
+        Order o;
+        try {
+            o = subscribedClientsService.createBasket(subscribedClients);
+        } catch (Exception e) {
+            throw new RuntimeException("Create basket Exception catch" + e);
+        }
+
+        LOG.info("panié créé");
         subscribedClients.setBasket(o);
+        LOG.info("enregistrement client");
         subscribedClientsService.registerClient(subscribedClients);
     }
 

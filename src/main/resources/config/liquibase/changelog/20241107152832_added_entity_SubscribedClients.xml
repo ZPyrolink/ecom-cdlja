@@ -97,4 +97,18 @@
         <column name="favoris_id" type="numeric"/>
       </loadData>
     </changeSet>
+
+    <changeSet id="20241107152828-1-sequence-adjustment" author="jhipster">
+     <!-- Pour PostgreSQL -->
+      <sql dbms="postgresql">
+         SELECT setval('client_id_seq', (SELECT COALESCE(MAX(id), 0) + 1 FROM subscribed_clients);
+        </sql>
+
+      <!-- Pour H2 -->
+      <sql dbms="h2">
+        ALTER TABLE subscribed_clients ALTER COLUMN id RESTART WITH (
+        SELECT COALESCE(MAX(id), 0) + 1 FROM subscribed_clients
+          );
+      </sql>
+    </changeSet>
 </databaseChangeLog>
