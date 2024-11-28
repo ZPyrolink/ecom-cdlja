@@ -120,6 +120,15 @@ public class Order implements Serializable {
         this.amount = amount;
     }
 
+    public Float computeAmount() {
+        Set<OrderLine> orderlines = this.getOrderlines();
+        Float amount = 0F;
+        for (OrderLine o : orderlines) {
+            amount += o.getAmountline();
+        }
+        return amount;
+    }
+
     public MeansOfPayment getMeanOfPayment() {
         return this.meanOfPayment;
     }
