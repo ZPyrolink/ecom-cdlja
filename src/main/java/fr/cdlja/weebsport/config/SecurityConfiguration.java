@@ -3,7 +3,7 @@ package fr.cdlja.weebsport.config;
 import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
-import fr.cdlja.weebsport.security.*;
+import fr.cdlja.weebsport.security.AuthoritiesConstants;
 import fr.cdlja.weebsport.web.filter.SpaWebFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -77,8 +77,8 @@ public class SecurityConfiguration {
                     .requestMatchers(mvc.pattern("/api/activate")).permitAll()
                     .requestMatchers(mvc.pattern("/api/account/reset-password/init")).permitAll()
                     .requestMatchers(mvc.pattern("/api/account/reset-password/finish")).permitAll()
-//                    .requestMatchers(mvc.pattern("/api/admin/**")).hasAuthority(AuthoritiesConstants.ADMIN)
-                    .requestMatchers(mvc.pattern("/api/admin/**")).permitAll()
+                    .requestMatchers(mvc.pattern("/api/admin/**")).hasAuthority(AuthoritiesConstants.ADMIN)
+//                    .requestMatchers(mvc.pattern("/api/admin/**")).permitAll()
                     .requestMatchers(mvc.pattern("/api/client")).authenticated()
 
                     .requestMatchers(mvc.pattern("/api/**")).permitAll()
