@@ -10,12 +10,12 @@
   </h2>
   <div class="product-list">
     <div *ngIf="clothes.length > 0; else noClothes">
-      <div class="grid-container">
+      <div class="products">
         <div class="product-item" *ngFor="let clothe of clothes" (click)="goToProductDetails(clothe.id)">
           <img src="{{ clothe.imageP }}" alt="{{ clothe.type }} {{ clothe.theme }}" />
           <div class="product-info">
-            <p class="product-name">{{ clothe.type }} {{ clothe.theme }}</p>
-            <p class="product-price">{{ clothe.price }}€</p>
+            <div class="product-name">{{ clothe.type }} {{ clothe.theme }}</div>
+            <div class="product-price">{{ clothe.price }}€</div>
           </div>
         </div>
       </div>
@@ -24,5 +24,6 @@
       <p>Aucun vêtement trouvé.</p>
     </ng-template>
   </div>
+
+  <jhi-pagination [totalPages]="totalPages" [currentPage]="currentPage" (pageChanged)="onPageChange($event)"> </jhi-pagination>
 </div>
-<jhi-pagination [totalPages]="totalPages" [currentPage]="currentPage" (pageChanged)="onPageChange($event)"> </jhi-pagination>
