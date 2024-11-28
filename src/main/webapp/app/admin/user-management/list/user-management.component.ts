@@ -44,7 +44,7 @@ export default class UserManagementComponent implements OnInit {
   }
 
   trackIdentity(item: User): number {
-    return item.id!;
+    return item.id;
   }
 
   deleteUser(user: User): void {

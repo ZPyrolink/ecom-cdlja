@@ -4,46 +4,50 @@
   <div class="form-container">
     <div class="inscription-section">
       <h2>Inscription</h2>
-      <form>
-        <div class="inscription-inline">
-          <div class="form-group">
-            <label for="nom">Nom*</label>
-            <input id="nom" type="text" placeholder="Nom" />
+      <form [formGroup]="subscribeForm" (ngSubmit)="register()">
+        <div formGroupName="managedUser">
+          <div class="inscription-inline">
+            <div class="form-group">
+              <label for="login">Login</label>
+              <input id="login" type="text" placeholder="Login" formControlName="login" />
+            </div>
+            <div class="form-group">
+              <label for="nom">Nom</label>
+              <input id="nom" type="text" placeholder="Nom" formControlName="lastName" />
+            </div>
+            <div class="form-group">
+              <label for="prénom">Prénom</label>
+              <input id="prénom" type="text" placeholder="Prénom" formControlName="firstName" />
+            </div>
           </div>
           <div class="form-group">
-            <label for="prénom">Prénom*</label>
-            <input id="prénom" type="text" placeholder="Prénom" />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="email">Email*</label>
-          <input id="email" type="text" placeholder="Email" />
-        </div>
-        <div class="form-group">
-          <label for="password">Mot de passe*</label>
-          <input id="password" type="text" placeholder="Mot de passe" />
-        </div>
-        <div class="inscription-inline">
-          <div class="form-group">
-            <label for="pays">Pays*</label>
-            <input id="pays" type="text" placeholder="Pays" />
+            <label for="email">Email</label>
+            <input id="email" type="text" placeholder="Email" formControlName="email" />
           </div>
           <div class="form-group">
-            <label for="ville">Ville*</label>
-            <input id="ville" type="text" placeholder="Ville" />
+            <label for="password">Mot de passe</label>
+            <input id="password" type="password" placeholder="Mot de passe" formControlName="password" />
+          </div>
+        </div>
+        <div formGroupName="subscribedClient">
+          <div class="inscription-inline">
+            <div class="form-group">
+              <label for="pays">Pays</label>
+              <input id="pays" type="text" placeholder="Pays" formControlName="country" />
+            </div>
+            <div class="form-group">
+              <label for="ville">Ville</label>
+              <input id="ville" type="text" placeholder="Ville" formControlName="city" />
+            </div>
           </div>
           <div class="form-group">
-            <label for="code-postal">Code Postal*</label>
-            <input id="code-postal" type="text" placeholder="Code Postal" />
+            <label for="adresse">Adresse</label>
+            <input id="adresse" type="text" placeholder="Adresse" formControlName="address" />
           </div>
-        </div>
-        <div class="form-group">
-          <label for="adresse">Adresse*</label>
-          <input id="adresse" type="text" placeholder="Adresse" />
-        </div>
-        <div class="form-group">
-          <label for="phone-number">Numéro de téléphone*</label>
-          <input id="phone-number" type="text" placeholder="Numéro de téléphone" />
+          <div class="form-group">
+            <label for="phone-number">Numéro de téléphone</label>
+            <input id="phone-number" type="text" placeholder="Numéro de téléphone" formControlName="phoneNumber" />
+          </div>
         </div>
         <button type="submit" class="btn-primary">S'inscrire</button>
       </form>
@@ -53,14 +57,18 @@
 
     <div class="connexion-section">
       <h2>Connexion</h2>
-      <form>
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
         <div class="form-group">
           <label for="email-login">Email</label>
-          <input id="email-login" type="text" placeholder="Email" />
+          <input id="email-login" type="text" placeholder="Email" formControlName="username" />
         </div>
         <div class="form-group">
           <label for="password-login">Mot de passe</label>
-          <input id="password-login" type="text" placeholder="Mot de passe" />
+          <input id="password-login" type="password" placeholder="Mot de passe" formControlName="password" />
+        </div>
+        <div class="connexion-checkbox">
+          <input type="checkbox" id="remember-me" name="Se souvenir de moi" formControlName="rememberMe" />
+          <label for="remember-me">Se souvenir de moi</label>
         </div>
         <div class="forgot-password">
           <a href="#">Mot de passe oublié ?</a>
