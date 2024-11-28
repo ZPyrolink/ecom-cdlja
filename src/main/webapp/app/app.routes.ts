@@ -1,12 +1,33 @@
 import { Routes } from '@angular/router';
-
-import { Authority } from 'app/config/authority.constants';
-
-import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { errorRoute } from './layouts/error/error.route';
 
 const routes: Routes = [
   {
+    path: '',
+    loadComponent: () => import('./component/listing-product/listing-product.component'),
+    title: 'WeebSport',
+  },
+  {
+    path: 'home',
+    loadComponent: () => import('./component/home/home.component'),
+    title: 'WeebSport',
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./login/login.component'),
+    title: 'WeebSport',
+  },
+  {
+    path: 'basket',
+    loadComponent: () => import('./component/basket/basket.component'),
+    title: 'WeebSport',
+  },
+  {
+    path: 'setting',
+    loadComponent: () => import('./component/setting/setting.component'),
+    title: 'WeebSport',
+  },
+  /*  {
     path: '',
     loadComponent: () => import('./home/home.component'),
     title: 'home.title',
@@ -15,8 +36,8 @@ const routes: Routes = [
     path: '',
     loadComponent: () => import('./layouts/navbar/navbar.component'),
     outlet: 'navbar',
-  },
-  {
+  },*/
+  /* {
     path: 'admin',
     data: {
       authorities: [Authority.ADMIN],
@@ -36,7 +57,7 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import(`./entities/entity.routes`),
-  },
+  },*/
   ...errorRoute,
 ];
 

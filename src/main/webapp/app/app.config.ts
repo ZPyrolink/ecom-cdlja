@@ -1,11 +1,11 @@
-import { ApplicationConfig, LOCALE_ID, importProvidersFrom, inject } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, inject, LOCALE_ID } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import {
   NavigationError,
+  provideRouter,
   Router,
   RouterFeatures,
   TitleStrategy,
-  provideRouter,
   withComponentInputBinding,
   withDebugTracing,
   withNavigationErrorHandler,
@@ -17,12 +17,12 @@ import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 
 import { DEBUG_INFO_ENABLED } from 'app/app.constants';
 import './config/dayjs';
-import { TranslationModule } from 'app/shared/language/translation.module';
 import { httpInterceptorProviders } from './core/interceptor';
 import routes from './app.routes';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { NgbDateDayjsAdapter } from './config/datepicker-adapter';
 import { AppPageTitleStrategy } from './app-page-title-strategy';
+import { TranslationModule } from './shared/language/translation.module';
 
 const routerFeatures: RouterFeatures[] = [
   withComponentInputBinding(),
