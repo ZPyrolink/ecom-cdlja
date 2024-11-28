@@ -7,7 +7,6 @@ import fr.cdlja.weebsport.repository.OrderRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
 import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
 import fr.cdlja.weebsport.service.dto.*;
-import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -69,7 +68,7 @@ public class SubscribedClientsService {
         Order o;
         LOG.debug("subclienttrouvé");
         if (optionalClient.isPresent()) {
-            SubscribedClients client = optionalClient.get();
+            SubscribedClients client = optionalClient.orElseThrow();
             o = client.getBasket();
             // Traitez le panier ici
         } else {
@@ -104,7 +103,7 @@ public class SubscribedClientsService {
     }
 
     public List<OrderDTO> getHistorique(String email) {
-        Long client_id = subscribedClientsRepository.findByEmail(email).get().getId();
+        Long client_id = subscribedClientsRepository.findByEmail(email).orElseThrow().getId();
         List<Order> orders = orderRepository.getHistorique(client_id);
         List<OrderDTO> historique = new ArrayList<>();
         List<OrderLine> orderlines = new ArrayList<>();
