@@ -10,6 +10,7 @@ import fr.cdlja.weebsport.service.dto.*;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -63,8 +64,18 @@ public class SubscribedClientsService {
         return new SubscribedClientDTO(client); // Transformer l'entité en DTO si nécessaire
     }
 
-    public OrderDTO getBasket(String email) {
-        Order o = subscribedClientsRepository.findByEmail(email).get().getBasket();
+    public OrderDTO getBasket(String email) throws Exception {
+        Optional<SubscribedClients> optionalClient = subscribedClientsRepository.findByEmail(email);
+        Order o;
+        LOG.debug("subclienttrouvé");
+        if (optionalClient.isPresent()) {
+            SubscribedClients client = optionalClient.get();
+            o = client.getBasket();
+            // Traitez le panier ici
+        } else {
+            throw new Exception("Client not found for email: " + email);
+        }
+
         List<OrderLine> orderlines = new ArrayList<>();
         Stock article;
         StockDTO articleDTO;
@@ -73,10 +84,14 @@ public class SubscribedClientsService {
         OrderlineDTO orderLineDTO;
         OrderDTO orderDTO;
         orderDTO = new OrderDTO(o);
+        LOG.debug("recherche lignes");
         orderlines = orderLineRepository.getlines(o.getId());
+        LOG.debug("lignes trouvés");
         for (OrderLine ol : orderlines) {
+            LOG.debug("recherche article");
             article = orderLineRepository.getArticle(ol.getId());
             articleDTO = new StockDTO(article);
+            LOG.debug("recherche vetement");
             vetement = stockRepository.getClothe(article.getId());
             vetementDTO = new ClotheDTO(vetement);
             articleDTO.setClotheDTO(vetementDTO);

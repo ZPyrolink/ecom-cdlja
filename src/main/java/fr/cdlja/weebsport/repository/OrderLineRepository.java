@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface OrderLineRepository extends JpaRepository<OrderLine, Long> {
-    @Query("SELECT o FROM OrderLine o WHERE o.order= :orderId")
+    @Query("SELECT o FROM OrderLine o WHERE o.order.id= :orderId")
     List<OrderLine> getlines(@Param("orderId") Long orderId);
 
     @Query("SELECT o.stock FROM OrderLine o WHERE o.id= :orderlineId")

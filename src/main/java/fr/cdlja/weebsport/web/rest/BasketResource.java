@@ -26,7 +26,7 @@ public class BasketResource {
     }
 
     @GetMapping("")
-    public ResponseEntity<OrderDTO> getPanier() {
+    public ResponseEntity<OrderDTO> getPanier() throws Exception {
         String userLogin = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new RuntimeException("User not logged in"));
 
         String userEmail = userRepository

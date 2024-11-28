@@ -108,14 +108,18 @@ public class AccountResource {
     }
 
     @GetMapping("/client")
-    public ResponseEntity<ClientWhithAdminDTO> getConnectClient() {
+    public ResponseEntity<ClientWhithAdminDTO> getConnectClient() throws Exception {
         AdminUserDTO adminUserDTO = userService
             .getUserWithAuthorities()
             .map(AdminUserDTO::new)
             .orElseThrow(() -> new AccountResourceException("User could not be found"));
+        LOG.info("User: {}", adminUserDTO);
         SubscribedClientDTO subscribedClientDTO = subscribedClientsService.getClientByEmail(adminUserDTO.getEmail());
+        LOG.info("clientabonned: {}", subscribedClientDTO);
         OrderDTO basketDTO = subscribedClientsService.getBasket(adminUserDTO.getEmail());
+        LOG.info("basketDTO: {}", basketDTO);
         List<OrderDTO> historique = subscribedClientsService.getHistorique(adminUserDTO.getEmail());
+        LOG.info("historique: {}", historique);
         ClientWhithAdminDTO clientWhithAdminDTO = new ClientWhithAdminDTO(subscribedClientDTO, adminUserDTO, basketDTO, historique);
 
         return ResponseEntity.ok(clientWhithAdminDTO);
