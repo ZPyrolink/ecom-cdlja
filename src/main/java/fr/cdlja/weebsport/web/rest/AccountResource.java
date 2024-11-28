@@ -125,6 +125,22 @@ public class AccountResource {
         return ResponseEntity.ok(clientWhithAdminDTO);
     }
 
+    @GetMapping("/client/basket")
+    public ResponseEntity<OrderDTO> getClientBasket() throws Exception {
+        // Récupérer l'utilisateur connecté
+        AdminUserDTO adminUserDTO = userService
+            .getUserWithAuthorities()
+            .map(AdminUserDTO::new)
+            .orElseThrow(() -> new AccountResourceException("User could not be found"));
+        LOG.info("User: {}", adminUserDTO);
+
+        // Récupérer le panier du client connecté
+        OrderDTO basketDTO = subscribedClientsService.getBasket(adminUserDTO.getEmail());
+        LOG.info("Basket: {}", basketDTO);
+
+        return ResponseEntity.ok(basketDTO);
+    }
+
     /**
      * {@code POST  /register} : register the user.
      *
