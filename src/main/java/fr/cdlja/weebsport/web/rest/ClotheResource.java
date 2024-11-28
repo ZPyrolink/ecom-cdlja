@@ -2,7 +2,10 @@ package fr.cdlja.weebsport.web.rest;
 
 import fr.cdlja.weebsport.domain.Clothe;
 import fr.cdlja.weebsport.domain.Stock;
+import fr.cdlja.weebsport.domain.enumeration.Color;
+import fr.cdlja.weebsport.domain.enumeration.Size;
 import fr.cdlja.weebsport.repository.ClotheRepository;
+import fr.cdlja.weebsport.repository.StockRepository;
 import fr.cdlja.weebsport.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,9 +39,11 @@ public class ClotheResource {
     private String applicationName;
 
     private final ClotheRepository clotheRepository;
+    private final StockRepository stockRepository;
 
-    public ClotheResource(ClotheRepository clotheRepository) {
+    public ClotheResource(ClotheRepository clotheRepository, StockRepository stockRepository) {
         this.clotheRepository = clotheRepository;
+        this.stockRepository = stockRepository;
     }
 
     /**
@@ -170,6 +175,19 @@ public class ClotheResource {
             .collect(Collectors.toList());
         Page<Clothe> ClothePage = new PageImpl<>(clothes);
         return ResponseEntity.ok(ClothePage);
+    }
+
+    @GetMapping("/size/{id}/{color}")
+    public ResponseEntity<List<Size>> getClotheSize(@PathVariable Long id, @PathVariable Color color) {
+        List<Size> availableSizes = stockRepository.findAvailableSizesByClotheIdAndColorId(id, color);
+        return ResponseEntity.ok(availableSizes);
+    }
+
+    @GetMapping("/color/{id}")
+    public ResponseEntity<List<Color>> getClotheColor(@PathVariable Long id) {
+        // recupère toute couleur dispo pour un vetement
+        List<Color> availablesColor = stockRepository.findAvailableColorsByClotheId(id);
+        return ResponseEntity.ok(availablesColor);
     }
 
     /**
