@@ -1,0 +1,33 @@
+{
+  "annotations": {
+    "changelogDate": "20241107152830"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "quantity",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "amountline",
+      "fieldType": "Float"
+    }
+  ],
+  "name": "OrderLine",
+  "relationships": [
+    {
+      "otherEntityName": "order",
+      "otherEntityRelationshipName": "orderline",
+      "relationshipName": "order",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "stock",
+      "relationshipName": "stock",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

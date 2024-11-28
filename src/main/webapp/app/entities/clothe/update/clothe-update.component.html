@@ -1,0 +1,95 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-clothe-heading" data-cy="ClotheCreateUpdateHeading" jhiTranslate="weebSportApp.clothe.home.createOrEditLabel">
+        Create or edit a Clothe
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="weebSportApp.clothe.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_type" jhiTranslate="weebSportApp.clothe.type">Type</label>
+          <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
+            <option [ngValue]="null">{{ 'weebSportApp.Type.null' | translate }}</option>
+            @for (type of typeValues; track $index) {
+              <option [value]="type">{{ 'weebSportApp.Type.' + type | translate }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_theme" jhiTranslate="weebSportApp.clothe.theme">Theme</label>
+          <input type="text" class="form-control" name="theme" id="field_theme" data-cy="theme" formControlName="theme" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_gender" jhiTranslate="weebSportApp.clothe.gender">Gender</label>
+          <select class="form-control" name="gender" formControlName="gender" id="field_gender" data-cy="gender">
+            <option [ngValue]="null">{{ 'weebSportApp.Gender.null' | translate }}</option>
+            @for (gender of genderValues; track $index) {
+              <option [value]="gender">{{ 'weebSportApp.Gender.' + gender | translate }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_price" jhiTranslate="weebSportApp.clothe.price">Price</label>
+          <input type="number" class="form-control" name="price" id="field_price" data-cy="price" formControlName="price" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_description" jhiTranslate="weebSportApp.clothe.description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="field_subscribedClients" jhiTranslate="weebSportApp.clothe.subscribedClients">Subscribed Clients</label>
+          <select
+            class="form-control"
+            id="field_subscribedClients"
+            data-cy="subscribedClients"
+            multiple
+            name="subscribedClients"
+            formControlName="subscribedClients"
+            [compareWith]="compareSubscribedClients"
+          >
+            @for (subscribedClientsOption of subscribedClientsSharedCollection; track $index) {
+              <option [ngValue]="subscribedClientsOption">{{ subscribedClientsOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

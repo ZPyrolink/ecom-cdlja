@@ -1,0 +1,152 @@
+<div>
+  <h2 id="page-heading" data-cy="StockHeading">
+    <span jhiTranslate="weebSportApp.stock.home.title">Stocks</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="weebSportApp.stock.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-stock"
+        [routerLink]="['/stock/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="weebSportApp.stock.home.createLabel">Create a new Stock</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (stocks?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="weebSportApp.stock.home.notFound">No Stocks found</span>
+    </div>
+  }
+
+  @if (stocks && stocks.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="color">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.stock.color">Color</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="size">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.stock.size">Size</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="quantity">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.stock.quantity">Quantity</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="clothe.id">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.stock.clothe">Clothe</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (stock of stocks; track trackId(stock)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/stock', stock.id, 'view']">{{ stock.id }}</a>
+              </td>
+              <td [jhiTranslate]="'weebSportApp.Color.' + (stock.color ?? 'null')">
+                {{
+                  {
+                    null: '',
+                    GREEN: 'GREEN',
+                    BLACK: 'BLACK',
+                    BLUE: 'BLUE',
+                    RED: 'RED',
+                    PINK: 'PINK',
+                    BEIGE: 'BEIGE',
+                    WHITE: 'WHITE',
+                    ORANGE: 'ORANGE',
+                    BROWN: 'BROWN',
+                    GRAY: 'GRAY',
+                    YELLOW: 'YELLOW',
+                    PURPLE: 'PURPLE',
+                  }[stock.color ?? 'null']
+                }}
+              </td>
+              <td [jhiTranslate]="'weebSportApp.Size.' + (stock.size ?? 'null')">
+                {{
+                  {
+                    null: '',
+                    XXS: 'XXS',
+                    XS: 'XS',
+                    S: 'S',
+                    M: 'M',
+                    L: 'L',
+                    XL: 'XL',
+                    XXL: 'XXL',
+                    FOUR: 'FOUR',
+                    SIX: 'SIX',
+                    EIGHT: 'EIGHT',
+                    TEN: 'TEN',
+                    TWELVE: 'TWELVE',
+                    FOURTEEN: 'FOURTEEN',
+                  }[stock.size ?? 'null']
+                }}
+              </td>
+              <td>{{ stock.quantity }}</td>
+              <td>
+                @if (stock.clothe) {
+                  <div>
+                    <a [routerLink]="['/clothe', stock.clothe.id, 'view']">{{ stock.clothe.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/stock', stock.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a [routerLink]="['/stock', stock.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(stock)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

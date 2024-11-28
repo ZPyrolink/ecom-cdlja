@@ -1,0 +1,83 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (stock(); as stockRef) {
+      <div>
+        <h2 data-cy="stockDetailsHeading"><span jhiTranslate="weebSportApp.stock.detail.title">Stock</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ stockRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.stock.color">Color</span></dt>
+          <dd>
+            <span [jhiTranslate]="'weebSportApp.Color.' + (stockRef.color ?? 'null')">{{
+              {
+                null: '',
+                GREEN: 'GREEN',
+                BLACK: 'BLACK',
+                BLUE: 'BLUE',
+                RED: 'RED',
+                PINK: 'PINK',
+                BEIGE: 'BEIGE',
+                WHITE: 'WHITE',
+                ORANGE: 'ORANGE',
+                BROWN: 'BROWN',
+                GRAY: 'GRAY',
+                YELLOW: 'YELLOW',
+                PURPLE: 'PURPLE',
+              }[stockRef.color ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.stock.size">Size</span></dt>
+          <dd>
+            <span [jhiTranslate]="'weebSportApp.Size.' + (stockRef.size ?? 'null')">{{
+              {
+                null: '',
+                XXS: 'XXS',
+                XS: 'XS',
+                S: 'S',
+                M: 'M',
+                L: 'L',
+                XL: 'XL',
+                XXL: 'XXL',
+                FOUR: 'FOUR',
+                SIX: 'SIX',
+                EIGHT: 'EIGHT',
+                TEN: 'TEN',
+                TWELVE: 'TWELVE',
+                FOURTEEN: 'FOURTEEN',
+              }[stockRef.size ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.stock.quantity">Quantity</span></dt>
+          <dd>
+            <span>{{ stockRef.quantity }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.stock.clothe">Clothe</span></dt>
+          <dd>
+            @if (stock()!.clothe) {
+              <div>
+                <a [routerLink]="['/clothe', stock()!.clothe?.id, 'view']">{{ stockRef.clothe?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/stock', stockRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,11 +1,13 @@
 package fr.cdlja.weebsport.web.rest.vm;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fr.cdlja.weebsport.service.dto.AdminUserDTO;
 import jakarta.validation.constraints.Size;
 
 /**
  * View Model extending the AdminUserDTO, which is meant to be used in the user management UI.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ManagedUserVM extends AdminUserDTO {
 
     public static final int PASSWORD_MIN_LENGTH = 4;

@@ -53,8 +53,10 @@ public class UserService {
         this.cacheManager = cacheManager;
     }
 
+    //active le compte à partir d'une clé d'activation
     public Optional<User> activateRegistration(String key) {
         LOG.debug("Activating user for activation key {}", key);
+
         return userRepository
             .findOneByActivationKey(key)
             .map(user -> {
@@ -67,6 +69,7 @@ public class UserService {
             });
     }
 
+    //modifie le mot de passe
     public Optional<User> completePasswordReset(String newPassword, String key) {
         LOG.debug("Reset user password for reset key {}", key);
         return userRepository
@@ -94,45 +97,51 @@ public class UserService {
     }
 
     public User registerUser(AdminUserDTO userDTO, String password) {
-        userRepository
-            .findOneByLogin(userDTO.getLogin().toLowerCase())
-            .ifPresent(existingUser -> {
-                boolean removed = removeNonActivatedUser(existingUser);
-                if (!removed) {
+        try {
+            LOG.debug("Checking if login exists: {}", userDTO.getLogin());
+            userRepository
+                .findOneByLogin(userDTO.getLogin().toLowerCase())
+                .ifPresent(existingUser -> {
                     throw new UsernameAlreadyUsedException();
-                }
-            });
-        userRepository
-            .findOneByEmailIgnoreCase(userDTO.getEmail())
-            .ifPresent(existingUser -> {
-                boolean removed = removeNonActivatedUser(existingUser);
-                if (!removed) {
+                });
+            LOG.debug("Checking if email exists: {}", userDTO.getEmail());
+            userRepository
+                .findOneByEmailIgnoreCase(userDTO.getEmail())
+                .ifPresent(existingUser -> {
                     throw new EmailAlreadyUsedException();
-                }
-            });
-        User newUser = new User();
-        String encryptedPassword = passwordEncoder.encode(password);
-        newUser.setLogin(userDTO.getLogin().toLowerCase());
-        // new user gets initially a generated password
-        newUser.setPassword(encryptedPassword);
-        newUser.setFirstName(userDTO.getFirstName());
-        newUser.setLastName(userDTO.getLastName());
-        if (userDTO.getEmail() != null) {
+                });
+            User newUser = new User();
+            String encryptedPassword = passwordEncoder.encode(password);
+            newUser.setLogin(userDTO.getLogin().toLowerCase());
+            // new user gets initially a generated password
+            newUser.setPassword(encryptedPassword);
+            newUser.setFirstName(userDTO.getFirstName());
+            newUser.setLastName(userDTO.getLastName());
             newUser.setEmail(userDTO.getEmail().toLowerCase());
+            newUser.setImageUrl(userDTO.getImageUrl());
+            newUser.setLangKey(userDTO.getLangKey());
+            // clé d'activation non utile pour nous car automatiquement activé
+            LOG.debug("Saving new user to the database");
+            newUser.setActivationKey(RandomUtil.generateActivationKey());
+            Set<Authority> authorities = new HashSet<>();
+            authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+            newUser.setAuthorities(authorities);
+            LOG.debug("Saving new user to the database 4 {}", newUser);
+            User savedUser = userRepository.save(newUser);
+            LOG.debug("Saving new user to the database 5");
+            if (savedUser == null) {
+                LOG.error("Failed to save user to the database.");
+                throw new RuntimeException("Failed to save user to the database");
+            } else {
+                LOG.debug("User successfully saved: {}", savedUser.getLogin());
+            }
+            this.clearUserCaches(newUser);
+            LOG.debug("Created Information for User: {}", newUser);
+            return newUser;
+        } catch (Exception e) {
+            LOG.error("Error while creating user: ", e);
+            throw new RuntimeException("Une erreur est survenue lors de la création de l'utilisateur." + e);
         }
-        newUser.setImageUrl(userDTO.getImageUrl());
-        newUser.setLangKey(userDTO.getLangKey());
-        // new user is not active
-        newUser.setActivated(false);
-        // new user gets registration key
-        newUser.setActivationKey(RandomUtil.generateActivationKey());
-        Set<Authority> authorities = new HashSet<>();
-        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
-        newUser.setAuthorities(authorities);
-        userRepository.save(newUser);
-        this.clearUserCaches(newUser);
-        LOG.debug("Created Information for User: {}", newUser);
-        return newUser;
     }
 
     private boolean removeNonActivatedUser(User existingUser) {
