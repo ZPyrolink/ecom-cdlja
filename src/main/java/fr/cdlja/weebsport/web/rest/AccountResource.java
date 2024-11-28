@@ -142,15 +142,15 @@ public class AccountResource {
     }
 
     @GetMapping("/client/basket/count")
-    public ResponseEntity<Integer> getClientBasketCount() throws Exception {
+    public ResponseEntity<Long> getClientBasketCount() throws Exception {
         AdminUserDTO adminUserDTO = userService
             .getUserWithAuthorities()
             .map(AdminUserDTO::new)
             .orElseThrow(() -> new AccountResourceException("User could not be found"));
         LOG.info("User: {}", adminUserDTO);
         OrderDTO basketDTO = subscribedClientsService.getBasket(adminUserDTO.getEmail());
-        Integer nbarticles = basketService.countnbArticles(basketDTO);
-        return nbarticles;
+        Long nbarticles = basketService.countnbArticles(basketDTO);
+        return ResponseEntity.ok(nbarticles);
     }
 
     /**
