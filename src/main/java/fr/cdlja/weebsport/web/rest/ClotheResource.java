@@ -9,13 +9,11 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -163,9 +161,15 @@ public class ClotheResource {
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
         LOG.debug("REST request to get all Clothes");
-        Page<Clothe> clothePage = clotheRepository.findAll(pageable);
-
-        return ResponseEntity.ok(clothePage);
+        Page<Object[]> rawResults = clotheRepository.findClotheWithQuantityGreaterThanZero(pageable);
+        List<Clothe> clothes = rawResults
+            .getContent()
+            .stream()
+            .map(result -> (Clothe) result[0]) // Récupère l'entité Clothe du tableau Object[]
+            .distinct() // Remove duplicates
+            .collect(Collectors.toList());
+        Page<Clothe> ClothePage = new PageImpl<>(clothes);
+        return ResponseEntity.ok(ClothePage);
     }
 
     /**
