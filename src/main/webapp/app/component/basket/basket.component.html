@@ -1,23 +1,30 @@
-<div>
-  <h2>Panier</h2>
+<div class="page-basket">
+  <div class="title">Panier</div>
   <div class="product-list">
-    <div class="grid-container">
-      <div *ngFor="let product of products">
-        <div class="product-item">
-          <img [src]="product.image" alt="{{ product.name }}" />
-          <div class="product-info">
-            <div>
-              <div class="name">{{ product.name }} {{ product.theme }}</div>
-              <div>
-                <div>Taille : {{ product.size }}</div>
-                <div>Couleur : {{ product.color }}</div>
-              </div>
-              <div>Prix : {{ product.price }} €</div>
-              <div class="quantity-control">
-                Quantité : <span>{{ product.quantity }}</span>
-                <div class="control">
-                  <button (click)="decreaseQuantity(product)">-</button> |
-                  <button (click)="increaseQuantity(product)">+</button>
+    <div *ngIf="products.length > 0; else noProducts">
+      <div class="grid-container">
+        <div *ngFor="let product of products">
+          <div class="product">
+            <div class="product-item">
+              <div class="product-details">
+                <img [src]="product.image" alt="{{ product.name }}" />
+                <div>
+                  <div class="name">
+                    <div>{{ product.name }}</div>
+                    <div>Call of duty</div>
+                  </div>
+                  <div class="info">
+                    <div>Taille : {{ product.size }}</div>
+                    <div>Couleur : {{ product.color }}</div>
+                    <div class="quantity-control">
+                      Quantité : <span>{{ product.quantity }}</span>
+                      <div class="control">
+                        <button (click)="decreaseQuantity(product)">-</button> |
+                        <button (click)="increaseQuantity(product)">+</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="price">Prix : {{ product.price }} €</div>
                 </div>
               </div>
               <div class="delete-button">
@@ -29,16 +36,17 @@
       </div>
     </div>
   </div>
+  <jhi-pagination [totalPages]="totalPages" [currentPage]="currentPage" (pageChanged)="onPageChange($event)"> </jhi-pagination>
 
-  <!-- Résumé de la commande -->
   <div class="order-summary">
-    <p>Prix : {{ totalPrice }} € TTC</p>
-    <p>Livraison : {{ deliveryPrice }} €</p>
-    <p>
-      <strong>Total de la commande : {{ totalOrderPrice }} €</strong>
-    </p>
+    <div class="total">
+      Total de la commande : 10
+      <!--{{ totalOrderPrice }}-->
+      €
+    </div>
+    <button class="submit-btn" (click)="submitOrder()">Enregistrer</button>
   </div>
-
-  <!-- Bouton Submit -->
-  <button class="submit-btn" (click)="submitOrder()">Submit</button>
 </div>
+<ng-template #noProducts>
+  <p>Panier Vide</p>
+</ng-template>

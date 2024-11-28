@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
 import { PaginationComponent } from '../pagination/pagination.component';
-import { NgForOf } from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'jhi-basket',
   standalone: true,
-  imports: [PaginationComponent, NgForOf, FaIconComponent],
+  imports: [PaginationComponent, NgForOf, FaIconComponent, NgIf],
   templateUrl: './basket.component.html',
   styleUrl: './basket.component.scss',
 })
 export default class BasketComponent {
+  totalPages = 1;
+  currentPage = 1;
   products = [
     {
       name: 'Brassiere',
@@ -83,6 +85,11 @@ export default class BasketComponent {
 
   editProduct(product: any): void {
     alert(`Modifier le produit : ${product.name}`);
+  }
+
+  onPageChange(page: number): void {
+    // eslint-disable-next-line no-console
+    console.log('Data for page', page);
   }
 
   submitOrder(): void {
