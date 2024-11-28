@@ -10,6 +10,7 @@ import FooterComponent from '../footer/footer.component';
 import NavbarComponent from '../navbar/navbar.component';
 import FilterMenuComponent from '../../component/filter-menu/filtrer-menu.component';
 import { NgIf } from '@angular/common';
+import ArrowComponent from '../../component/arrow/arrow.component';
 
 @Component({
   standalone: true,
@@ -17,7 +18,7 @@ import { NgIf } from '@angular/common';
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
   providers: [AppPageTitleStrategy],
-  imports: [RouterOutlet, FooterComponent, NavbarComponent, PageRibbonComponent, FilterMenuComponent, NgIf],
+  imports: [RouterOutlet, FooterComponent, NavbarComponent, PageRibbonComponent, FilterMenuComponent, NgIf, ArrowComponent],
 })
 export default class MainComponent implements OnInit {
   isVisible = false;

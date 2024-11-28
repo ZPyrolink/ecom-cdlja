@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { NgForOf, NgIf } from '@angular/common';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'jhi-basket',
   standalone: true,
-  imports: [PaginationComponent, NgForOf, FaIconComponent, NgIf],
+  imports: [PaginationComponent, NgForOf, NgIf],
   templateUrl: './basket.component.html',
   styleUrl: './basket.component.scss',
 })
