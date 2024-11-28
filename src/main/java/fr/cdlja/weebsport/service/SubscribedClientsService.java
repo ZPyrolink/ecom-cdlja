@@ -7,6 +7,7 @@ import fr.cdlja.weebsport.repository.OrderRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
 import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
 import fr.cdlja.weebsport.service.dto.*;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -36,30 +37,22 @@ public class SubscribedClientsService {
         this.stockRepository = stockRepository;
     }
 
-    public void registerClient(SubscribedClients subscribedClient) {
-        subscribedClientsRepository.save(subscribedClient);
-    }
-
-    public Order createBasket(SubscribedClients subscribedClient) {
-        if (subscribedClient == null) {
-            LOG.debug("pas de client ");
-            throw new IllegalArgumentException("Subscribed client is null");
-        }
-        if (subscribedClient.getAddress() == null) {
-            LOG.debug("pas d'adresse' ");
-            throw new IllegalArgumentException("Delivery address is null for client");
-        }
-
-        Order order = new Order();
-        //adresse de livraison par défaut
-        LOG.debug("B1 ");
-        order.setDeliveryAddress(subscribedClient.getAddress());
-        LOG.debug("B2 ");
-        order.setClient(subscribedClient);
-        LOG.debug("B2 ");
-        order.setStatus(Status.BASKET);
-        LOG.debug("B3 ");
-        return orderRepository.save(order);
+    public void createClientWithBasket(User user, SubscribedClientDTO clientAbonned) {
+        SubscribedClients subscribedClients = new SubscribedClients();
+        subscribedClients.setEmail(user.getEmail());
+        subscribedClients.setUser(user);
+        subscribedClients.setAddress(clientAbonned.getAddress());
+        subscribedClients.setBirthday(clientAbonned.getBirthday());
+        subscribedClients.setPhone(clientAbonned.getPhoneNumber());
+        subscribedClients.setBankCard(clientAbonned.getBankCard());
+        Order basket = new Order();
+        basket.setDeliveryAddress(clientAbonned.getAddress());
+        basket.setStatus(Status.BASKET);
+        LOG.debug("donner panié au client");
+        subscribedClients.setBasket(basket);
+        LOG.debug("donner client au panier");
+        basket.setClient(subscribedClients);
+        subscribedClientsRepository.save(subscribedClients);
     }
 
     public SubscribedClientDTO getClientByEmail(String email) {

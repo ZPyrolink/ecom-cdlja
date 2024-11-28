@@ -20,9 +20,6 @@
             <column name="email" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="passworld" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
             <column name="address" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
@@ -84,7 +81,7 @@
            <column name="points" type="numeric"/>
            <column name="basket_id" type="numeric"/>
            <column name="user_id" type="numeric"/>
-           <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here
+            jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here
         </loadData>
     </changeSet>
     <changeSet id="20241107152832-1-data-relations" author="jhipster" context="faker">
@@ -99,8 +96,8 @@
     </changeSet>
 
     <changeSet id="20241107152828-1-sequence-adjustment" author="jhipster">
-     <!-- Pour PostgreSQL -->
-  <!--  <sql dbms="postgresql">
+      Pour PostgreSQL
+   <sql dbms="postgresql">
      SELECT setval('client_id_seq', (SELECT COALESCE(MAX(id), 0) + 1 FROM subscribed_clients);
     </sql>-->
 

@@ -39,7 +39,7 @@ public class SubscribedClients extends AbstractClient implements Serializable {
     private Integer points = 0;
 
     @JsonIgnoreProperties(value = { "client", "orderlines", "subscribedClients" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(unique = true, name = "basket_id")
     private Order basket;
 
@@ -150,6 +150,9 @@ public class SubscribedClients extends AbstractClient implements Serializable {
 
     public void setBasket(Order order) {
         this.basket = order;
+        if (basket != null) {
+            basket.setClient(this); // Synchronisation du côté Commande
+        }
     }
 
     public SubscribedClients basket(Order order) {
@@ -209,6 +212,14 @@ public class SubscribedClients extends AbstractClient implements Serializable {
         this.historiques.remove(order);
         order.setClient(null);
         return this;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return this.user;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

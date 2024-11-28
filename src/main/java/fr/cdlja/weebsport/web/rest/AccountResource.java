@@ -4,10 +4,13 @@ import fr.cdlja.weebsport.config.Constants;
 import fr.cdlja.weebsport.domain.Order;
 import fr.cdlja.weebsport.domain.SubscribedClients;
 import fr.cdlja.weebsport.domain.User;
+import fr.cdlja.weebsport.domain.enumeration.Status;
+import fr.cdlja.weebsport.repository.OrderRepository;
 import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
 import fr.cdlja.weebsport.repository.UserRepository;
 import fr.cdlja.weebsport.security.AuthoritiesConstants;
 import fr.cdlja.weebsport.security.SecurityUtils;
+import fr.cdlja.weebsport.service.BasketService;
 import fr.cdlja.weebsport.service.MailService;
 import fr.cdlja.weebsport.service.SubscribedClientsService;
 import fr.cdlja.weebsport.service.UserService;
@@ -54,23 +57,31 @@ public class AccountResource {
 
     private final MailService mailService;
 
+    private final OrderRepository orderRepository;
+
+    private final BasketService basketService;
+
     public AccountResource(
         UserRepository userRepository,
         SubscribedClientsRepository subscribedClientsRepository,
         UserService userService,
         MailService mailService,
-        SubscribedClientsService subscribedClientsService
+        SubscribedClientsService subscribedClientsService,
+        OrderRepository OrderRepository,
+        BasketService basketService
     ) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
         this.subscribedClientsService = subscribedClientsService;
+        this.orderRepository = OrderRepository;
+        this.basketService = basketService;
     }
 
     // Logique métier pour créer les entités User et ClientAbonne et panié asso
     @PostMapping("/client/signin")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createClient(@Valid @RequestBody RegisterAccountVM registerAccountVM) {
+    public void createClient(@Valid @RequestBody RegisterAccountVM registerAccountVM) throws Exception {
         // Accès aux données de l'utilisateur
         ManagedUserVM userm = registerAccountVM.getManagedUser();
 
@@ -81,35 +92,19 @@ public class AccountResource {
         }
         User user;
         try {
-            LOG.info("Attempting to register user: {}", userm);
             user = userService.registerUser(userm, userm.getPassword());
             if (user == null) {
-                LOG.error("Failed to create user: {}", userm);
                 throw new RuntimeException("Erreur lors de la création de l'utilisateur. BOKI");
             }
         } catch (Exception e) {
             // Log the error and throw a specific exception or return a custom responses
+            throw new RuntimeException("Create User Exception catch" + e);
+        }
+        try {
+            subscribedClientsService.createClientWithBasket(user, clientAbonned);
+        } catch (Exception e) {
             throw new RuntimeException("Create Client Exception catch" + e);
         }
-        LOG.info("Utilisateur enregistré/ début création client");
-        SubscribedClients subscribedClients = new SubscribedClients();
-        subscribedClients.setEmail(user.getEmail());
-        subscribedClients.setAddress(clientAbonned.getAddress());
-        subscribedClients.setBirthday(clientAbonned.getBirthday());
-        subscribedClients.setPhone(clientAbonned.getPhoneNumber());
-        subscribedClients.setBankCard(clientAbonned.getBankCard());
-        LOG.info("création panier");
-        Order o;
-        try {
-            o = subscribedClientsService.createBasket(subscribedClients);
-        } catch (Exception e) {
-            throw new RuntimeException("Create basket Exception catch" + e);
-        }
-
-        LOG.info("panié créé");
-        subscribedClients.setBasket(o);
-        LOG.info("enregistrement client");
-        subscribedClientsService.registerClient(subscribedClients);
     }
 
     @GetMapping("/client")

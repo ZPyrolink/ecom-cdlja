@@ -26,7 +26,7 @@
             <column name="mean_of_payment" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="client_id" type="bigint">
+            <column name="client_abonné_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <column name="deliveryadress" type="varchar(255)">

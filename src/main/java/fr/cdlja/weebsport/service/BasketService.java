@@ -1,33 +1,45 @@
 package fr.cdlja.weebsport.service;
 
+import fr.cdlja.weebsport.domain.Order;
 import fr.cdlja.weebsport.domain.OrderLine;
 import fr.cdlja.weebsport.domain.Stock;
-import fr.cdlja.weebsport.repository.OrderLineRepository;
-import fr.cdlja.weebsport.repository.StockRepository;
-import fr.cdlja.weebsport.repository.UserRepository;
+import fr.cdlja.weebsport.domain.SubscribedClients;
+import fr.cdlja.weebsport.repository.*;
 import fr.cdlja.weebsport.security.SecurityUtils;
 import fr.cdlja.weebsport.service.dto.OrderDTO;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class BasketService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(BasketService.class);
     public final SubscribedClientsService subscribedClientsService;
     private final OrderLineRepository orderLineRepository;
     private final StockRepository stockRepository;
     private final UserRepository userRepository;
+    private final OrderRepository orderRepository;
+    private final SubscribedClientsRepository subscribedClientsRepository;
 
     public BasketService(
         SubscribedClientsService subscribedClientsService,
         OrderLineRepository orderLineRepository,
         StockRepository stockRepository,
-        UserRepository userRepository
+        UserRepository userRepository,
+        OrderRepository orderRepository,
+        SubscribedClientsRepository subscribedClientsRepository
     ) {
         this.subscribedClientsService = subscribedClientsService;
         this.orderLineRepository = orderLineRepository;
         this.stockRepository = stockRepository;
         this.userRepository = userRepository;
+        this.orderRepository = orderRepository;
+        this.subscribedClientsRepository = subscribedClientsRepository;
     }
 
     public OrderDTO ajouterArticle(Long articleId) throws Exception {
