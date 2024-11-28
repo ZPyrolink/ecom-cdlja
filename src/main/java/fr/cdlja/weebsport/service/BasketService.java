@@ -105,4 +105,9 @@ public class BasketService {
         }
         return subscribedClientsService.getBasket(userEmail);
     }
+
+    public Integer countnbArticles(OrderDTO panierDTO) throws Exception {
+        //recupère le nb d'article de chaque ligne de commande et additionne
+        return null;
+    }
 }
