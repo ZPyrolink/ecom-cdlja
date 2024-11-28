@@ -1,27 +1,27 @@
 <div id="container">
   <h1>Paiement</h1>
-  <form>
+  <form (ngSubmit)="pay()" [formGroup]="payementForm">
     <div class="form-container">
       <div class="column-1">
         <h2>Livraison</h2>
         <div class="delivery-inline">
           <div class="cb">
-            <input id="residence" type="radio" name="type" checked />
+            <input id="residence" value="residence" type="radio" name="type" formControlName="type" />
             <label for="residence">Livraison à domicile</label>
           </div>
           <div class="cb">
-            <input id="relay" type="radio" name="type" />
+            <input id="relay" value="relay" type="radio" name="type" formControlName="type" />
             <label for="relay">Livraison en point relai</label>
           </div>
         </div>
         <div class="delivery-inline">
           <div class="form-group">
             <label for="nom">Nom</label>
-            <input id="nom" type="text" placeholder="Nom" />
+            <input id="nom" type="text" placeholder="Nom" formControlName="firstName" />
           </div>
           <div class="form-group">
             <label for="prénom">Prénom</label>
-            <input id="prénom" type="text" placeholder="Prénom" />
+            <input id="prénom" type="text" placeholder="Prénom" formControlName="lastName" />
           </div>
         </div>
         <div class="form-group">
@@ -68,7 +68,7 @@
         </div>
         <div class="form-group">
           <label for="password-login">N° de carte</label>
-          <input id="password-login" type="text" placeholder="1234 5678 9012 3456" />
+          <input id="password-login" type="text" placeholder="1234 5678 9012 3456" formControlName="cardNum" />
         </div>
         <div class="delivery-inline">
           <div class="form-group">
