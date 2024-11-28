@@ -35,7 +35,6 @@ export default class MainComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // try to log in automatically
     this.accountService.identity().subscribe();
 
     this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {
@@ -47,7 +46,5 @@ export default class MainComponent implements OnInit {
 
   onVisibilityChange(visible: boolean): void {
     this.isVisible = visible;
-    // eslint-disable-next-line no-console
-    console.log(this.isVisible);
   }
 }
