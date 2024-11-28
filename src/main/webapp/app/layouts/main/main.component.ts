@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, Renderer2, RendererFactory2, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, Renderer2, RendererFactory2 } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import dayjs from 'dayjs/esm';
@@ -9,6 +9,7 @@ import PageRibbonComponent from '../profiles/page-ribbon.component';
 import FooterComponent from '../footer/footer.component';
 import NavbarComponent from '../navbar/navbar.component';
 import FilterMenuComponent from '../../component/filter-menu/filtrer-menu.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -16,10 +17,10 @@ import FilterMenuComponent from '../../component/filter-menu/filtrer-menu.compon
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
   providers: [AppPageTitleStrategy],
-  imports: [RouterOutlet, FooterComponent, NavbarComponent, PageRibbonComponent, FilterMenuComponent],
+  imports: [RouterOutlet, FooterComponent, NavbarComponent, PageRibbonComponent, FilterMenuComponent, NgIf],
 })
 export default class MainComponent implements OnInit {
-  @ViewChild(FilterMenuComponent) filterMenu: FilterMenuComponent | undefined;
+  isVisible = false;
   private renderer: Renderer2;
 
   private router = inject(Router);
@@ -43,7 +44,9 @@ export default class MainComponent implements OnInit {
     });
   }
 
-  togglePanel(): void {
-    this.filterMenu?.toggleVisibility();
+  onVisibilityChange(visible: boolean): void {
+    this.isVisible = visible;
+    // eslint-disable-next-line no-console
+    console.log(this.isVisible);
   }
 }

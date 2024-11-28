@@ -13,11 +13,15 @@ import { FormsModule } from '@angular/forms';
   imports: [RouterModule, SharedModule, HasAnyAuthorityDirective, ActiveMenuDirective, FormsModule],
 })
 export default class NavbarComponent {
-  @Output() panelToggle = new EventEmitter<void>();
   searchQuery = '';
 
+  isVisible = false;
+
+  @Output() visibilityChange = new EventEmitter<boolean>();
+
   openPanel(): void {
-    this.panelToggle.emit();
+    this.isVisible = !this.isVisible;
+    this.visibilityChange.emit(this.isVisible);
   }
 
   onSearch(): void {
