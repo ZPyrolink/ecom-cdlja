@@ -2,6 +2,7 @@ package fr.cdlja.weebsport.web.rest;
 
 import fr.cdlja.weebsport.domain.Clothe;
 import fr.cdlja.weebsport.domain.Stock;
+import fr.cdlja.weebsport.domain.enumeration.Category;
 import fr.cdlja.weebsport.domain.enumeration.Color;
 import fr.cdlja.weebsport.domain.enumeration.Size;
 import fr.cdlja.weebsport.repository.ClotheRepository;
@@ -188,6 +189,18 @@ public class ClotheResource {
         // recupère toute couleur dispo pour un vetement
         List<Color> availablesColor = stockRepository.findAvailableColorsByClotheId(id);
         return ResponseEntity.ok(availablesColor);
+    }
+
+    @GetMapping("/category/videogame")
+    public ResponseEntity<List<String>> getThemesVideogame() {
+        List<String> themes = clotheRepository.findAllThemes(Category.VIDEOGAME);
+        return ResponseEntity.ok(themes);
+    }
+
+    @GetMapping("/category/anime")
+    public ResponseEntity<List<String>> getThemesAnime() {
+        List<String> themes = clotheRepository.findAllThemes(Category.ANIME);
+        return ResponseEntity.ok(themes);
     }
 
     /**
