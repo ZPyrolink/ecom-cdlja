@@ -4,10 +4,11 @@ import fr.cdlja.weebsport.domain.Order;
 import fr.cdlja.weebsport.domain.OrderLine;
 import fr.cdlja.weebsport.domain.Stock;
 import fr.cdlja.weebsport.domain.SubscribedClients;
-import fr.cdlja.weebsport.repository.*;
-import fr.cdlja.weebsport.security.SecurityUtils;
+import fr.cdlja.weebsport.repository.OrderLineRepository;
+import fr.cdlja.weebsport.repository.OrderRepository;
+import fr.cdlja.weebsport.repository.StockRepository;
+import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
 import fr.cdlja.weebsport.service.dto.OrderDTO;
-import java.util.Optional;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,42 +21,34 @@ public class BasketService {
     public final SubscribedClientsService subscribedClientsService;
     private final OrderLineRepository orderLineRepository;
     private final StockRepository stockRepository;
-    private final UserRepository userRepository;
     private final OrderRepository orderRepository;
     private final SubscribedClientsRepository subscribedClientsRepository;
+    private final UserService userService;
 
     public BasketService(
         SubscribedClientsService subscribedClientsService,
         OrderLineRepository orderLineRepository,
         StockRepository stockRepository,
-        UserRepository userRepository,
         OrderRepository orderRepository,
-        SubscribedClientsRepository subscribedClientsRepository
+        SubscribedClientsRepository subscribedClientsRepository,
+        UserService userService
     ) {
         this.subscribedClientsService = subscribedClientsService;
         this.orderLineRepository = orderLineRepository;
         this.stockRepository = stockRepository;
-        this.userRepository = userRepository;
         this.orderRepository = orderRepository;
         this.subscribedClientsRepository = subscribedClientsRepository;
+        this.userService = userService;
     }
 
     public void ajouterArticle(Long articleId) throws Exception {
-        String userLogin = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new RuntimeException("User not logged in"));
-        if (userLogin == null || userLogin.isEmpty()) {
-            throw new IllegalStateException("No subscribedUser actually logged in.");
-        }
-        String userEmail = userRepository
-            .findOneByLogin(userLogin)
-            .orElseThrow(() -> new RuntimeException("User not found with login: " + userLogin))
-            .getEmail();
+        SubscribedClients optional = subscribedClientsRepository
+            .findByEmail(userService.getUserWithAuthorities().orElseThrow().getEmail())
+            .orElseThrow();
 
-        Optional<SubscribedClients> optionalClient = subscribedClientsRepository.findByEmail(userEmail);
-        Order order;
-        SubscribedClients client = optionalClient.orElseThrow();
-        order = client.getBasket();
-
+        Order order = optional.getBasket();
         Set<OrderLine> orderlines = order.getOrderlines();
+
         if (orderlines == null) {
             throw new RuntimeException("Error retrieving order lines for basket : " + order.getId());
         }
@@ -92,17 +85,13 @@ public class BasketService {
     }
 
     public void supprimerArticle(Long articleId) throws Exception {
-        String userLogin = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new RuntimeException("User not logged in"));
-        String userEmail = userRepository
-            .findOneByLogin(userLogin)
-            .orElseThrow(() -> new RuntimeException("User not found with login: " + userLogin))
-            .getEmail();
-        Optional<SubscribedClients> optionalClient = subscribedClientsRepository.findByEmail(userEmail);
-        Order order;
-        SubscribedClients client = optionalClient.orElseThrow();
-        order = client.getBasket();
+        SubscribedClients optional = subscribedClientsRepository
+            .findByEmail(userService.getUserWithAuthorities().orElseThrow().getEmail())
+            .orElseThrow();
 
+        Order order = optional.getBasket();
         Set<OrderLine> orderlines = order.getOrderlines();
+
         boolean articleFound = false;
         for (OrderLine o : orderlines) {
             if ((o.getStock().getId()).equals(articleId)) {
