@@ -51,7 +51,7 @@ form {
 
     label {
       font-size: 15px;
-      margin-bottom: 5px;
+      margin-top: 5px;
     }
 
     input {
@@ -139,7 +139,12 @@ h2 {
   border-radius: 4px;
   cursor: pointer;
 
-  &:hover {
+  &[disabled] {
+    background-color: #999;
+    cursor: not-allowed;
+  }
+
+  &:not([disabled]):hover {
     background-color: #333;
   }
 }
