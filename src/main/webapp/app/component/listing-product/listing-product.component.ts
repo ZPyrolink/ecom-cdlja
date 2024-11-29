@@ -16,8 +16,8 @@ import { Subscription } from 'rxjs';
   imports: [SharedModule, RouterModule, FiltersBarComponent, PaginationComponent],
 })
 export default class ListingProductComponent implements OnInit, OnDestroy {
-  totalPages = 1;
-  currentPage = 1;
+  totalPages = 0;
+  currentPage = 0;
   clothes: IClothe[] = [];
   selectedItemsClothes: string[] = [];
   selectedItemsThemes: string[] = [];

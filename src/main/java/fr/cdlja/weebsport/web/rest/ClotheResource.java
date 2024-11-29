@@ -1,7 +1,6 @@
 package fr.cdlja.weebsport.web.rest;
 
 import fr.cdlja.weebsport.domain.Clothe;
-import fr.cdlja.weebsport.domain.Stock;
 import fr.cdlja.weebsport.repository.ClotheRepository;
 import fr.cdlja.weebsport.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -168,8 +167,8 @@ public class ClotheResource {
             .map(result -> (Clothe) result[0]) // Récupère l'entité Clothe du tableau Object[]
             .distinct() // Remove duplicates
             .collect(Collectors.toList());
-        Page<Clothe> ClothePage = new PageImpl<>(clothes);
-        return ResponseEntity.ok(ClothePage);
+        Page<Clothe> clothePage = new PageImpl<>(clothes, pageable, rawResults.getTotalElements());
+        return ResponseEntity.ok(clothePage);
     }
 
     /**
