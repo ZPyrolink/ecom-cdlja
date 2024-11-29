@@ -17,7 +17,7 @@ export class PaginationComponent {
    * Calcul des pages intermédiaires.
    */
   get middlePages(): number[] {
-    const range = 2; // Nombre de pages avant et après la page actuelle
+    const range = 1; // Nombre de pages avant et après la page actuelle
     const startPage = Math.max(2, this.currentPage + 1 - range); // Limite basse (exclut "1")
     const endPage = Math.min(this.totalPages - 1, this.currentPage + 1 + range); // Limite haute (exclut "totalPages")
 
@@ -39,7 +39,7 @@ export class PaginationComponent {
    * Affiche les points de suspension à droite.
    */
   get showRightDots(): boolean {
-    return this.currentPage + 1 < this.totalPages - 2; // Afficher "..." si on est avant l'avant-dernière page
+    return this.currentPage < this.totalPages - 3; // Afficher "..." si on est avant l'avant-dernière page
   }
 
   /**
