@@ -1,10 +1,8 @@
 package fr.cdlja.weebsport.web.rest;
 
 import fr.cdlja.weebsport.repository.UserRepository;
-import fr.cdlja.weebsport.security.SecurityUtils;
 import fr.cdlja.weebsport.service.BasketService;
 import fr.cdlja.weebsport.service.SubscribedClientsService;
-import fr.cdlja.weebsport.service.dto.OrderDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,20 +21,6 @@ public class BasketResource {
         this.basketService = basketService;
         this.userRepository = userRepository;
         this.subscribedClientsService = subscribedClientsService;
-    }
-
-    @GetMapping("")
-    public ResponseEntity<OrderDTO> getPanier() throws Exception {
-        String userLogin = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new RuntimeException("User not logged in"));
-
-        String userEmail = userRepository
-            .findOneByLogin(userLogin)
-            .orElseThrow(() -> new RuntimeException("User not found with login: " + userLogin))
-            .getEmail();
-
-        OrderDTO panierDTO = subscribedClientsService.getBasket(userEmail);
-
-        return ResponseEntity.ok(panierDTO);
     }
 
     @PostMapping("/{id}")

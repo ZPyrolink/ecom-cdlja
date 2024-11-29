@@ -103,8 +103,10 @@ public class BasketService {
         order = client.getBasket();
 
         Set<OrderLine> orderlines = order.getOrderlines();
+        boolean articleFound = false;
         for (OrderLine o : orderlines) {
             if ((o.getStock().getId()).equals(articleId)) {
+                articleFound = true;
                 if (o.getQuantity() > 1) {
                     o.setQuantity(-1 + (o.getQuantity()));
                     o.setAmountline(o.getQuantity() * (o.getStock().getClothe().getPrice()));
@@ -119,6 +121,9 @@ public class BasketService {
                 }
                 break;
             }
+        }
+        if (!articleFound) {
+            throw new RuntimeException("Article with id " + articleId + " not found in the basket.");
         }
     }
 
