@@ -1,74 +1,110 @@
 id;type;theme;gender;price;description;imageP
-1;SWEAT;Naruto;WOMAN;30493.98;ninjas in motion;/content/images/imageExemple.png
-2;BRA;Zelda;WOMAN;24920.10;legendary style;/content/images/imageExemple.png
-3;BRA;One Piece;CHILD;10789.91;pirate dreams;/content/images/imageExemple.png
-4;SHORT;Pokemon;UNISEX;15501.22;adventure awaits;/content/images/imageExemple.png
-5;JOGGER;Attack on Titan;UNISEX;21434.79;titan strides;/content/images/imageExemple.png
-6;SWEAT;Final Fantasy;WOMAN;16959.43;fantasy chic;/content/images/imageExemple.png
-7;LEGGING;Demon Slayer;UNISEX;32173.43;slay the day;/content/images/imageExemple.png
-8;TEESHIRT;Zelda;UNISEX;17048.16;timeless quests;/content/images/imageExemple.png
-9;BRA;Naruto;CHILD;26602.08;hidden comfort;/content/images/imageExemple.png
-10;SWEAT;Mario;MAN;8695.82;power-up style;/content/images/imageExemple.png
-11;SWEAT;One Piece;WOMAN;20245.73;treasure chic;/content/images/imageExemple.png
-12;LEGGING;Pokemon;CHILD;11342.67;catch it all;/content/images/imageExemple.png
-13;JOGGER;Zelda;UNISEX;19031.80;hero's path;/content/images/imageExemple.png
-14;BRA;Final Fantasy;MAN;15204.35;epic comfort;/content/images/imageExemple.png
-15;TEESHIRT;Naruto;UNISEX;28430.98;shuriken vibes;/content/images/imageExemple.png
-16;SWEAT;Attack on Titan;WOMAN;20958.43;slayer strength;/content/images/imageExemple.png
-17;BRA;Demon Slayer;CHILD;14567.92;blade comfort;/content/images/imageExemple.png
-18;SHORT;Mario;MAN;26530.04;plumber's style;/content/images/imageExemple.png
-19;JOGGER;Zelda;WOMAN;27681.53;legendary chic;/content/images/imageExemple.png
-20;SWEAT;Pokemon;UNISEX;15321.49;pika power;/content/images/imageExemple.png
-21;LEGGING;Naruto;WOMAN;18976.12;leaf comfort;/content/images/imageExemple.png
-22;TEESHIRT;One Piece;UNISEX;27941.86;crew vibes;/content/images/imageExemple.png
-23;BRA;Attack on Titan;CHILD;23154.36;titan shield;/content/images/imageExemple.png
-24;SWEAT;Final Fantasy;MAN;23210.25;fantasy power;/content/images/imageExemple.png
-25;LEGGING;Demon Slayer;WOMAN;31256.78;demon dodge;/content/images/imageExemple.png
-26;JOGGER;Zelda;MAN;11823.34;adventurer comfort;/content/images/imageExemple.png
-27;SWEAT;Pokemon;CHILD;13456.17;trainer ready;/content/images/imageExemple.png
-28;BRA;One Piece;UNISEX;21588.65;treasure vibes;/content/images/imageExemple.png
-29;TEESHIRT;Attack on Titan;WOMAN;23510.92;survey chic;/content/images/imageExemple.png
-30;SWEAT;Final Fantasy;MAN;18236.45;crystal breeze;/content/images/imageExemple.png
-31;LEGGING;Mario;WOMAN;15988.21;warp chic;/content/images/imageExemple.png
-32;JOGGER;Demon Slayer;UNISEX;22751.32;blade moves;/content/images/imageExemple.png
-33;BRA;Naruto;MAN;28361.78;kage vibes;/content/images/imageExemple.png
-34;SWEAT;Pokemon;WOMAN;31479.96;electric steps;/content/images/imageExemple.png
-35;LEGGING;One Piece;UNISEX;10674.33;pirate flow;/content/images/imageExemple.png
-36;JOGGER;Attack on Titan;MAN;21145.72;wall jumper;/content/images/imageExemple.png
-37;SWEAT;Final Fantasy;UNISEX;30241.05;magic move;/content/images/imageExemple.png
-38;BRA;Zelda;WOMAN;25803.63;princess grace;/content/images/imageExemple.png
-39;SHORT;Demon Slayer;MAN;11873.12;quick slay;/content/images/imageExemple.png
-40;JOGGER;Mario;CHILD;17541.76;mushroom sprint;/content/images/imageExemple.png
-41;LEGGING;Naruto;UNISEX;16280.89;shinobi strength;/content/images/imageExemple.png
-42;SWEAT;Pokemon;MAN;20356.14;trainer's choice;/content/images/imageExemple.png
-43;BRA;One Piece;WOMAN;21729.35;sea breeze;/content/images/imageExemple.png
-44;TEESHIRT;Attack on Titan;MAN;15209.51;wall style;/content/images/imageExemple.png
-45;SWEAT;Final Fantasy;WOMAN;23612.79;crystal chic;/content/images/imageExemple.png
-46;JOGGER;Demon Slayer;CHILD;20870.26;slayer run;/content/images/imageExemple.png
-47;LEGGING;Zelda;MAN;24914.34;legend vibes;/content/images/imageExemple.png
-48;SWEAT;Naruto;CHILD;15465.49;konoha breeze;/content/images/imageExemple.png
-49;TEESHIRT;Mario;UNISEX;19188.57;power-up tee;/content/images/imageExemple.png
-50;JOGGER;Pokemon;WOMAN;26782.04;pika pace;/content/images/imageExemple.png
-51;SWEAT;One Piece;WOMAN;28439.10;grand line chic;/content/images/imageExemple.png
-52;BRA;Attack on Titan;WOMAN;21984.62;survey shield;/content/images/imageExemple.png
-53;TEESHIRT;Demon Slayer;MAN;18562.98;blade casual;/content/images/imageExemple.png
-54;LEGGING;Final Fantasy;CHILD;16394.11;magic vibe;/content/images/imageExemple.png
-55;SWEAT;Zelda;WOMAN;30718.45;royal grace;/content/images/imageExemple.png
-56;BRA;Pokemon;MAN;21289.76;trainer's shield;/content/images/imageExemple.png
-57;SHORT;Naruto;CHILD;15432.56;leaf quick;/content/images/imageExemple.png
-58;JOGGER;One Piece;MAN;20891.11;sea flow;/content/images/imageExemple.png
-59;TEESHIRT;Attack on Titan;WOMAN;17823.94;survey team;/content/images/imageExemple.png
-60;LEGGING;Mario;UNISEX;19672.32;warp runner;/content/images/imageExemple.png
-61;SWEAT;Final Fantasy;WOMAN;28745.68;epic casual;/content/images/imageExemple.png
-62;JOGGER;Demon Slayer;CHILD;23489.17;speed slay;/content/images/imageExemple.png
-63;BRA;Pokemon;UNISEX;25467.38;electric guard;/content/images/imageExemple.png
-64;TEESHIRT;Naruto;MAN;18742.61;shinobi casual;/content/images/imageExemple.png
-65;SWEAT;Zelda;WOMAN;30284.56;princess tee;/content/images/imageExemple.png
-66;BRA;One Piece;CHILD;24976.23;treasure shield;/content/images/imageExemple.png
-67;JOGGER;Attack on Titan;MAN;19234.10;titan speed;/content/images/imageExemple.png
-68;LEGGING;Final Fantasy;WOMAN;30718.29;magic flow;/content/images/imageExemple.png
-69;SWEAT;Mario;CHILD;25467.31;jump casual;/content/images/imageExemple.png
-70;SHORT;Pokemon;UNISEX;21434.67;trainer sprint;/content/images/imageExemple.png
-71;TEESHIRT;Naruto;MAN;17432.98;leaf speed;/content/images/imageExemple.png
-72;JOGGER;One Piece;UNISEX;19234.89;pirate vibes;/content/images/imageExemple.png
-73;BRA;Demon Slayer;MAN;20231.34;blade guard;/content/images/imageExemple.png
+1;SWEAT;Naruto;WOMAN;49.99;ninjas in motion;/content/images/imageExemple.png
+2;BRA;Zelda;WOMAN;34.90;legendary style;/content/images/imageExemple.png
+3;BRA;One Piece;CHILD;19.99;pirate dreams;/content/images/imageExemple.png
+4;SHORT;Pokemon;UNISEX;24.99;adventure awaits;/content/images/imageExemple.png
+5;JOGGER;Attack on Titan;UNISEX;39.99;titan strides;/content/images/imageExemple.png
+6;SWEAT;Final Fantasy;WOMAN;44.99;fantasy chic;/content/images/imageExemple.png
+7;LEGGING;Demon Slayer;UNISEX;59.99;slay the day;/content/images/imageExemple.png
+8;TEESHIRT;Zelda;UNISEX;29.99;timeless quests;/content/images/imageExemple.png
+9;BRA;Naruto;CHILD;22.99;hidden comfort;/content/images/imageExemple.png
+10;SWEAT;Mario;MAN;39.99;power-up style;/content/images/imageExemple.png
+11;SWEAT;One Piece;WOMAN;54.99;treasure chic;/content/images/imageExemple.png
+12;LEGGING;Pokemon;CHILD;19.99;catch it all;/content/images/imageExemple.png
+13;JOGGER;Zelda;UNISEX;42.99;hero's path;/content/images/imageExemple.png
+14;BRA;Final Fantasy;MAN;25.99;epic comfort;/content/images/imageExemple.png
+15;TEESHIRT;Naruto;UNISEX;34.99;shuriken vibes;/content/images/imageExemple.png
+16;SWEAT;Attack on Titan;WOMAN;48.99;slayer strength;/content/images/imageExemple.png
+17;BRA;Demon Slayer;CHILD;22.50;blade comfort;/content/images/imageExemple.png
+18;SHORT;Mario;MAN;26.99;plumber's style;/content/images/imageExemple.png
+19;JOGGER;Zelda;WOMAN;45.99;legendary chic;/content/images/imageExemple.png
+20;SWEAT;Pokemon;UNISEX;37.99;pika power;/content/images/imageExemple.png
+21;LEGGING;Naruto;WOMAN;38.99;leaf comfort;/content/images/imageExemple.png
+22;TEESHIRT;One Piece;UNISEX;33.99;crew vibes;/content/images/imageExemple.png
+23;BRA;Attack on Titan;CHILD;23.99;titan shield;/content/images/imageExemple.png
+24;SWEAT;Final Fantasy;MAN;49.99;fantasy power;/content/images/imageExemple.png
+25;LEGGING;Demon Slayer;WOMAN;57.99;demon dodge;/content/images/imageExemple.png
+26;JOGGER;Zelda;MAN;42.99;adventurer comfort;/content/images/imageExemple.png
+27;SWEAT;Pokemon;CHILD;29.99;trainer ready;/content/images/imageExemple.png
+28;BRA;One Piece;UNISEX;31.99;treasure vibes;/content/images/imageExemple.png
+29;TEESHIRT;Attack on Titan;WOMAN;36.99;survey chic;/content/images/imageExemple.png
+30;SWEAT;Final Fantasy;MAN;44.99;crystal breeze;/content/images/imageExemple.png
+31;LEGGING;Mario;WOMAN;34.99;warp chic;/content/images/imageExemple.png
+32;JOGGER;Demon Slayer;UNISEX;49.99;blade moves;/content/images/imageExemple.png
+33;BRA;Naruto;MAN;39.99;kage vibes;/content/images/imageExemple.png
+34;SWEAT;Pokemon;WOMAN;49.99;electric steps;/content/images/imageExemple.png
+35;LEGGING;One Piece;UNISEX;27.99;pirate flow;/content/images/imageExemple.png
+36;JOGGER;Attack on Titan;MAN;45.99;wall jumper;/content/images/imageExemple.png
+37;SWEAT;Final Fantasy;UNISEX;59.99;magic move;/content/images/imageExemple.png
+38;BRA;Zelda;WOMAN;31.99;princess grace;/content/images/imageExemple.png
+39;SHORT;Demon Slayer;MAN;21.99;quick slay;/content/images/imageExemple.png
+40;JOGGER;Mario;CHILD;29.99;mushroom sprint;/content/images/imageExemple.png
+41;SWEAT;Naruto;WOMAN;49.99;ninjas in motion;/content/images/imageExemple.png
+42;BRA;Zelda;WOMAN;34.90;legendary style;/content/images/imageExemple.png
+43;BRA;One Piece;CHILD;19.99;pirate dreams;/content/images/imageExemple.png
+44;SHORT;Pokemon;UNISEX;24.99;adventure awaits;/content/images/imageExemple.png
+45;JOGGER;Attack on Titan;UNISEX;39.99;titan strides;/content/images/imageExemple.png
+46;SWEAT;Final Fantasy;WOMAN;44.99;fantasy chic;/content/images/imageExemple.png
+47;LEGGING;Demon Slayer;UNISEX;59.99;slay the day;/content/images/imageExemple.png
+48;TEESHIRT;Zelda;UNISEX;29.99;timeless quests;/content/images/imageExemple.png
+49;BRA;Naruto;CHILD;22.99;hidden comfort;/content/images/imageExemple.png
+50;SWEAT;Mario;MAN;39.99;power-up style;/content/images/imageExemple.png
+51;SWEAT;One Piece;WOMAN;54.99;treasure chic;/content/images/imageExemple.png
+52;LEGGING;Pokemon;CHILD;19.99;catch it all;/content/images/imageExemple.png
+53;JOGGER;Zelda;UNISEX;42.99;hero's path;/content/images/imageExemple.png
+54;BRA;Final Fantasy;MAN;25.99;epic comfort;/content/images/imageExemple.png
+55;TEESHIRT;Naruto;UNISEX;34.99;shuriken vibes;/content/images/imageExemple.png
+56;SWEAT;Attack on Titan;WOMAN;48.99;slayer strength;/content/images/imageExemple.png
+57;BRA;Demon Slayer;CHILD;22.50;blade comfort;/content/images/imageExemple.png
+58;SHORT;Mario;MAN;26.99;plumber's style;/content/images/imageExemple.png
+59;JOGGER;Zelda;WOMAN;45.99;legendary chic;/content/images/imageExemple.png
+60;SWEAT;Pokemon;UNISEX;37.99;pika power;/content/images/imageExemple.png
+61;LEGGING;Naruto;WOMAN;38.99;leaf comfort;/content/images/imageExemple.png
+62;TEESHIRT;One Piece;UNISEX;33.99;crew vibes;/content/images/imageExemple.png
+63;BRA;Attack on Titan;CHILD;23.99;titan shield;/content/images/imageExemple.png
+64;SWEAT;Final Fantasy;MAN;49.99;fantasy power;/content/images/imageExemple.png
+65;LEGGING;Demon Slayer;WOMAN;57.99;demon dodge;/content/images/imageExemple.png
+66;JOGGER;Zelda;MAN;42.99;adventurer comfort;/content/images/imageExemple.png
+67;SWEAT;Pokemon;CHILD;29.99;trainer ready;/content/images/imageExemple.png
+68;BRA;One Piece;UNISEX;31.99;treasure vibes;/content/images/imageExemple.png
+69;TEESHIRT;Attack on Titan;WOMAN;36.99;survey chic;/content/images/imageExemple.png
+70;SWEAT;Final Fantasy;MAN;44.99;crystal breeze;/content/images/imageExemple.png
+71;LEGGING;Mario;WOMAN;34.99;warp chic;/content/images/imageExemple.png
+72;JOGGER;Demon Slayer;UNISEX;49.99;blade moves;/content/images/imageExemple.png
+73;BRA;Naruto;MAN;39.99;kage vibes;/content/images/imageExemple.png
+74;SWEAT;Pokemon;WOMAN;49.99;electric steps;/content/images/imageExemple.png
+75;LEGGING;One Piece;UNISEX;27.99;pirate flow;/content/images/imageExemple.png
+76;JOGGER;Attack on Titan;MAN;45.99;wall jumper;/content/images/imageExemple.png
+77;SWEAT;Final Fantasy;UNISEX;59.99;magic move;/content/images/imageExemple.png
+78;BRA;Zelda;WOMAN;31.99;princess grace;/content/images/imageExemple.png
+79;SHORT;Demon Slayer;MAN;21.99;quick slay;/content/images/imageExemple.png
+80;JOGGER;Mario;CHILD;29.99;mushroom sprint;/content/images/imageExemple.png
+81;LEGGING;Mario;WOMAN;34.99;warp chic;/content/images/imageExemple.png
+82;JOGGER;Demon Slayer;UNISEX;49.99;blade moves;/content/images/imageExemple.png
+83;BRA;Naruto;MAN;39.99;kage vibes;/content/images/imageExemple.png
+84;SWEAT;Pokemon;WOMAN;49.99;electric steps;/content/images/imageExemple.png
+85;LEGGING;One Piece;UNISEX;27.99;pirate flow;/content/images/imageExemple.png
+86;JOGGER;Attack on Titan;MAN;45.99;wall jumper;/content/images/imageExemple.png
+87;SWEAT;Final Fantasy;UNISEX;59.99;magic move;/content/images/imageExemple.png
+88;BRA;Zelda;WOMAN;31.99;princess grace;/content/images/imageExemple.png
+89;SHORT;Demon Slayer;MAN;21.99;quick slay;/content/images/imageExemple.png
+90;JOGGER;Mario;CHILD;29.99;mushroom sprint;/content/images/imageExemple.png
+91;LEGGING;Mario;WOMAN;34.99;warp chic;/content/images/imageExemple.png
+92;JOGGER;Demon Slayer;UNISEX;49.99;blade moves;/content/images/imageExemple.png
+93;BRA;Naruto;MAN;39.99;kage vibes;/content/images/imageExemple.png
+94;SWEAT;Pokemon;WOMAN;49.99;electric steps;/content/images/imageExemple.png
+95;LEGGING;One Piece;UNISEX;27.99;pirate flow;/content/images/imageExemple.png
+96;JOGGER;Attack on Titan;MAN;45.99;wall jumper;/content/images/imageExemple.png
+97;SWEAT;Final Fantasy;UNISEX;59.99;magic move;/content/images/imageExemple.png
+98;BRA;Zelda;WOMAN;31.99;princess grace;/content/images/imageExemple.png
+99;SHORT;Demon Slayer;MAN;21.99;quick slay;/content/images/imageExemple.png
+100;JOGGER;Mario;CHILD;29.99;mushroom sprint;/content/images/imageExemple.png
+101;LEGGING;Mario;WOMAN;34.99;warp chic;/content/images/imageExemple.png
+102;JOGGER;Demon Slayer;UNISEX;49.99;blade moves;/content/images/imageExemple.png
+103;BRA;Naruto;MAN;39.99;kage vibes;/content/images/imageExemple.png
+104;SWEAT;Pokemon;WOMAN;49.99;electric steps;/content/images/imageExemple.png
+105;LEGGING;One Piece;UNISEX;27.99;pirate flow;/content/images/imageExemple.png
+106;JOGGER;Attack on Titan;MAN;45.99;wall jumper;/content/images/imageExemple.png
+107;SWEAT;Final Fantasy;UNISEX;59.99;magic move;/content/images/imageExemple.png
+108;BRA;Zelda;WOMAN;31.99;princess grace;/content/images/imageExemple.png
+109;SHORT;Demon Slayer;MAN;21.99;quick slay;/content/images/imageExemple.png

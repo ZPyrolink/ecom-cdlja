@@ -9,36 +9,46 @@ import { NgForOf, NgIf } from '@angular/common';
   styleUrl: './pagination.component.scss',
 })
 export class PaginationComponent {
-  @Input() totalPages = 1;
-  @Input() currentPage = 0;
-  @Output() pageChanged = new EventEmitter<number>();
-  endPage = 0;
+  @Input() totalPages = 1; // Total des pages (ex: 10)
+  @Input() currentPage = 0; // Page actuelle (0-indexé)
+  @Output() pageChanged = new EventEmitter<number>(); // Événement pour notifier le changement de page
 
+  /**
+   * Calcul des pages intermédiaires.
+   */
   get middlePages(): number[] {
-    const range = 2;
+    const range = 2; // Nombre de pages avant et après la page actuelle
+    const startPage = Math.max(2, this.currentPage + 1 - range); // Limite basse (exclut "1")
+    const endPage = Math.min(this.totalPages - 1, this.currentPage + 1 + range); // Limite haute (exclut "totalPages")
+
     const pages = [];
-
-    const startPage = Math.max(2, this.currentPage - range);
-    this.endPage = this.totalPages - 1;
-
-    if (startPage < this.endPage) {
-      for (let i = startPage; i < this.endPage; i++) {
-        pages.push(i);
-      }
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
     }
     return pages;
   }
+
+  /**
+   * Affiche les points de suspension à gauche.
+   */
   get showLeftDots(): boolean {
-    return this.currentPage > 3;
+    return this.currentPage > 2; // Afficher "..." si la page actuelle est au-delà de la 3e (1-indexé)
   }
 
+  /**
+   * Affiche les points de suspension à droite.
+   */
   get showRightDots(): boolean {
-    return this.currentPage < this.endPage && this.endPage > 3;
+    return this.currentPage + 1 < this.totalPages - 2; // Afficher "..." si on est avant l'avant-dernière page
   }
 
+  /**
+   * Changer la page et émettre un événement.
+   * @param page - Numéro de la page (1-indexé)
+   */
   changePage(page: number): void {
-    if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
-      this.pageChanged.emit(page);
+    if (page > 0 && page <= this.totalPages && page !== this.currentPage + 1) {
+      this.pageChanged.emit(page - 1); // Convertir vers 0-indexé
     }
   }
 }
