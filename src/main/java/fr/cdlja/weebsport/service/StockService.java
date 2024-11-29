@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,8 +51,8 @@ public class StockService {
         String email = client.getEmail();
         OrderDTO basket = subscribedClientsService.getBasket(email);
         Long orderid = basket.getId();
-
-        List<OrderLine> lines = orderLineRepository.getlines(orderid);
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<OrderLine> lines = orderLineRepository.getlines(orderid, pageable);
 
         for (OrderLine orderLine : lines) {
             Stock stock = orderLineRepository.getArticle(orderLine.getId());

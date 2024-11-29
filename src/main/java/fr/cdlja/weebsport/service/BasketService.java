@@ -11,6 +11,9 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,9 +57,10 @@ public class BasketService {
         if (panierDTO == null) {
             throw new Exception("No basket found for user whose email is : " + userEmail);
         }
-        List<OrderLine> orderlines = orderLineRepository.getlines(panierDTO.getId());
-        if (orderlines == null) {
-            throw new Exception("Error retrieving order lines for basket : " + panierDTO.getId());
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<OrderLine> orderlines = orderLineRepository.getlines(panierDTO.getId(), pageable);
+        if (orderlines.isEmpty()) {
+            throw new Exception("No order lines found for basket: " + panierDTO.getId());
         }
         boolean isPresent = false;
         for (OrderLine o : orderlines) {
@@ -90,9 +94,10 @@ public class BasketService {
         if (panierDTO == null) {
             throw new Exception("No basket found for user whose email is : " + userEmail);
         }
-        List<OrderLine> orderlines = orderLineRepository.getlines(panierDTO.getId());
-        if (orderlines == null) {
-            throw new Exception("Error retrieving order lines for basket : " + panierDTO.getId());
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<OrderLine> orderlines = orderLineRepository.getlines(panierDTO.getId(), pageable);
+        if (orderlines.isEmpty()) {
+            throw new Exception("No order lines found for basket: " + panierDTO.getId());
         }
         for (OrderLine o : orderlines) {
             if ((o.getStock().getId()).equals(articleId)) {

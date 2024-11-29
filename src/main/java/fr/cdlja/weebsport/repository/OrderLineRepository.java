@@ -3,6 +3,8 @@ package fr.cdlja.weebsport.repository;
 import fr.cdlja.weebsport.domain.OrderLine;
 import fr.cdlja.weebsport.domain.Stock;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -14,7 +16,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OrderLineRepository extends JpaRepository<OrderLine, Long> {
     @Query("SELECT o FROM OrderLine o WHERE o.order.id= :orderId")
-    List<OrderLine> getlines(@Param("orderId") Long orderId);
+    Page<OrderLine> getlines(@Param("orderId") Long orderId, Pageable pageable);
 
     @Query("SELECT o.stock FROM OrderLine o WHERE o.id= :orderlineId")
     Stock getArticle(@Param("orderlineId") Long orderlineId);

@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,7 +78,6 @@ public class SubscribedClientsService {
             throw new Exception("Client not found for email: " + email);
         }
 
-        List<OrderLine> orderlines = new ArrayList<>();
         Stock article;
         StockDTO articleDTO;
         Clothe vetement;
@@ -84,8 +86,12 @@ public class SubscribedClientsService {
         OrderDTO orderDTO;
         orderDTO = new OrderDTO(o);
         LOG.debug("recherche lignes");
-        orderlines = orderLineRepository.getlines(o.getId());
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<OrderLine> orderlines = orderLineRepository.getlines(o.getId(), pageable);
         LOG.debug("lignes trouvés");
+        if (orderlines.isEmpty()) {
+            throw new Exception("No order lines found : " + o.getId());
+        }
         for (OrderLine ol : orderlines) {
             LOG.debug("recherche article");
             article = orderLineRepository.getArticle(ol.getId());
@@ -99,14 +105,19 @@ public class SubscribedClientsService {
             orderDTO.addArticle(orderLineDTO);
         }
 
-        return new OrderDTO(o);
+        return orderDTO;
     }
 
-    public List<OrderDTO> getHistorique(String email) {
+    public List<OrderDTO> getHistorique(String email) throws Exception {
         Long client_id = subscribedClientsRepository.findByEmail(email).orElseThrow().getId();
-        List<Order> orders = orderRepository.getHistorique(client_id);
+
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Order> orders = orderRepository.getHistorique(client_id, pageable);
+        if (orders.isEmpty()) {
+            throw new Exception("No order found for client: " + client_id);
+        }
         List<OrderDTO> historique = new ArrayList<>();
-        List<OrderLine> orderlines = new ArrayList<>();
+
         OrderlineDTO orderLineDTO;
         OrderDTO orderDTO;
         Stock article;
@@ -115,7 +126,10 @@ public class SubscribedClientsService {
         ClotheDTO vetementDTO;
         for (Order o : orders) {
             orderDTO = new OrderDTO(o);
-            orderlines = orderLineRepository.getlines(o.getId());
+            Page<OrderLine> orderlines = orderLineRepository.getlines(o.getId(), pageable);
+            if (orderlines.isEmpty()) {
+                throw new Exception("No order lines found for order: " + o.getId());
+            }
             for (OrderLine ol : orderlines) {
                 article = orderLineRepository.getArticle(ol.getId());
                 articleDTO = new StockDTO(article);
