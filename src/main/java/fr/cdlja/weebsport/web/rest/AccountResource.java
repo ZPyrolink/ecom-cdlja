@@ -1,21 +1,16 @@
 package fr.cdlja.weebsport.web.rest;
 
 import fr.cdlja.weebsport.config.Constants;
-import fr.cdlja.weebsport.domain.Order;
-import fr.cdlja.weebsport.domain.SubscribedClients;
-import fr.cdlja.weebsport.domain.User;
+import fr.cdlja.weebsport.domain.*;
 import fr.cdlja.weebsport.domain.enumeration.Status;
-import fr.cdlja.weebsport.repository.OrderRepository;
-import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
-import fr.cdlja.weebsport.repository.UserRepository;
+import fr.cdlja.weebsport.repository.*;
 import fr.cdlja.weebsport.security.AuthoritiesConstants;
 import fr.cdlja.weebsport.security.SecurityUtils;
-import fr.cdlja.weebsport.service.BasketService;
-import fr.cdlja.weebsport.service.MailService;
-import fr.cdlja.weebsport.service.SubscribedClientsService;
-import fr.cdlja.weebsport.service.UserService;
+import fr.cdlja.weebsport.service.*;
 import fr.cdlja.weebsport.service.dto.*;
 import fr.cdlja.weebsport.web.rest.errors.*;
+import fr.cdlja.weebsport.web.rest.errors.EmailAlreadyUsedException;
+import fr.cdlja.weebsport.web.rest.errors.InvalidPasswordException;
 import fr.cdlja.weebsport.web.rest.vm.KeyAndPasswordVM;
 import fr.cdlja.weebsport.web.rest.vm.ManagedUserVM;
 import fr.cdlja.weebsport.web.rest.vm.RegisterAccountVM;
@@ -24,6 +19,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import java.io.Console;
 import java.util.*;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +55,13 @@ public class AccountResource {
 
     private final OrderRepository orderRepository;
 
+    private final OrderLineRepository orderLineRepository;
+
+    private final StockRepository stockRepository;
+
     private final BasketService basketService;
+
+    private final StockService stockService;
 
     public AccountResource(
         UserRepository userRepository,
@@ -68,14 +70,20 @@ public class AccountResource {
         MailService mailService,
         SubscribedClientsService subscribedClientsService,
         OrderRepository OrderRepository,
-        BasketService basketService
+        OrderLineRepository OrderLineRepository,
+        BasketService basketService,
+        StockRepository stockRepository,
+        StockService stockService
     ) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
         this.subscribedClientsService = subscribedClientsService;
         this.orderRepository = OrderRepository;
+        this.orderLineRepository = OrderLineRepository;
         this.basketService = basketService;
+        this.stockRepository = stockRepository;
+        this.stockService = stockService;
     }
 
     // Logique métier pour créer les entités User et ClientAbonne et panié asso
@@ -163,6 +171,27 @@ public class AccountResource {
         OrderDTO basketDTO = subscribedClientsService.getBasket(adminUserDTO.getEmail());
         Long nbarticles = basketService.countnbArticles(basketDTO);
         return ResponseEntity.ok(nbarticles);
+    }
+
+    @PostMapping("/client/basket/validate/{id}")
+    public void validateClientBasket(@PathVariable Long id, @RequestBody OrderDTO orderdto) throws Exception {
+        // TODO
+        if (id == null) {
+            try {
+                stockService.validatebasketnonabo(orderdto);
+            } catch (Exception e) {
+                throw new AccountResourceException(e.getMessage());
+            }
+        } else {
+            try {
+                stockService.validebasketabo(id);
+            } catch (Exception e) {
+                throw new AccountResourceException(e.getMessage());
+            }
+        }
+        //si body vide alors client abonné recuperer son panier et lui réserver ses articles
+        // si id null alors panier du client non abonné dans le body, récupérer les articles et lui les reserver
+        //reserver = verif si dispo/ gestion de la concurence et mise à jour du nombre d'article et de la version dans le stock
     }
 
     /**

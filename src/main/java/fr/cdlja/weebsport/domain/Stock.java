@@ -37,6 +37,9 @@ public class Stock implements Serializable {
     @Column(name = "quantity")
     private Integer quantity;
 
+    @Column(name = "version")
+    private Integer version;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clothe_id")
     @JsonIgnoreProperties(value = { "subscribedClients" }, allowSetters = true)
@@ -48,6 +51,14 @@ public class Stock implements Serializable {
     private Set<String> imageUrls;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
     public Set<String> getImageUrls() {
         return imageUrls;

@@ -16,6 +16,7 @@ public class OrderDTO {
     private Float amount;
     private String deliveryAddress;
     private MeansOfPayment meansOfPayment;
+    private String bankCard;
     private List<OrderlineDTO> lignescommandes;
 
     public OrderDTO() {}
@@ -28,6 +29,15 @@ public class OrderDTO {
         this.deliveryAddress = order.getDeliveryAddress();
         this.meansOfPayment = order.getMeanOfPayment();
         this.lignescommandes = new ArrayList<>();
+        this.bankCard = "nonenregistré";
+    }
+
+    public String getBankCard() {
+        return bankCard;
+    }
+
+    public void setBankCard(String bankCard) {
+        this.bankCard = bankCard;
     }
 
     public Long getId() {
@@ -78,7 +88,7 @@ public class OrderDTO {
         this.meansOfPayment = meansOfPayment;
     }
 
-    public List<OrderlineDTO> getArticles() {
+    public List<OrderlineDTO> getOrderLines() {
         return lignescommandes;
     }
 
