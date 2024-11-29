@@ -18,4 +18,7 @@ public interface OrderLineRepository extends JpaRepository<OrderLine, Long> {
 
     @Query("SELECT o.stock FROM OrderLine o WHERE o.id= :orderlineId")
     Stock getArticle(@Param("orderlineId") Long orderlineId);
+
+    @Query("SELECT COALESCE(SUM (o.quantity),0) from OrderLine o Join o.order WHERE o.order.id= :orderid")
+    Long getQuantity(@Param("orderid") Long orderid);
 }
