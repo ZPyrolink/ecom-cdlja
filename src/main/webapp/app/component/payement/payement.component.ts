@@ -1,36 +1,10 @@
 import { Component } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { faCcApplePay } from '@fortawesome/free-brands-svg-icons';
-import { RegexpUtils } from '../../utils/regexp';
-
-function validators(required = true, pattern?: RegExp, ...others: ValidatorFn[]): ValidatorFn[] {
-  const result: ValidatorFn[] = [];
-
-  if (required) {
-    result.push(Validators.required);
-  }
-
-  if (pattern) {
-    result.push(Validators.pattern(pattern));
-  }
-
-  if (others.length > 0) {
-    result.push(...others);
-  }
-
-  return result;
-}
+import RegexpUtils from '../../utils/regexpUtils';
+import ValidatorsExt from '../../utils/validatorsExt';
 
 function onValueChanged(control: FormControl, callback: (value: string) => string): void {
   control.valueChanges.subscribe((val: string) => {
@@ -54,39 +28,39 @@ export default class PayementComponent {
 
   protected cardNumControl = new FormControl('', {
     nonNullable: true,
-    validators: validators(true, RegexpUtils.CARD_NUM),
+    validators: ValidatorsExt.validators(true, RegexpUtils.CARD_NUM),
   });
 
   protected expirationDateControl = new FormControl('', {
     nonNullable: true,
-    validators: validators(true, RegexpUtils.EXPIRATION_DATE, expirationDateValidator),
+    validators: ValidatorsExt.validators(true, RegexpUtils.EXPIRATION_DATE, ValidatorsExt.expirationDateValidator),
   });
 
   protected cryptoControl = new FormControl('', {
     nonNullable: true,
-    validators: validators(true, RegexpUtils.CRYPTO),
+    validators: ValidatorsExt.validators(true, RegexpUtils.CRYPTO),
   });
 
   protected phoneNumControl = new FormControl('', {
     nonNullable: true,
-    validators: validators(true, RegexpUtils.PHONE_NUM),
+    validators: ValidatorsExt.validators(true, RegexpUtils.PHONE_NUM),
   });
 
   protected payementForm = new FormGroup({
-    type: new FormControl('residence', { validators: validators() }),
-    firstName: new FormControl('', { validators: validators() }),
-    lastName: new FormControl('', { validators: validators() }),
-    email: new FormControl('', { validators: validators(true, undefined, Validators.email) }),
-    country: new FormControl('', { validators: validators() }),
+    type: new FormControl('residence', { validators: ValidatorsExt.validators() }),
+    firstName: new FormControl('', { validators: ValidatorsExt.validators() }),
+    lastName: new FormControl('', { validators: ValidatorsExt.validators() }),
+    email: new FormControl('', { validators: ValidatorsExt.validators(true, undefined, Validators.email) }),
+    country: new FormControl('', { validators: ValidatorsExt.validators() }),
     expirationDate: this.expirationDateControl,
-    city: new FormControl('', { validators: validators() }),
-    address: new FormControl('', { validators: validators() }),
+    city: new FormControl('', { validators: ValidatorsExt.validators() }),
+    address: new FormControl('', { validators: ValidatorsExt.validators() }),
     phoneNumber: this.phoneNumControl,
 
-    cardName: new FormControl('', { validators: validators(true, RegexpUtils.CARD_NAME) }),
+    cardName: new FormControl('', { validators: ValidatorsExt.validators(true, RegexpUtils.CARD_NAME) }),
     cardNum: this.cardNumControl,
     crypto: this.cryptoControl,
-    postalCode: new FormControl('', { validators: validators(true, RegexpUtils.POSTAL_CODE) }),
+    postalCode: new FormControl('', { validators: ValidatorsExt.validators(true, RegexpUtils.POSTAL_CODE) }),
   });
 
   constructor() {
@@ -112,23 +86,4 @@ export default class PayementComponent {
   private keepNumbers(value: string): string {
     return value.replace(/[^0-9/]/g, '');
   }
-}
-
-function expirationDateValidator(control: AbstractControl<string>): ValidationErrors | null {
-  const [month, year] = control.value.split('/').map(v => +v);
-
-  const error = { expiredCard: true };
-
-  const today = new Date();
-  const currentYear = today.getFullYear() - 2000;
-
-  if (year < currentYear) {
-    return error;
-  }
-
-  if (year === currentYear && month - 1 < today.getMonth()) {
-    return error;
-  }
-
-  return null;
 }

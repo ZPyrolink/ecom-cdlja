@@ -1,4 +1,4 @@
-export class RegexpUtils {
+export default class RegexpUtils {
   static POSTAL_CODE = /^\d{5}$/;
   static PHONE_NUM = /^0[1-9](?:\s\d{2}){4}$/;
   static CRYPTO = /^\d{3}$/;
