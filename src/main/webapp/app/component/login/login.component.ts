@@ -7,6 +7,10 @@ import { UserService } from '../../entities/user/service/user.service';
 import { ISigninRequest } from '../../entities/signin-request/signin-request.model';
 import { NewSubscribedClients } from '../../entities/subscribed-clients/subscribed-clients.model';
 import { NewUser } from '../../admin/user-management/user-management.model';
+import { IConnectionRequest } from '../../entities/connection-request/connection-request.model';
+import { switchMap } from 'rxjs';
+
+export type TokenResult = { id_token: string };
 
 @Component({
   selector: 'jhi-login',
@@ -61,8 +65,6 @@ export default class LoginComponent implements OnInit, AfterViewInit {
   }
 
   login(): void {
-    window.console.log('login');
-
     if (this.loginForm.invalid) {
       alert('Veuillez remplir les champs correctement.');
       return;
@@ -86,10 +88,11 @@ export default class LoginComponent implements OnInit, AfterViewInit {
   }
 
   register(): void {
-    window.console.log('register');
-
     if (this.subscribeForm.invalid) {
-      alert('Veuillez remplir les champs correctement.');
+      const errors = Object.keys(this.subscribeForm.controls)
+        .filter(key => this.subscribeForm.get(key)!.invalid)
+        .join(', ');
+      alert(`Les champs suivants sont invalides : ${errors}`);
       return;
     }
 
@@ -113,12 +116,33 @@ export default class LoginComponent implements OnInit, AfterViewInit {
 
     const payload: ISigninRequest = { managedUser, subscribedClient };
 
-    this.userService.register(payload).subscribe({
-      next: () => {
-        alert('Inscription réussie !');
-        this.router.navigate(['']);
-      },
-      error: () => alert("Erreur lors de l'inscription"),
-    });
+    this.userService
+      .register(payload)
+      .pipe(
+        switchMap(() => {
+          const loginPayload: IConnectionRequest = {
+            username: this.subscribeForm.value.managedUser!.login,
+            password: this.subscribeForm.value.managedUser!.password,
+            rememberMe: false,
+          };
+
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+          return this.userService.login(loginPayload);
+        }),
+      )
+      .subscribe({
+        next: () => {
+          this.authenticationError.set(false);
+          alert('Inscription réussie !');
+          if (!this.router.getCurrentNavigation()) {
+            // There were no routing during login (eg from navigationToStoredUrl)
+            this.router.navigate(['']);
+          }
+        },
+        error: () => {
+          this.authenticationError.set(true);
+          alert('Erreur lors de la connexion');
+        },
+      });
   }
 }

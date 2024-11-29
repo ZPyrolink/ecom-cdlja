@@ -5,6 +5,8 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 import { IUser } from '../user.model';
 import { IConnectionRequest } from '../../connection-request/connection-request.model';
 import { ISigninRequest } from '../../signin-request/signin-request.model';
+import { TokenResult } from '../../../component/login/login.component';
+import { tap } from 'rxjs/operators';
 
 export type EntityResponseType = HttpResponse<IUser>;
 export type EntityArrayResponseType = HttpResponse<IUser[]>;
@@ -14,15 +16,17 @@ export class UserService {
   protected http = inject(HttpClient);
   protected applicationConfigService = inject(ApplicationConfigService);
 
-  protected resourceUrl = this.applicationConfigService.getEndpointFor('client');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api');
 
-  login(payload: IConnectionRequest): Observable<string> {
-    window.console.log(payload);
-    return this.http.post<string>(`${this.resourceUrl}/login`, payload);
+  login(payload: IConnectionRequest): Observable<TokenResult> {
+    return this.http.post<TokenResult>(`${this.resourceUrl}/authenticate`, payload).pipe(
+      tap((res: TokenResult) => {
+        window.sessionStorage['id_storage'] = res.id_token; // Stocker le token comme effet secondaire
+      }),
+    );
   }
 
-  register(payload: ISigninRequest): Observable<string> {
-    window.console.log(payload);
-    return this.http.post<string>(`${this.resourceUrl}/register`, payload);
+  register(payload: ISigninRequest): Observable<TokenResult> {
+    return this.http.post<TokenResult>(`${this.resourceUrl}/client/signin`, payload);
   }
 }
