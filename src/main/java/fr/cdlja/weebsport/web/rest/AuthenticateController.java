@@ -55,12 +55,16 @@ public class AuthenticateController {
     //verifie code et connect user
     @PostMapping("/authenticate")
     public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) {
+        LOG.info("start identification");
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
             loginVM.getUsername(),
             loginVM.getPassword()
         );
-        //recupère username et authorities du l'utilisateur connecté et le donne au security controleur
+        // authentification du client via le manager responssable de connecter les users
+        // retourne les info de l'utisateur (roles/ nom)
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+        //stock les info dans le context de sécurité
         SecurityContextHolder.getContext().setAuthentication(authentication);
         //rememberme pour permettre à l'utilisateur de rester connecter
         String jwt = this.createToken(authentication, loginVM.isRememberMe());

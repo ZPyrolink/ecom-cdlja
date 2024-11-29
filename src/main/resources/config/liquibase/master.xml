@@ -18,12 +18,16 @@
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20241107152828_added_entity_Clothe.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241107152828_added_entity_Clothe_categories.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241107152828_added_entity_Article_images.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20241107152829_added_entity_Stock.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20241107152830_added_entity_OrderLine.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20241107152831_added_entity_Order.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20241107152832_added_entity_SubscribedClients.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20241107152829_added_entity_constraints_Stock.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241107152829_added_entity_constraints_Clothe_categories.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241107152829_added_entity_constraints_Article_images.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20241107152830_added_entity_constraints_OrderLine.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20241107152831_added_entity_constraints_Order.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20241107152832_added_entity_constraints_SubscribedClients.xml" relativeToChangelogFile="false"/>

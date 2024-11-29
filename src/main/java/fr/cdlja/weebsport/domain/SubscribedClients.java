@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -22,8 +21,8 @@ public class SubscribedClients extends AbstractClient implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subscribedClientSequenceGenerator")
+    @SequenceGenerator(name = "subscribedClientSequenceGenerator", sequenceName = "client_id_seq")
     @Column(name = "id")
     private Long id;
 
@@ -31,7 +30,7 @@ public class SubscribedClients extends AbstractClient implements Serializable {
     private LocalDate birthday;
 
     @Column(name = "bank_card")
-    private String bankCard;
+    private String bankCard = "nonenregistre";
 
     @Column(name = "phone")
     private String phone;
@@ -40,7 +39,7 @@ public class SubscribedClients extends AbstractClient implements Serializable {
     private Integer points = 0;
 
     @JsonIgnoreProperties(value = { "client", "orderlines", "subscribedClients" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(unique = true, name = "basket_id")
     private Order basket;
 
@@ -151,6 +150,9 @@ public class SubscribedClients extends AbstractClient implements Serializable {
 
     public void setBasket(Order order) {
         this.basket = order;
+        if (basket != null) {
+            basket.setClient(this); // Synchronisation du côté Commande
+        }
     }
 
     public SubscribedClients basket(Order order) {
@@ -210,6 +212,14 @@ public class SubscribedClients extends AbstractClient implements Serializable {
         this.historiques.remove(order);
         order.setClient(null);
         return this;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return this.user;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
