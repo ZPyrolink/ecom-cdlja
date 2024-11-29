@@ -141,6 +141,18 @@ public class AccountResource {
         return ResponseEntity.ok(basketDTO);
     }
 
+    @GetMapping("/client/historique")
+    public ResponseEntity<List<OrderDTO>> getClientHistorique() throws Exception {
+        AdminUserDTO adminUserDTO = userService
+            .getUserWithAuthorities()
+            .map(AdminUserDTO::new)
+            .orElseThrow(() -> new AccountResourceException("User could not be found"));
+        LOG.info("User: {}", adminUserDTO);
+        List<OrderDTO> historique = subscribedClientsService.getHistorique(adminUserDTO.getEmail());
+        LOG.info("historique: {}", historique);
+        return ResponseEntity.ok(historique);
+    }
+
     @GetMapping("/client/basket/count")
     public ResponseEntity<Long> getClientBasketCount() throws Exception {
         AdminUserDTO adminUserDTO = userService
