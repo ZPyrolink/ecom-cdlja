@@ -10,7 +10,7 @@ import { NgForOf, NgIf } from '@angular/common';
 })
 export class PaginationComponent {
   @Input() totalPages = 1;
-  @Input() currentPage = 1;
+  @Input() currentPage = 0;
   @Output() pageChanged = new EventEmitter<number>();
   endPage = 0;
 
