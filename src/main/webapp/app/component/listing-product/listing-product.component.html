@@ -14,9 +14,10 @@
         <div class="product-item" *ngFor="let clothe of clothes" (click)="goToProductDetails(clothe.id)">
           <img src="{{ clothe.imageP }}" alt="{{ clothe.type }} {{ clothe.theme }}" />
           <div class="product-info">
-            <div class="product-name">{{ clothe.type }} {{ clothe.theme }}</div>
+            <div class="product-name">{{ clothe.type }}</div>
             <div class="product-price">{{ clothe.price }}€</div>
           </div>
+          <div class="product-them">{{ clothe.theme }}</div>
         </div>
       </div>
     </div>
