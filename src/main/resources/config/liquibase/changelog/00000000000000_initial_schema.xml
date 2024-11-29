@@ -78,7 +78,7 @@
         <addNotNullConstraint   columnName="password_hash"
                                 columnDataType="varchar(60)"
                                 tableName="jhi_user"/>
-        <loadData
+        <!--<loadData
                   file="config/liquibase/data/authority.csv"
                   separator=";"
                   tableName="jhi_authority"
@@ -101,7 +101,19 @@
                   usePreparedStatements="true">
             <column name="user_id" type="numeric"/>
         </loadData>
-        <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="${datetimeType}"/>-->
+
+      <!-- Ajuster les séquences après le chargement des données -->
+      <!-- Pour PostgreSQL
+      <sql dbms="postgresql">
+        SELECT setval('user_id_seq', (SELECT COALESCE(MAX(id), 0) + 1 FROM jhi_user));
+      </sql>-->
+
+      <!-- Pour H2
+      <sql dbms="h2">
+        ALTER SEQUENCE user_id_seq RESTART WITH (SELECT COALESCE(MAX(id), 0) + 1 FROM jhi_user);
+      </sql>-->
+
     </changeSet>
 
     <changeSet author="jhipster" id="00000000000002" context="test">
@@ -118,4 +130,6 @@
             <column name="local_date" type="date"/>
         </createTable>
     </changeSet>
+
+
 </databaseChangeLog>

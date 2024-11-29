@@ -1,3 +1,11 @@
 id;login;password_hash;first_name;last_name;email;image_url;activated;lang_key;created_by;last_modified_by
 1;admin;$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC;Administrator;Administrator;admin@localhost;;true;en;system;system
 2;user;$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K;User;User;user@localhost;;true;en;system;system
+3;john_doe;$2a$10$z8g7FyJKh3s.P.j6uA4hZbM0V8uAn8vI1W7L9fM3/hOjJ79kZhwZy;John;Doe;john.doe@example.com;;true;en;system;system
+4;jane_smith;$2a$10$k9a8lQZXFHR2VZ3uNElo7twk/yTmK3OCqaZMj8U2D5OjgGo2H8pI6;Jane;Smith;jane.smith@example.com;;true;en;system;system
+5;alice_jones;$2a$10$7JdhjWsztl0aFSHg9Ecv0.pS7pkfXg6Szj3S5Zzm75BdJGHoi7j7;Alice;Jones;alice.jones@example.com;;true;en;system;system
+6;bob_brown;$2a$10$3vMbGg8WkRrpymt2hTgV5Wb0PzDfeGyBldZ6hXZ6wBx2BHO67qIfK;Bob;Brown;bob.brown@example.com;;true;en;system;system
+7;carol_white;$2a$10$9QHPRiWiHa7Xszx5/TZpiy7l2eB4sAC0rZ0P2pU.3b9sNJwDo79Se;Carol;White;carol.white@example.com;;true;en;system;system
+8;dave_green;$2a$10$8qkx.EtHGJxEpyihzDNo9m.X0zRlLsU5RYFhs0hHwrY11r0vUzvga;Dave;Green;dave.green@example.com;;true;en;system;system
+9;emma_harris;$2a$10$J81w2H0XdxKdkRftr0LVYGzOTbsTSl5wsGmsmeR8rpGAT7dqSFe9.;Emma;Harris;emma.harris@example.com;;true;en;system;system
+10;frank_martin;$2a$10$4tZG3C.k4eOkx1.BNkKmYyZ7iz4KN3q9YWsbQ9xHRsdTOggOdv3x2;Frank;Martin;frank.martin@example.com;;true;en;system;system

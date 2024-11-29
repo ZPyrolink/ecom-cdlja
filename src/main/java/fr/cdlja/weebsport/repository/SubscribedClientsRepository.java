@@ -32,4 +32,8 @@ public interface SubscribedClientsRepository
 
     @Query("SELECT sc FROM SubscribedClients sc WHERE sc.email = :email")
     Optional<SubscribedClients> findByEmail(@Param("email") String email);
+
+    @Modifying
+    @Query("UPDATE SubscribedClients c SET c.address = :newAddress WHERE c.id = :id")
+    int updateClientAddress(@Param("id") Long id, @Param("newAddress") String newAddress);
 }

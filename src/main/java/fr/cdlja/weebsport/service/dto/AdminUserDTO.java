@@ -1,5 +1,6 @@
 package fr.cdlja.weebsport.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fr.cdlja.weebsport.config.Constants;
 import fr.cdlja.weebsport.domain.Authority;
 import fr.cdlja.weebsport.domain.User;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 /**
  * A DTO representing a user, with his authorities.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AdminUserDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,7 +39,7 @@ public class AdminUserDTO implements Serializable {
     @Size(max = 256)
     private String imageUrl;
 
-    private boolean activated = false;
+    private boolean activated = true;
 
     @Size(min = 2, max = 10)
     private String langKey;

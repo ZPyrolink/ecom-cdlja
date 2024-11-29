@@ -1,5 +1,6 @@
 package fr.cdlja.weebsport.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fr.cdlja.weebsport.config.Constants;
 import fr.cdlja.weebsport.domain.Authority;
 import fr.cdlja.weebsport.domain.SubscribedClients;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SubscribedClientDTO {
 
     @Email
@@ -19,7 +21,6 @@ public class SubscribedClientDTO {
     @NotNull
     private LocalDate birthday;
 
-    @NotNull
     private String bankCard;
 
     @NotNull
@@ -28,6 +29,8 @@ public class SubscribedClientDTO {
     private String address;
 
     private Integer points;
+
+    public SubscribedClientDTO() {}
 
     public SubscribedClientDTO(SubscribedClients s) {
         this.email = s.getEmail();
