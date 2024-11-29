@@ -16,42 +16,48 @@
         </div>
         <div class="delivery-inline">
           <div class="form-group">
-            <label for="nom">Nom</label>
-            <input id="nom" type="text" placeholder="Nom" formControlName="firstName" title="Requis" />
+            <label for="lastName">Nom</label>
+            <input id="lastName" type="text" placeholder="Nom" formControlName="lastName" title="Requis" />
           </div>
           <div class="form-group">
-            <label for="prénom">Prénom</label>
-            <input id="prénom" type="text" placeholder="Prénom" formControlName="lastName" title="Requis" />
+            <label for="firstName">Prénom</label>
+            <input id="firstName" type="text" placeholder="Prénom" formControlName="firstName" title="Requis" />
           </div>
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input id="email" type="email" placeholder="Email" formControlName="email" title="Email valide requis" />
+          <input
+            id="email"
+            type="email"
+            placeholder="fc-im2ag@univ-grenoble-alpes.fr"
+            formControlName="email"
+            title="Email valide requis"
+          />
         </div>
         <div class="address-inline">
           <div class="form-group">
             <label for="country">Pays</label>
-            <input id="country" type="text" placeholder="Pays" formControlName="country" title="Requis" />
+            <input id="country" type="text" placeholder="France" formControlName="country" title="Requis" />
           </div>
           <div class="form-group">
             <label for="city">Ville</label>
-            <input id="city" type="text" placeholder="Ville" formControlName="city" title="Requis" />
+            <input id="city" type="text" placeholder="Saint-Martin-d'Hères" formControlName="city" title="Requis" />
           </div>
           <div class="form-group">
-            <label for="code-postal">Code Postal</label>
-            <input id="code-postal" type="text" placeholder="Code Postal" formControlName="postalCode" title="Code postal valide requis" />
+            <label for="postalCode">Code Postal</label>
+            <input id="postalCode" type="text" placeholder="38400" formControlName="postalCode" title="Code postal valide requis" />
           </div>
         </div>
         <div class="form-group">
-          <label for="adress">Addresse</label>
-          <input id="adress" type="text" placeholder="Address" formControlName="address" title="Requis" />
+          <label for="address">Addresse</label>
+          <input id="address" type="text" placeholder="60 Rue de la Chimie" formControlName="address" title="Requis" />
         </div>
         <div class="form-group">
           <label for="phone-number">Numéro de téléphone</label>
           <input
             id="phone-number"
             type="text"
-            placeholder="01 23 45 67 89"
+            placeholder="04 57 42 25 70"
             formControlName="phoneNumber"
             title="Numéro de téléphone valide requis"
           />
@@ -69,19 +75,19 @@
         <h3>Carte de crédit</h3>
 
         <div class="form-group">
-          <label for="email-login">Nom sur la carte</label>
+          <label for="cardName">Nom sur la carte</label>
           <input
-            id="email-login"
+            id="cardName"
             type="text"
-            placeholder="Firstname Lastname"
+            placeholder="Prénom Nom"
             formControlName="cardName"
-            title="Nom et prénom séparé par un espace requis"
+            title="Prénom et nom séparé par un espace requis"
           />
         </div>
         <div class="form-group">
-          <label for="password-login">N° de carte</label>
+          <label for="cardNum">N° de carte</label>
           <input
-            id="password-login"
+            id="cardNum"
             type="text"
             placeholder="1234 5678 9012 3456"
             formControlName="cardNum"
