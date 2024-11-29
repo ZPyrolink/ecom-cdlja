@@ -17,38 +17,44 @@
         <div class="delivery-inline">
           <div class="form-group">
             <label for="nom">Nom</label>
-            <input id="nom" type="text" placeholder="Nom" formControlName="firstName" />
+            <input id="nom" type="text" placeholder="Nom" formControlName="firstName" title="Requis" />
           </div>
           <div class="form-group">
             <label for="prénom">Prénom</label>
-            <input id="prénom" type="text" placeholder="Prénom" formControlName="lastName" />
+            <input id="prénom" type="text" placeholder="Prénom" formControlName="lastName" title="Requis" />
           </div>
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input id="email" type="email" placeholder="Email" formControlName="email" />
+          <input id="email" type="email" placeholder="Email" formControlName="email" title="Email valide requis" />
         </div>
         <div class="address-inline">
           <div class="form-group">
             <label for="country">Pays</label>
-            <input id="country" type="text" placeholder="Pays" formControlName="country" />
+            <input id="country" type="text" placeholder="Pays" formControlName="country" title="Requis" />
           </div>
           <div class="form-group">
             <label for="city">Ville</label>
-            <input id="city" type="text" placeholder="Ville" formControlName="city" />
+            <input id="city" type="text" placeholder="Ville" formControlName="city" title="Requis" />
           </div>
           <div class="form-group">
             <label for="code-postal">Code Postal</label>
-            <input id="code-postal" type="text" placeholder="Code Postal" formControlName="postalCode" />
+            <input id="code-postal" type="text" placeholder="Code Postal" formControlName="postalCode" title="Code postal valide requis" />
           </div>
         </div>
         <div class="form-group">
           <label for="adress">Addresse</label>
-          <input id="adress" type="text" placeholder="Address" formControlName="address" />
+          <input id="adress" type="text" placeholder="Address" formControlName="address" title="Requis" />
         </div>
         <div class="form-group">
           <label for="phone-number">Numéro de téléphone</label>
-          <input id="phone-number" type="text" placeholder="Numéro de téléphone" formControlName="phoneNumber" />
+          <input
+            id="phone-number"
+            type="text"
+            placeholder="01 23 45 67 89"
+            formControlName="phoneNumber"
+            title="Numéro de téléphone valide requis"
+          />
         </div>
       </div>
 
@@ -56,7 +62,7 @@
 
       <div class="column-2">
         <h3>Paiement express</h3>
-        <fa-icon [icon]="faCcApplePay" class="fa-3x" />
+        <fa-icon [icon]="faCcApplePay" class="fa-3x" id="applePay" />
 
         <div class="hDivider"></div>
 
@@ -64,20 +70,38 @@
 
         <div class="form-group">
           <label for="email-login">Nom sur la carte</label>
-          <input id="email-login" type="text" placeholder="Firstname Lastname" formControlName="cardName" />
+          <input
+            id="email-login"
+            type="text"
+            placeholder="Firstname Lastname"
+            formControlName="cardName"
+            title="Nom et prénom séparé par un espace requis"
+          />
         </div>
         <div class="form-group">
           <label for="password-login">N° de carte</label>
-          <input id="password-login" type="text" placeholder="1234 5678 9012 3456" formControlName="cardNum" />
+          <input
+            id="password-login"
+            type="text"
+            placeholder="1234 5678 9012 3456"
+            formControlName="cardNum"
+            title="Numéro de carte valide requis"
+          />
         </div>
         <div class="delivery-inline">
           <div class="form-group">
             <label for="exp">Date d'expiration</label>
-            <input id="exp" type="text" placeholder="01/19" formControlName="expirationDate" />
+            <input
+              id="exp"
+              type="text"
+              placeholder="01/19"
+              formControlName="expirationDate"
+              title="Date d'expiration valide valide requise. La carte doit être non expirée"
+            />
           </div>
           <div class="form-group">
             <label for="crypt">Cryptogramme</label>
-            <input id="crypt" type="text" placeholder="000" formControlName="crypto" />
+            <input id="crypt" type="text" placeholder="123" formControlName="crypto" title="Cryptogramme valide requis" />
           </div>
         </div>
       </div>
@@ -85,7 +109,7 @@
 
     <div class="delivery-sb">
       <p>Total de la commande : {{ price | number: '1.2-2' }}€</p>
-      <button class="btn-primary">Payer</button>
+      <button class="btn-primary" [disabled]="!isValid" [title]="buttonTitle">Payer</button>
     </div>
   </form>
 </div>

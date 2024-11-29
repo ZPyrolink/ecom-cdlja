@@ -24,6 +24,14 @@ export default class PayementComponent {
 
   test = '';
 
+  get buttonTitle(): string {
+    return this.isValid ? '' : 'Certains champs sont invalides';
+  }
+
+  get isValid(): boolean {
+    return this.payementForm.valid;
+  }
+
   protected readonly faCcApplePay = faCcApplePay;
 
   protected cardNumControl = new FormControl('', {
