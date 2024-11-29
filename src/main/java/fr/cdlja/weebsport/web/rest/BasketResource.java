@@ -39,23 +39,23 @@ public class BasketResource {
         return ResponseEntity.ok(panierDTO);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<OrderDTO> ajouterArticle(@PathVariable(value = "id", required = false) final long articleId) {
+    @PostMapping("/{id}")
+    public ResponseEntity<?> ajouterArticle(@PathVariable(value = "id", required = false) final long articleId) {
         try {
-            OrderDTO panier = basketService.ajouterArticle(articleId);
-            return ResponseEntity.ok(panier);
+            basketService.ajouterArticle(articleId);
+            return ResponseEntity.ok("Article ajouté avec succès");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 200 OK
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<OrderDTO> supprimerArticle(@PathVariable(value = "id", required = false) final long articleId) {
+    public ResponseEntity<?> supprimerArticle(@PathVariable(value = "id", required = false) final long articleId) {
         try {
-            OrderDTO panier = basketService.supprimerArticle(articleId);
-            return ResponseEntity.ok(panier);
+            basketService.supprimerArticle(articleId);
+            return ResponseEntity.ok("Article supprimé avec succès");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 200 OK
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
         }
     }
 }
