@@ -1,0 +1,37 @@
+{
+  "annotations": {
+    "changelogDate": "20241107152828"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "type",
+      "fieldType": "Type",
+      "fieldValues": "JOGGER,TEESHIRT,BRA,LEGGING,SHORT,SWEAT"
+    },
+    {
+      "fieldName": "theme",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "gender",
+      "fieldType": "Gender",
+      "fieldValues": "MAN,WOMAN,UNISEX,CHILD"
+    },
+    {
+      "fieldName": "price",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "imageP",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Clothe",
+  "relationships": [],
+  "searchEngine": "no"
+}

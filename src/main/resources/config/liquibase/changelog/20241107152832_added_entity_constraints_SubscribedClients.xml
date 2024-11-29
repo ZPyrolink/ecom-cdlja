@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <!--
+        Added the constraints for entity SubscribedClients.
+    -->
+    <changeSet id="20241107152832-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="basket_id"
+                                 baseTableName="subscribed_clients"
+                                 constraintName="fk_subscribed_clients__basket_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_order"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="subscribed_clients_id"
+                                 baseTableName="rel_subscribed_clients__favoris"
+                                 constraintName="fk_rel_subscribed_clients__favoris__subscribed_clients_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="subscribed_clients"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="favoris_id"
+                                 baseTableName="rel_subscribed_clients__favoris"
+                                 constraintName="fk_rel_subscribed_clients__favoris__favoris_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="clothe"
+                                 />
+
+      <addForeignKeyConstraint baseColumnNames="user_id"
+                               baseTableName="subscribed_clients"
+                               constraintName="fk_subscribed_clients__id"
+                               referencedColumnNames="id"
+                               referencedTableName="jhi_user"
+      />
+    </changeSet>
+</databaseChangeLog>

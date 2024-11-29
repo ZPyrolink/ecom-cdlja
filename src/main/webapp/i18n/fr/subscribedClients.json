@@ -1,0 +1,35 @@
+{
+  "weebSportApp": {
+    "subscribedClients": {
+      "home": {
+        "title": "SubscribedClients",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Subscribed Clients",
+        "createOrEditLabel": "Créer ou éditer un Subscribed Clients",
+        "notFound": "Aucun Subscribed Clients trouvé"
+      },
+      "created": "Un nouveau Subscribed Clients a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Subscribed Clients avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Subscribed Clients avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Subscribed Clients {{ id }} ?"
+      },
+      "detail": {
+        "title": "Subscribed Clients"
+      },
+      "id": "ID",
+      "lastname": "Lastname",
+      "firstname": "Firstname",
+      "birthday": "Birthday",
+      "email": "Email",
+      "passworld": "Passworld",
+      "address": "Address",
+      "bankCard": "Banck Card",
+      "phone": "Phone",
+      "points": "Points",
+      "basket": "Basket",
+      "favoris": "Favoris",
+      "historique": "Historique"
+    }
+  }
+}

@@ -1,0 +1,131 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-subscribed-clients-heading"
+        data-cy="SubscribedClientsCreateUpdateHeading"
+        jhiTranslate="weebSportApp.subscribedClients.home.createOrEditLabel"
+      >
+        Create or edit a Subscribed Clients
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="weebSportApp.subscribedClients.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_lastname" jhiTranslate="weebSportApp.subscribedClients.lastname">Lastname</label>
+          <input type="text" class="form-control" name="lastname" id="field_lastname" data-cy="lastname" formControlName="lastname" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_firstname" jhiTranslate="weebSportApp.subscribedClients.firstname">Firstname</label>
+          <input type="text" class="form-control" name="firstname" id="field_firstname" data-cy="firstname" formControlName="firstname" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_birthday" jhiTranslate="weebSportApp.subscribedClients.birthday">Birthday</label>
+          <div class="input-group">
+            <input
+              id="field_birthday"
+              data-cy="birthday"
+              type="text"
+              class="form-control"
+              name="birthday"
+              ngbDatepicker
+              #birthdayDp="ngbDatepicker"
+              formControlName="birthday"
+            />
+            <button type="button" class="btn btn-secondary" (click)="birthdayDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_email" jhiTranslate="weebSportApp.subscribedClients.email">Email</label>
+          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_passworld" jhiTranslate="weebSportApp.subscribedClients.passworld">Passworld</label>
+          <input type="text" class="form-control" name="passworld" id="field_passworld" data-cy="passworld" formControlName="passworld" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_address" jhiTranslate="weebSportApp.subscribedClients.address">Address</label>
+          <input type="text" class="form-control" name="address" id="field_address" data-cy="address" formControlName="address" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_bankCard" jhiTranslate="weebSportApp.subscribedClients.bankCard">Banck Card</label>
+          <input type="text" class="form-control" name="bankCard" id="field_bankCard" data-cy="bankCard" formControlName="bankCard" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_phone" jhiTranslate="weebSportApp.subscribedClients.phone">Phone</label>
+          <input type="text" class="form-control" name="phone" id="field_phone" data-cy="phone" formControlName="phone" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_points" jhiTranslate="weebSportApp.subscribedClients.points">Points</label>
+          <input type="number" class="form-control" name="points" id="field_points" data-cy="points" formControlName="points" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_basket" jhiTranslate="weebSportApp.subscribedClients.basket">Basket</label>
+          <select
+            class="form-control"
+            id="field_basket"
+            data-cy="basket"
+            name="basket"
+            formControlName="basket"
+            [compareWith]="compareOrder"
+          >
+            <option [ngValue]="null"></option>
+            @for (orderOption of basketsCollection; track $index) {
+              <option [ngValue]="orderOption">{{ orderOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="field_favorises" jhiTranslate="weebSportApp.subscribedClients.favoris">Favoris</label>
+          <select
+            class="form-control"
+            id="field_favorises"
+            data-cy="favoris"
+            multiple
+            name="favorises"
+            formControlName="favorises"
+            [compareWith]="compareClothe"
+          >
+            @for (clotheOption of clothesSharedCollection; track $index) {
+              <option [ngValue]="clotheOption">{{ clotheOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
