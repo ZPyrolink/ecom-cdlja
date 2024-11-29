@@ -43,19 +43,36 @@ form {
   }
 
   .form-group {
+    display: flex;
     flex-direction: column;
 
+    box-sizing: border-box;
+    width: 100%;
+
     label {
-      font-size: 12px;
+      font-size: 15px;
       margin-bottom: 5px;
     }
 
     input {
       padding: 5px;
-      border: 1px solid #ccc;
       border-radius: 4px;
-      font-size: 12px;
-      height: 50%;
+      font-size: 13px;
+      min-width: 3px !important;
+
+      border: 1px solid;
+
+      &.ng-untouched {
+        border-color: #ccc !important;
+      }
+
+      &.ng-valid {
+        border-color: #ccc;
+      }
+
+      &.ng-invalid {
+        border-color: red;
+      }
     }
   }
 }
@@ -70,12 +87,6 @@ form {
   height: 40px;
   width: 40px;
   color: black;
-}
-
-.ws-logo {
-  height: 75%;
-  margin: 0 20px 0 0;
-  width: 15%;
 }
 
 .column-1 {
@@ -94,6 +105,16 @@ h2 {
 
 .delivery-inline {
   gap: 5px;
+
+  div {
+    flex: 1;
+  }
+}
+
+.address-inline {
+  display: flex;
+  gap: 5px;
+  width: 150px;
 
   div {
     flex: 1;
@@ -136,4 +157,20 @@ h2 {
       text-decoration: underline;
     }
   }
+}
+
+.container {
+  display: flex;
+}
+
+.return-button {
+  position: absolute;
+  top: 70px;
+  left: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  color: black;
 }
