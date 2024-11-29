@@ -47,13 +47,13 @@ public class BasketService {
             .orElseThrow();
 
         Order order = optional.getBasket();
-        Set<OrderLine> orderlines = order.getOrderlines();
+        Set<OrderLine> orderLines = order.getOrderLines();
 
-        if (orderlines == null) {
+        if (orderLines == null) {
             throw new RuntimeException("Error retrieving order lines for basket : " + order.getId());
         }
         boolean isPresent = false;
-        for (OrderLine o : orderlines) {
+        for (OrderLine o : orderLines) {
             if ((o.getStock().getId()).equals(articleId)) {
                 if (o.getStock().getQuantity() == 0) {
                     throw new RuntimeException("Stock is out of stock for article: " + articleId);
@@ -69,7 +69,7 @@ public class BasketService {
         }
         if (!isPresent) {
             OrderLine o = new OrderLine();
-            order.addOrderline(o);
+            order.addOrderLine(o);
             Stock stock = stockRepository.getReferenceById(articleId);
             if (stock.getQuantity() == 0) {
                 throw new RuntimeException("Stock is out of stock for article : " + articleId);
@@ -90,10 +90,10 @@ public class BasketService {
             .orElseThrow();
 
         Order order = optional.getBasket();
-        Set<OrderLine> orderlines = order.getOrderlines();
+        Set<OrderLine> orderLines = order.getOrderLines();
 
         boolean articleFound = false;
-        for (OrderLine o : orderlines) {
+        for (OrderLine o : orderLines) {
             if ((o.getStock().getId()).equals(articleId)) {
                 articleFound = true;
                 if (o.getQuantity() > 1) {
@@ -103,7 +103,7 @@ public class BasketService {
                     orderLineRepository.save(o);
                     orderRepository.save(order);
                 } else {
-                    order.removeOrderline(o);
+                    order.removeOrderLine(o);
                     order.setAmount(order.computeAmount());
                     orderLineRepository.delete(o);
                     orderRepository.save(order);
@@ -116,9 +116,8 @@ public class BasketService {
         }
     }
 
-    public Long countnbArticles(OrderDTO panierDTO) throws Exception {
+    public Long countNbArticles(OrderDTO panierDTO) throws Exception {
         //recupère le nb d'article de chaque ligne de commande et additionne
-        Long nbarticles = orderLineRepository.getQuantity(panierDTO.getId());
-        return nbarticles;
+        return orderLineRepository.getQuantity(panierDTO.getId());
     }
 }
