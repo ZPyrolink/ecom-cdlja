@@ -1,37 +1,30 @@
 package fr.cdlja.weebsport.web.rest;
 
-import fr.cdlja.weebsport.config.Constants;
-import fr.cdlja.weebsport.domain.Order;
-import fr.cdlja.weebsport.domain.SubscribedClients;
 import fr.cdlja.weebsport.domain.User;
-import fr.cdlja.weebsport.domain.enumeration.Status;
 import fr.cdlja.weebsport.repository.OrderRepository;
 import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
 import fr.cdlja.weebsport.repository.UserRepository;
-import fr.cdlja.weebsport.security.AuthoritiesConstants;
 import fr.cdlja.weebsport.security.SecurityUtils;
 import fr.cdlja.weebsport.service.BasketService;
 import fr.cdlja.weebsport.service.MailService;
 import fr.cdlja.weebsport.service.SubscribedClientsService;
 import fr.cdlja.weebsport.service.UserService;
 import fr.cdlja.weebsport.service.dto.*;
-import fr.cdlja.weebsport.web.rest.errors.*;
+import fr.cdlja.weebsport.web.rest.errors.EmailAlreadyUsedException;
+import fr.cdlja.weebsport.web.rest.errors.InvalidPasswordException;
+import fr.cdlja.weebsport.web.rest.errors.LoginAlreadyUsedException;
 import fr.cdlja.weebsport.web.rest.vm.KeyAndPasswordVM;
 import fr.cdlja.weebsport.web.rest.vm.ManagedUserVM;
 import fr.cdlja.weebsport.web.rest.vm.RegisterAccountVM;
-import io.undertow.util.BadRequestException;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Pattern;
-import java.io.Console;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing the current user's account.
@@ -86,7 +79,7 @@ public class AccountResource {
         ManagedUserVM userm = registerAccountVM.getManagedUser();
 
         // Accès aux données du client abonné
-        SubscribedClientDTO clientAbonned = registerAccountVM.getSubscribedClient();
+        SubscribedClientDTO clientAbonne = registerAccountVM.getSubscribedClient();
         if (isPasswordLengthInvalid(userm.getPassword())) {
             throw new InvalidPasswordException();
         }
@@ -101,7 +94,7 @@ public class AccountResource {
             throw new RuntimeException("Create User Exception catch" + e);
         }
         try {
-            subscribedClientsService.createClientWithBasket(user, clientAbonned);
+            subscribedClientsService.createClientWithBasket(user, clientAbonne);
         } catch (Exception e) {
             throw new RuntimeException("Create Client Exception catch" + e);
         }
@@ -161,8 +154,8 @@ public class AccountResource {
             .orElseThrow(() -> new AccountResourceException("User could not be found"));
         LOG.info("User: {}", adminUserDTO);
         OrderDTO basketDTO = subscribedClientsService.getBasket(adminUserDTO.getEmail());
-        Long nbarticles = basketService.countnbArticles(basketDTO);
-        return ResponseEntity.ok(nbarticles);
+        Long nbArticles = basketService.countNbArticles(basketDTO);
+        return ResponseEntity.ok(nbArticles);
     }
 
     /**

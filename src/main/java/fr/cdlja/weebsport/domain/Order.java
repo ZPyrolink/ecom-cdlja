@@ -120,6 +120,15 @@ public class Order implements Serializable {
         this.amount = amount;
     }
 
+    public Float computeAmount() {
+        Set<OrderLine> orderlines = this.getOrderLines();
+        Float amount = 0F;
+        for (OrderLine o : orderlines) {
+            amount += o.getAmountline();
+        }
+        return amount;
+    }
+
     public MeansOfPayment getMeanOfPayment() {
         return this.meanOfPayment;
     }
@@ -142,36 +151,36 @@ public class Order implements Serializable {
     }
 
     public Order client(AbstractClient client) {
-        this.setClient(client);
+        setClient(client);
         return this;
     }
 
-    public Set<OrderLine> getOrderlines() {
-        return this.orderlines;
+    public Set<OrderLine> getOrderLines() {
+        return orderlines;
     }
 
-    public void setOrderlines(Set<OrderLine> orderLines) {
-        if (this.orderlines != null) {
-            this.orderlines.forEach(i -> i.setOrder(null));
+    public void setOrderLines(Set<OrderLine> orderLines) {
+        if (orderlines != null) {
+            orderlines.forEach(i -> i.setOrder(null));
         }
         if (orderLines != null) {
             orderLines.forEach(i -> i.setOrder(this));
         }
-        this.orderlines = orderLines;
+        orderlines = orderLines;
     }
 
-    public Order orderlines(Set<OrderLine> orderLines) {
-        this.setOrderlines(orderLines);
+    public Order orderLines(Set<OrderLine> orderLines) {
+        setOrderLines(orderLines);
         return this;
     }
 
-    public Order addOrderline(OrderLine orderLine) {
+    public Order addOrderLine(OrderLine orderLine) {
         this.orderlines.add(orderLine);
         orderLine.setOrder(this);
         return this;
     }
 
-    public Order removeOrderline(OrderLine orderLine) {
+    public Order removeOrderLine(OrderLine orderLine) {
         this.orderlines.remove(orderLine);
         orderLine.setOrder(null);
         return this;

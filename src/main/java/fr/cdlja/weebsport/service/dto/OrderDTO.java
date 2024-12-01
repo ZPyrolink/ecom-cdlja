@@ -5,7 +5,6 @@ import fr.cdlja.weebsport.domain.enumeration.MeansOfPayment;
 import fr.cdlja.weebsport.domain.enumeration.Status;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class OrderDTO {
@@ -16,7 +15,7 @@ public class OrderDTO {
     private Float amount;
     private String deliveryAddress;
     private MeansOfPayment meansOfPayment;
-    private List<OrderlineDTO> lignescommandes;
+    private List<OrderlineDTO> lignesCommandes;
 
     public OrderDTO() {}
 
@@ -27,7 +26,7 @@ public class OrderDTO {
         this.amount = order.getAmount();
         this.deliveryAddress = order.getDeliveryAddress();
         this.meansOfPayment = order.getMeanOfPayment();
-        this.lignescommandes = new ArrayList<>();
+        this.lignesCommandes = new ArrayList<>();
     }
 
     public Long getId() {
@@ -79,14 +78,14 @@ public class OrderDTO {
     }
 
     public List<OrderlineDTO> getArticles() {
-        return lignescommandes;
+        return lignesCommandes;
     }
 
     public void setArticles(List<OrderlineDTO> articles) {
-        this.lignescommandes = articles;
+        this.lignesCommandes = articles;
     }
 
     public void addArticle(OrderlineDTO article) {
-        this.lignescommandes.add(article);
+        this.lignesCommandes.add(article);
     }
 }

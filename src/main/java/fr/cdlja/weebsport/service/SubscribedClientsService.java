@@ -99,7 +99,7 @@ public class SubscribedClientsService {
             orderDTO.addArticle(orderLineDTO);
         }
 
-        return new OrderDTO(o);
+        return orderDTO;
     }
 
     public List<OrderDTO> getHistorique(String email) {
