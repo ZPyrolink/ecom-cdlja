@@ -4,18 +4,19 @@ import fr.cdlja.weebsport.domain.Order;
 import fr.cdlja.weebsport.domain.OrderLine;
 import fr.cdlja.weebsport.domain.Stock;
 import fr.cdlja.weebsport.domain.SubscribedClients;
-import fr.cdlja.weebsport.repository.*;
-import fr.cdlja.weebsport.security.SecurityUtils;
+import fr.cdlja.weebsport.repository.OrderLineRepository;
+import fr.cdlja.weebsport.repository.OrderRepository;
+import fr.cdlja.weebsport.repository.StockRepository;
+import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
+import fr.cdlja.weebsport.repository.UserRepository;
 import fr.cdlja.weebsport.service.dto.OrderDTO;
-import jakarta.persistence.EntityNotFoundException;
-import java.util.List;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -28,6 +29,7 @@ public class BasketService {
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
     private final SubscribedClientsRepository subscribedClientsRepository;
+    private final UserService userService;
 
     public BasketService(
         SubscribedClientsService subscribedClientsService,
@@ -35,85 +37,94 @@ public class BasketService {
         StockRepository stockRepository,
         UserRepository userRepository,
         OrderRepository orderRepository,
-        SubscribedClientsRepository subscribedClientsRepository
+        SubscribedClientsRepository subscribedClientsRepository,
+        UserService userService
     ) {
         this.subscribedClientsService = subscribedClientsService;
         this.orderLineRepository = orderLineRepository;
         this.stockRepository = stockRepository;
-        this.userRepository = userRepository;
         this.orderRepository = orderRepository;
         this.subscribedClientsRepository = subscribedClientsRepository;
+        this.userService = userService;
     }
 
-    public OrderDTO ajouterArticle(Long articleId) throws Exception {
-        String userLogin = String.valueOf(SecurityUtils.getCurrentUserLogin());
-        if (userLogin == null || userLogin.isEmpty()) {
-            throw new IllegalStateException("No subscribedUser actually logged in.");
-        }
-        String userEmail =
-            (userRepository.findOneByLogin(userLogin)).orElseThrow(() -> new Exception("User not found with login: " + userLogin)
-                ).getEmail();
-        OrderDTO panierDTO = (subscribedClientsService.getBasket(userEmail));
-        if (panierDTO == null) {
-            throw new Exception("No basket found for user whose email is : " + userEmail);
-        }
-        Pageable pageable = PageRequest.of(0, 10);
-        Page<OrderLine> orderlines = orderLineRepository.getlines(panierDTO.getId(), pageable);
-        if (orderlines.isEmpty()) {
-            throw new Exception("No order lines found for basket: " + panierDTO.getId());
+    public void ajouterArticle(Long articleId) throws Exception {
+        SubscribedClients optional = subscribedClientsRepository
+            .findByEmail(userService.getUserWithAuthorities().orElseThrow().getEmail())
+            .orElseThrow();
+
+        Order order = optional.getBasket();
+        Set<OrderLine> orderLines = order.getOrderLines();
+
+        if (orderLines == null) {
+            throw new RuntimeException("Error retrieving order lines for basket : " + order.getId());
         }
         boolean isPresent = false;
-        for (OrderLine o : orderlines) {
+        for (OrderLine o : orderLines) {
             if ((o.getStock().getId()).equals(articleId)) {
+                if (o.getStock().getQuantity() == 0) {
+                    throw new RuntimeException("Stock is out of stock for article: " + articleId);
+                }
                 o.setQuantity(1 + (o.getQuantity()));
-                isPresent = true;
+                o.setAmountline(o.getQuantity() * (o.getStock().getClothe().getPrice())); // Update the price of the orderline
+                order.setAmount(order.computeAmount()); // Update the price of the order
                 orderLineRepository.save(o);
+                orderRepository.save(order);
+                isPresent = true;
                 break;
             }
         }
         if (!isPresent) {
             OrderLine o = new OrderLine();
+            order.addOrderLine(o);
             Stock stock = stockRepository.getReferenceById(articleId);
+            if (stock.getQuantity() == 0) {
+                throw new RuntimeException("Stock is out of stock for article : " + articleId);
+            }
             o.setStock(stock);
             o.setQuantity(1);
-            o.setOrder(orderLineRepository.getReferenceById(panierDTO.getId()).getOrder());
+            o.setAmountline(o.getQuantity() * (o.getStock().getClothe().getPrice()));
+            o.setOrder(order);
+            order.setAmount(order.computeAmount());
             orderLineRepository.save(o);
+            orderRepository.save(order);
         }
-        return subscribedClientsService.getBasket(userEmail);
     }
 
-    public OrderDTO supprimerArticle(Long articleId) throws Exception {
-        String userLogin = String.valueOf(SecurityUtils.getCurrentUserLogin());
-        if (userLogin == null || userLogin.isEmpty()) {
-            throw new IllegalStateException("No subscribedUser actually logged in.");
-        }
-        String userEmail =
-            (userRepository.findOneByLogin(userLogin)).orElseThrow(() -> new Exception("User not found with login: " + userLogin)
-                ).getEmail();
-        OrderDTO panierDTO = subscribedClientsService.getBasket(userEmail);
-        if (panierDTO == null) {
-            throw new Exception("No basket found for user whose email is : " + userEmail);
-        }
-        Pageable pageable = PageRequest.of(0, 10);
-        Page<OrderLine> orderlines = orderLineRepository.getlines(panierDTO.getId(), pageable);
-        if (orderlines.isEmpty()) {
-            throw new Exception("No order lines found for basket: " + panierDTO.getId());
-        }
-        for (OrderLine o : orderlines) {
+    public void supprimerArticle(Long articleId) throws Exception {
+        SubscribedClients optional = subscribedClientsRepository
+            .findByEmail(userService.getUserWithAuthorities().orElseThrow().getEmail())
+            .orElseThrow();
+
+        Order order = optional.getBasket();
+        Set<OrderLine> orderLines = order.getOrderLines();
+
+        boolean articleFound = false;
+        for (OrderLine o : orderLines) {
             if ((o.getStock().getId()).equals(articleId)) {
+                articleFound = true;
                 if (o.getQuantity() > 1) {
                     o.setQuantity(-1 + (o.getQuantity()));
+                    o.setAmountline(o.getQuantity() * (o.getStock().getClothe().getPrice()));
+                    order.setAmount(order.computeAmount());
                     orderLineRepository.save(o);
-                } else orderLineRepository.delete(o);
+                    orderRepository.save(order);
+                } else {
+                    order.removeOrderLine(o);
+                    order.setAmount(order.computeAmount());
+                    orderLineRepository.delete(o);
+                    orderRepository.save(order);
+                }
                 break;
             }
         }
-        return subscribedClientsService.getBasket(userEmail);
+        if (!articleFound) {
+            throw new RuntimeException("Article with id " + articleId + " not found in the basket.");
+        }
     }
 
-    public Long countnbArticles(OrderDTO panierDTO) throws Exception {
+    public Long countNbArticles(OrderDTO panierDTO) throws Exception {
         //recupère le nb d'article de chaque ligne de commande et additionne
-        Long nbarticles = orderLineRepository.getQuantity(panierDTO.getId());
-        return nbarticles;
+        return orderLineRepository.getQuantity(panierDTO.getId());
     }
 }

@@ -1,8 +1,8 @@
 package fr.cdlja.weebsport.domain;
 
-import static fr.cdlja.weebsport.domain.OrderLineTestSamples.*;
+import static fr.cdlja.weebsport.domain.OrderLineTestSamples.getOrderLineRandomSampleGenerator;
 import static fr.cdlja.weebsport.domain.OrderTestSamples.*;
-import static fr.cdlja.weebsport.domain.SubscribedClientsTestSamples.*;
+import static fr.cdlja.weebsport.domain.SubscribedClientsTestSamples.getSubscribedClientsRandomSampleGenerator;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import fr.cdlja.weebsport.web.rest.TestUtil;
@@ -43,20 +43,20 @@ class OrderTest {
         Order order = getOrderRandomSampleGenerator();
         OrderLine orderLineBack = getOrderLineRandomSampleGenerator();
 
-        order.addOrderline(orderLineBack);
-        assertThat(order.getOrderlines()).containsOnly(orderLineBack);
+        order.addOrderLine(orderLineBack);
+        assertThat(order.getOrderLines()).containsOnly(orderLineBack);
         assertThat(orderLineBack.getOrder()).isEqualTo(order);
 
-        order.removeOrderline(orderLineBack);
-        assertThat(order.getOrderlines()).doesNotContain(orderLineBack);
+        order.removeOrderLine(orderLineBack);
+        assertThat(order.getOrderLines()).doesNotContain(orderLineBack);
         assertThat(orderLineBack.getOrder()).isNull();
 
-        order.orderlines(new HashSet<>(Set.of(orderLineBack)));
-        assertThat(order.getOrderlines()).containsOnly(orderLineBack);
+        order.orderLines(new HashSet<>(Set.of(orderLineBack)));
+        assertThat(order.getOrderLines()).containsOnly(orderLineBack);
         assertThat(orderLineBack.getOrder()).isEqualTo(order);
 
-        order.setOrderlines(new HashSet<>());
-        assertThat(order.getOrderlines()).doesNotContain(orderLineBack);
+        order.setOrderLines(new HashSet<>());
+        assertThat(order.getOrderLines()).doesNotContain(orderLineBack);
         assertThat(orderLineBack.getOrder()).isNull();
     }
 }
