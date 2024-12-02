@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    @Query("SELECT o FROM Order o WHERE o.client.id= :clientId")
+    @Query("SELECT o FROM Order o WHERE o.client.id= :clientId and o.status = 'PAID'")
     Page<Order> getHistorique(@Param("clientId") Long clientId, Pageable pageable);
 
     @Modifying

@@ -19,14 +19,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-@Transactional
 public class BasketService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BasketService.class);
     public final SubscribedClientsService subscribedClientsService;
     private final OrderLineRepository orderLineRepository;
     private final StockRepository stockRepository;
-    private final UserRepository userRepository;
+
     private final OrderRepository orderRepository;
     private final SubscribedClientsRepository subscribedClientsRepository;
     private final UserService userService;

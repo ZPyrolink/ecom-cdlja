@@ -23,7 +23,7 @@
             <column name="quantity" type="integer">
                 <constraints nullable="true" />
             </column>
-            <column name="quantity" type="integer">
+            <column name="version" type="integer">
                 <constraints nullable="false" />
             </column>
 

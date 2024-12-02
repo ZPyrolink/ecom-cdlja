@@ -90,19 +90,20 @@ public class SubscribedClientsService {
         Page<OrderLine> orderlines = orderLineRepository.getlines(o.getId(), pageable);
         LOG.debug("lignes trouvés");
         if (orderlines.isEmpty()) {
-            throw new Exception("No order lines found : " + o.getId());
-        }
-        for (OrderLine ol : orderlines) {
-            LOG.debug("recherche article");
-            article = orderLineRepository.getArticle(ol.getId());
-            articleDTO = new StockDTO(article);
-            LOG.debug("recherche vetement");
-            vetement = stockRepository.getClothe(article.getId());
-            vetementDTO = new ClotheDTO(vetement);
-            articleDTO.setClotheDTO(vetementDTO);
-            orderLineDTO = new OrderlineDTO(ol);
-            orderLineDTO.setStockDTO(articleDTO);
-            orderDTO.addArticle(orderLineDTO);
+            LOG.debug("No order lines found : " + o.getId());
+        } else {
+            for (OrderLine ol : orderlines) {
+                LOG.debug("recherche article");
+                article = orderLineRepository.getArticle(ol.getId());
+                articleDTO = new StockDTO(article);
+                LOG.debug("recherche vetement");
+                vetement = stockRepository.getClothe(article.getId());
+                vetementDTO = new ClotheDTO(vetement);
+                articleDTO.setClotheDTO(vetementDTO);
+                orderLineDTO = new OrderlineDTO(ol);
+                orderLineDTO.setStockDTO(articleDTO);
+                orderDTO.addArticle(orderLineDTO);
+            }
         }
 
         return orderDTO;
@@ -113,10 +114,11 @@ public class SubscribedClientsService {
 
         Pageable pageable = PageRequest.of(0, 10);
         Page<Order> orders = orderRepository.getHistorique(client_id, pageable);
-        if (orders.isEmpty()) {
-            throw new Exception("No order found for client: " + client_id);
-        }
         List<OrderDTO> historique = new ArrayList<>();
+        if (orders.isEmpty()) {
+            LOG.debug("No order found for client: " + client_id);
+            return historique;
+        }
 
         OrderlineDTO orderLineDTO;
         OrderDTO orderDTO;
@@ -128,17 +130,18 @@ public class SubscribedClientsService {
             orderDTO = new OrderDTO(o);
             Page<OrderLine> orderlines = orderLineRepository.getlines(o.getId(), pageable);
             if (orderlines.isEmpty()) {
-                throw new Exception("No order lines found for order: " + o.getId());
-            }
-            for (OrderLine ol : orderlines) {
-                article = orderLineRepository.getArticle(ol.getId());
-                articleDTO = new StockDTO(article);
-                vetement = stockRepository.getClothe(article.getId());
-                vetementDTO = new ClotheDTO(vetement);
-                articleDTO.setClotheDTO(vetementDTO);
-                orderLineDTO = new OrderlineDTO(ol);
-                orderLineDTO.setStockDTO(articleDTO);
-                orderDTO.addArticle(orderLineDTO);
+                LOG.debug("No order lines found : " + o.getId());
+            } else {
+                for (OrderLine ol : orderlines) {
+                    article = orderLineRepository.getArticle(ol.getId());
+                    articleDTO = new StockDTO(article);
+                    vetement = stockRepository.getClothe(article.getId());
+                    vetementDTO = new ClotheDTO(vetement);
+                    articleDTO.setClotheDTO(vetementDTO);
+                    orderLineDTO = new OrderlineDTO(ol);
+                    orderLineDTO.setStockDTO(articleDTO);
+                    orderDTO.addArticle(orderLineDTO);
+                }
             }
 
             historique.add(orderDTO);
