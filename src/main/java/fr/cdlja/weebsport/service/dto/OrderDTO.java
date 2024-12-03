@@ -16,7 +16,7 @@ public class OrderDTO {
     private String deliveryAddress;
     private MeansOfPayment meansOfPayment;
     private String bankCard;
-    private List<OrderlineDTO> lignesCommandes;
+    private List<OrderlineDTO> orderLines;
 
     public OrderDTO() {}
 
@@ -27,7 +27,7 @@ public class OrderDTO {
         this.amount = order.getAmount();
         this.deliveryAddress = order.getDeliveryAddress();
         this.meansOfPayment = order.getMeanOfPayment();
-        this.lignesCommandes = new ArrayList<>();
+        this.orderLines = new ArrayList<>();
         this.bankCard = "nonenregistré";
     }
 
@@ -88,14 +88,14 @@ public class OrderDTO {
     }
 
     public List<OrderlineDTO> getOrderLines() {
-        return lignesCommandes;
+        return orderLines;
     }
 
     public void setArticles(List<OrderlineDTO> articles) {
-        this.lignesCommandes = articles;
+        this.orderLines = articles;
     }
 
     public void addArticle(OrderlineDTO article) {
-        this.lignesCommandes.add(article);
+        this.orderLines.add(article);
     }
 }

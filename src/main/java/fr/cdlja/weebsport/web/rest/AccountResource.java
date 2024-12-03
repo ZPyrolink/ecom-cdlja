@@ -177,8 +177,9 @@ public class AccountResource {
     @PostMapping("/client/basket/validate/{id}")
     public void validateClientBasket(@PathVariable Long id, @RequestBody OrderDTO orderdto) throws Exception {
         // TODO
-        if (id == null) {
+        if (id == 0) {
             try {
+                LOG.info("Client non abonné");
                 stockService.validatebasketnonabo(orderdto);
             } catch (Exception e) {
                 throw new AccountResourceException(e.getMessage());

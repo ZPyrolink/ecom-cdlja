@@ -84,13 +84,16 @@ public class StockService {
 
     public void validatebasketnonabo(OrderDTO orderDTO) throws Exception {
         List<OrderlineDTO> lines = orderDTO.getOrderLines();
+        if (lines.isEmpty()) {
+            throw new Exception("Order line is empty");
+        }
         for (OrderlineDTO orderlineDTO : lines) {
             Integer quantityachat = orderlineDTO.getQuantity();
             StockDTO stockDTO = orderlineDTO.getStockDTO();
-            Object[] res = stockRepository.readStock(stockDTO.getId());
+            Object[][] res = stockRepository.readStock(stockDTO.getId());
             if (res != null) {
-                Integer quantity = (Integer) res[0];
-                Integer version = (Integer) res[1];
+                int quantity = (int) res[0][0];
+                int version = (int) res[0][1];
                 if (quantity == 0) {
                     throw new Exception("Stock quantity is zero");
                 }
@@ -99,6 +102,8 @@ public class StockService {
                     throw new Exception("nb souhaité superieur à la quantité disponible");
                 }
                 Integer newquantity = quantity - quantityachat;
+                //si ici on met version à O, c'est à dire une version inférieur à la dernière faites
+                //donc comme si une commande à été validée depuis la lecture la requete echou et la commande est impossible
                 int rowsAffected = stockRepository.updateStock(newquantity, version, stockDTO.getId());
                 if (rowsAffected > 0) {
                     System.out.println("Update successful, rows affected: " + rowsAffected);
