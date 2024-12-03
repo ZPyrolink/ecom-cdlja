@@ -30,7 +30,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     List<Color> findAvailableColorsByClotheId(@Param("clotheId") Long clotheId);
 
     @Query("SELECT s.quantity, s.version FROM Stock s WHERE s.id= :stockID")
-    Object[] readStock(@Param("stockID") Long stockID);
+    Object[][] readStock(@Param("stockID") Long stockID);
 
     @Query("SELECT s.version FROM Stock s WHERE s.id= :stockID")
     Long readVersion(@Param("stockID") Long stockID);

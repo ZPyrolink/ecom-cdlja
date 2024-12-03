@@ -56,10 +56,11 @@ public class StockService {
 
         for (OrderLine orderLine : lines) {
             Stock stock = orderLineRepository.getArticle(orderLine.getId());
-            Object[] res = stockRepository.readStock(stock.getId());
+            Object[][] res = stockRepository.readStock(stock.getId());
             if (res != null) {
-                Integer quantity = (Integer) res[0];
-                Integer version = (Integer) res[1];
+                LOG.debug("problem ici !!!");
+                int quantity = (int) res[0][0];
+                int version = (int) res[0][1];
                 if (quantity == 0) {
                     throw new Exception("Stock quantity is zero");
                 }

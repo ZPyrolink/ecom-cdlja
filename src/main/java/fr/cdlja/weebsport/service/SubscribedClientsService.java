@@ -86,7 +86,7 @@ public class SubscribedClientsService {
         OrderDTO orderDTO;
         orderDTO = new OrderDTO(o);
         LOG.debug("recherche lignes");
-        Pageable pageable = PageRequest.of(0, 10);
+        Pageable pageable = PageRequest.of(0, 5);
         Page<OrderLine> orderlines = orderLineRepository.getlines(o.getId(), pageable);
         LOG.debug("lignes trouvés");
         if (orderlines.isEmpty()) {
@@ -112,7 +112,7 @@ public class SubscribedClientsService {
     public List<OrderDTO> getHistorique(String email) throws Exception {
         Long client_id = subscribedClientsRepository.findByEmail(email).orElseThrow().getId();
 
-        Pageable pageable = PageRequest.of(0, 10);
+        Pageable pageable = PageRequest.of(0, 5);
         Page<Order> orders = orderRepository.getHistorique(client_id, pageable);
         List<OrderDTO> historique = new ArrayList<>();
         if (orders.isEmpty()) {

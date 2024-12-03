@@ -35,10 +35,10 @@ public class Stock implements Serializable {
     private Size size;
 
     @Column(name = "quantity")
-    private Integer quantity;
+    private int quantity;
 
     @Column(name = "version")
-    private Integer version;
+    private int version;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clothe_id")
@@ -52,11 +52,11 @@ public class Stock implements Serializable {
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
-    public Integer getVersion() {
+    public int getVersion() {
         return version;
     }
 
-    public void setVersion(Integer version) {
+    public void setVersion(int version) {
         this.version = version;
     }
 
@@ -122,16 +122,16 @@ public class Stock implements Serializable {
         this.size = size;
     }
 
-    public Integer getQuantity() {
+    public int getQuantity() {
         return this.quantity;
     }
 
-    public Stock quantity(Integer quantity) {
+    public Stock quantity(int quantity) {
         this.setQuantity(quantity);
         return this;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
