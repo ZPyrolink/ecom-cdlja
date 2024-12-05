@@ -1,7 +1,7 @@
-import { ComponentFixture, TestBed, fakeAsync, inject, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { HttpHeaders, HttpResponse, provideHttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { sampleWithRequiredData } from '../clothe.test-samples';
@@ -59,7 +59,15 @@ describe('Clothe Management Component', () => {
       .mockReturnValueOnce(
         of(
           new HttpResponse({
-            body: [{ id: 123 }],
+            body: {
+              content: [{ id: 123 }],
+              totalElements: 40,
+              totalPages: 2,
+              size: 20,
+              number: 0,
+              first: true,
+              last: false,
+            },
             headers: new HttpHeaders({
               link: '<http://localhost/api/foo?page=1&size=20>; rel="next"',
             }),
@@ -69,7 +77,15 @@ describe('Clothe Management Component', () => {
       .mockReturnValueOnce(
         of(
           new HttpResponse({
-            body: [{ id: 456 }],
+            body: {
+              content: [{ id: 456 }],
+              totalElements: 40,
+              totalPages: 2,
+              size: 20,
+              number: 1,
+              first: false,
+              last: true,
+            },
             headers: new HttpHeaders({
               link: '<http://localhost/api/foo?page=0&size=20>; rel="prev",<http://localhost/api/foo?page=2&size=20>; rel="next"',
             }),

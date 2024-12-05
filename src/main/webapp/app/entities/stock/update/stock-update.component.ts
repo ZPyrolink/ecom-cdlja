@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -14,6 +14,7 @@ import { Size } from 'app/entities/enumerations/size.model';
 import { StockService } from '../service/stock.service';
 import { IStock } from '../stock.model';
 import { StockFormGroup, StockFormService } from './stock-form.service';
+import { PaginatedResponse } from '../../../core/request/paginated-response.model';
 
 @Component({
   standalone: true,
@@ -93,7 +94,7 @@ export class StockUpdateComponent implements OnInit {
   protected loadRelationshipsOptions(): void {
     this.clotheService
       .query()
-      .pipe(map((res: HttpResponse<IClothe[]>) => res.body ?? []))
+      .pipe(map((res: HttpResponse<PaginatedResponse<IClothe>>) => res.body?.content ?? []))
       .pipe(map((clothes: IClothe[]) => this.clotheService.addClotheToCollectionIfMissing<IClothe>(clothes, this.stock?.clothe)))
       .subscribe((clothes: IClothe[]) => (this.clothesSharedCollection = clothes));
   }
