@@ -49,7 +49,7 @@ export class ClotheFormService {
       price: new FormControl(clotheRawValue.price),
       description: new FormControl(clotheRawValue.description),
       subscribedClients: new FormControl(clotheRawValue.subscribedClients ?? []),
-    });
+    } as ClotheFormGroupContent);
   }
 
   getClothe(form: ClotheFormGroup): IClothe | NewClothe {
