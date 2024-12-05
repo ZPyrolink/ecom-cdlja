@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,10 +83,12 @@ public class SubscribedClientsService {
         OrderlineDTO orderLineDTO;
         OrderDTO orderDTO;
         orderDTO = new OrderDTO(o);
-        Pageable pageable = PageRequest.of(0, 5);
+        int nblignes = 0;
+        Pageable pageable = PageRequest.of(0, 6, Sort.by("id").ascending());
         Page<OrderLine> orderlines = orderLineRepository.getlines(o.getId(), pageable);
         if (!orderlines.isEmpty()) {
             for (OrderLine ol : orderlines) {
+                nblignes++;
                 s = orderLineRepository.getArticle(ol.getId());
                 sDTO = new StockDTO(s);
                 c = stockRepository.getClothe(s.getId());
@@ -96,14 +99,19 @@ public class SubscribedClientsService {
                 orderDTO.addArticle(orderLineDTO);
             }
         }
-
+        orderDTO.setTotalElements(nblignes);
+        orderDTO.setTotalPages(orderlines.getTotalPages());
+        orderDTO.setSize(6);
+        orderDTO.setNumber(orderlines.getNumber());
+        orderDTO.setFirst(orderlines.isFirst());
+        orderDTO.setLast(orderlines.isLast());
         return orderDTO;
     }
 
     public List<OrderDTO> getHistorique(String email) {
         Long client_id = subscribedClientsRepository.findByEmail(email).orElseThrow().getId();
 
-        Pageable pageable = PageRequest.of(0, 5);
+        Pageable pageable = PageRequest.of(0, 5, Sort.by("id").ascending());
         Page<Order> orders = orderRepository.getHistorique(client_id, pageable);
         List<OrderDTO> historique = new ArrayList<>();
         if (orders.isEmpty()) {
@@ -116,11 +124,15 @@ public class SubscribedClientsService {
         StockDTO sDTO;
         Clothe c;
         ClotheDTO cDTO;
+        int nborder = 0;
         for (Order o : orders) {
+            nborder++;
+            int nblignes = 0;
             orderDTO = new OrderDTO(o);
             Page<OrderLine> orderlines = orderLineRepository.getlines(o.getId(), pageable);
             if (!orderlines.isEmpty()) {
                 for (OrderLine ol : orderlines) {
+                    nblignes++;
                     s = orderLineRepository.getArticle(ol.getId());
                     sDTO = new StockDTO(s);
                     c = stockRepository.getClothe(s.getId());
@@ -131,9 +143,16 @@ public class SubscribedClientsService {
                     orderDTO.addArticle(orderLineDTO);
                 }
             }
+            orderDTO.setTotalElements(nblignes);
+            orderDTO.setTotalPages(orderlines.getTotalPages());
+            orderDTO.setSize(6);
+            orderDTO.setNumber(orderlines.getNumber());
+            orderDTO.setFirst(orderlines.isFirst());
+            orderDTO.setLast(orderlines.isLast());
 
             historique.add(orderDTO);
         }
+
         return historique;
     }
 }
