@@ -9,7 +9,6 @@ import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IOrder, NewOrder } from '../order.model';
-import { PaginatedResponse } from '../../../core/request/paginated-response.model';
 
 export type PartialUpdateOrder = Partial<IOrder> & Pick<IOrder, 'id'>;
 
@@ -58,9 +57,9 @@ export class OrderService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  query(req?: any): Observable<HttpResponse<PaginatedResponse<RestOrder>>> | undefined {
+  query(req?: any): Observable<HttpResponse<IOrder>> | undefined {
     // const token = window.sessionStorage['id_storage'];
-    // TODO
+    // TODO changer
     const token =
       'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huZG9lIiwiZXhwIjoxNzM1OTgyNDkzLCJhdXRoIjoiIiwiaWF0IjoxNzMzMzkwNDkzfQ.O-mnnByYlD3bnuUr8lyv4ktINDW9c5DAUxx_gKSkaoZ8nI-7YT5DDpClzXUsAm4tb83XG4wcscNtOKWJ7EZOFA';
 
@@ -71,11 +70,35 @@ export class OrderService {
     const options = createRequestOption(req);
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<PaginatedResponse<RestOrder>>(this.resourceUrl, { params: options, headers, observe: 'response' }); // }
+    return this.http.get<IOrder>(this.resourceUrl, { params: options, headers, observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    // TODO changer token
+    const token =
+      'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huZG9lIiwiZXhwIjoxNzM1OTgyNDkzLCJhdXRoIjoiIiwiaWF0IjoxNzMzMzkwNDkzfQ.O-mnnByYlD3bnuUr8lyv4ktINDW9c5DAUxx_gKSkaoZ8nI-7YT5DDpClzXUsAm4tb83XG4wcscNtOKWJ7EZOFA';
+    const options = createRequestOption();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete(`api/basket/${id}`, {
+      params: options,
+      headers,
+      observe: 'response',
+      responseType: 'text',
+    });
+  }
+
+  add(id: number): Observable<object> {
+    const token =
+      'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huZG9lIiwiZXhwIjoxNzM1OTgyNDkzLCJhdXRoIjoiIiwiaWF0IjoxNzMzMzkwNDkzfQ.O-mnnByYlD3bnuUr8lyv4ktINDW9c5DAUxx_gKSkaoZ8nI-7YT5DDpClzXUsAm4tb83XG4wcscNtOKWJ7EZOFA';
+    const options = createRequestOption();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const body = { id };
+    return this.http.post(`api/basket/${id}`, body, {
+      params: options,
+      headers,
+      observe: 'response',
+      responseType: 'text',
+    });
   }
 
   getOrderIdentifier(order: Pick<IOrder, 'id'>): number {

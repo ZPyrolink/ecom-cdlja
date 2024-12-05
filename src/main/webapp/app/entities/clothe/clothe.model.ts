@@ -4,7 +4,7 @@ import { Gender } from 'app/entities/enumerations/gender.model';
 
 export interface IClothe {
   id: number;
-  type?: keyof typeof Type;
+  type: keyof typeof Type;
   theme?: string;
   gender?: keyof typeof Gender;
   price?: number;

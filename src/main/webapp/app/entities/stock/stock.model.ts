@@ -4,10 +4,10 @@ import { Size } from 'app/entities/enumerations/size.model';
 
 export interface IStock {
   id: number;
-  color?: keyof typeof Color | null;
-  size?: keyof typeof Size | null;
-  quantity?: number | null;
-  clothe?: IClothe | null;
+  color?: keyof typeof Color;
+  size?: keyof typeof Size;
+  quantity?: number;
+  clotheDTO?: IClothe;
 }
 
 export type NewStock = Omit<IStock, 'id'> & { id: null };

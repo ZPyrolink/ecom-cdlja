@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Type } from '@angular/core';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { NgForOf, NgIf } from '@angular/common';
 import { OrderService } from '../../entities/order/service/order.service';
-import { IClothe } from '../../entities/clothe/clothe.model';
+import { IOrder } from '../../entities/order/order.model';
+import { IOrderLine } from '../../entities/order-line/order-line.model';
+import getClotheTypeLabel from '../../entities/enumerations/type.model';
+import getSizeLabel from '../../entities/enumerations/size.model';
+import getColorLabel from '../../entities/enumerations/color.model';
 
 @Component({
   selector: 'jhi-basket',
@@ -12,67 +16,16 @@ import { IClothe } from '../../entities/clothe/clothe.model';
   styleUrl: './basket.component.scss',
 })
 export default class BasketComponent implements OnInit {
-  products = [
-    {
-      name: 'Brassiere',
-      theme: 'Minecraft',
-      size: 'Small',
-      color: 'Rose',
-      price: 20,
-      quantity: 1,
-      image: 'content/images/exemple.png',
-    },
-    {
-      name: 'Brassiere',
-      theme: 'Minecraft',
-      size: 'Small',
-      color: 'Rose',
-      price: 20,
-      quantity: 1,
-      image: 'content/images/exemple.png',
-    },
-    {
-      name: 'Brassiere',
-      theme: 'Minecraft',
-      size: 'Small',
-      color: 'Rose',
-      price: 20,
-      quantity: 1,
-      image: 'content/images/exemple.png',
-    },
-    {
-      name: 'Brassiere',
-      size: 'Small',
-      color: 'Rose',
-      price: 20,
-      quantity: 1,
-      image: 'content/images/exemple.png',
-    },
-    {
-      name: 'Brassiere',
-      size: 'Small',
-      color: 'Rose',
-      price: 20,
-      quantity: 1,
-      image: 'content/images/exemple.png',
-    },
-    {
-      name: 'Brassiere',
-      size: 'Small',
-      color: 'Rose',
-      price: 20,
-      quantity: 1,
-      image: 'content/images/exemple.png',
-    },
-  ];
-  deliveryPrice = 5.99;
-  totalPrice = 10;
-
   totalPages = 0;
   currentPage = 0;
-  clothes: IClothe[] = [];
-  orders: any[] = [];
-  errorMessage = '';
+  clothes: IOrderLine[] | undefined;
+  order: IOrder | undefined;
+
+  protected readonly Object = Object;
+  protected readonly Type = Type;
+  protected readonly getClotheTypeLabel = getClotheTypeLabel;
+  protected readonly getSizeLabel = getSizeLabel;
+  protected readonly getColorLabel = getColorLabel;
 
   constructor(private service: OrderService) {}
 
@@ -84,30 +37,46 @@ export default class BasketComponent implements OnInit {
     this.service.query({ page })?.subscribe({
       next: response => {
         if (response.body) {
-          this.orders = response.body.content;
+          this.order = response.body;
+          this.clothes = response.body.orderLines ?? [];
+          this.totalPages = response.body.totalPages ?? 1;
+          this.currentPage = response.body.number ?? 1;
         } else {
-          this.orders = []; // Aucun résultat
+          // TODO gerer si pas connecter et pour supprimer et ajouter quantite
         }
       },
     });
-    window.console.log('iciiiiiiiiiiiiiiiiiiiiii', this.orders);
-  }
-  totalOrderPrice(): any {
-    return this.deliveryPrice;
   }
 
-  increaseQuantity(product: any): void {
-    product.quantity++;
-  }
-
-  decreaseQuantity(product: any): void {
-    if (product.quantity > 1) {
-      product.quantity--;
+  increaseQuantity(clothe: IOrderLine): void {
+    window.console.log(this.order);
+    if (clothe.stockDTO?.id) {
+      this.service.add(clothe.id).subscribe({
+        next(response) {
+          window.location.reload();
+        },
+        error(error) {
+          window.console.error('Erreur lors de la requête:', error);
+        },
+      });
     }
   }
 
-  editProduct(product: any): void {
-    alert(`Modifier le produit : ${product.name}`);
+  decreaseQuantity(clothe: IOrderLine): void {
+    if (clothe.stockDTO?.id) {
+      this.service.delete(clothe.stockDTO.id).subscribe({
+        next(response) {
+          window.location.reload();
+        },
+        error(error) {
+          window.console.error('Erreur lors de la requête:', error);
+        },
+      });
+    }
+  }
+
+  delete(clothe: IOrderLine): void {
+    // TODO ajouter route
   }
 
   onPageChange(page: number): void {

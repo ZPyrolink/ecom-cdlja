@@ -13,15 +13,50 @@ export enum Size {
 
   XXL = 'XXL',
 
-  FOUR = 'FOUR',
+  FOUR = '4 ans',
 
-  SIX = 'SIX',
+  SIX = '6 ans',
 
-  EIGHT = 'EIGHT',
+  EIGHT = '8 ans',
 
-  TEN = 'TEN',
+  TEN = '10 ans',
 
-  TWELVE = 'TWELVE',
+  TWELVE = '12 ans',
 
-  FOURTEEN = 'FOURTEEN',
+  FOURTEEN = '14 ans',
+}
+
+export default function getSizeLabel(
+  size?: 'XXS' | 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'FOUR' | 'SIX' | 'EIGHT' | 'TEN' | 'TWELVE' | 'FOURTEEN',
+): string {
+  if (size === 'XXS') {
+    return Size.XXS;
+  } else if (size === 'XS') {
+    return Size.XS;
+  } else if (size === 'S') {
+    return Size.S;
+  } else if (size === 'M') {
+    return Size.M;
+  } else if (size === 'L') {
+    return Size.L;
+  } else if (size === 'XL') {
+    return Size.XL;
+  } else if (size === 'XXL') {
+    return Size.XXL;
+  } else if (size === 'FOUR') {
+    return Size.FOUR;
+  } else if (size === 'SIX') {
+    return Size.SIX;
+  } else if (size === 'EIGHT') {
+    return Size.EIGHT;
+  } else if (size === 'TEN') {
+    return Size.TEN;
+  } else if (size === 'TWELVE') {
+    return Size.TWELVE;
+  } else if (size === 'FOURTEEN') {
+    return Size.FOURTEEN;
+  }
+
+  // Par sécurité, renvoie un label par défaut si la taille n'est pas reconnue
+  return 'Taille inconnue';
 }
