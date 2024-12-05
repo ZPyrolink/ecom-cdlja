@@ -9,13 +9,14 @@ import { NewSubscribedClients } from '../../entities/subscribed-clients/subscrib
 import { NewUser } from '../../admin/user-management/user-management.model';
 import { IConnectionRequest } from '../../entities/connection-request/connection-request.model';
 import { switchMap } from 'rxjs';
+import { NgOptimizedImage } from '@angular/common';
 
 export type TokenResult = { id_token: string };
 
 @Component({
   selector: 'jhi-login',
   standalone: true,
-  imports: [ReactiveFormsModule, SharedModule],
+  imports: [ReactiveFormsModule, SharedModule, NgOptimizedImage],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
