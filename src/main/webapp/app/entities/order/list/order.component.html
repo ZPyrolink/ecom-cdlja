@@ -1,0 +1,127 @@
+<div>
+  <h2 id="page-heading" data-cy="OrderHeading">
+    <span jhiTranslate="weebSportApp.order.home.title">Orders</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="weebSportApp.order.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-order"
+        [routerLink]="['/order/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="weebSportApp.order.home.createLabel">Create a new Order</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (orders?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="weebSportApp.order.home.notFound">No Orders found</span>
+    </div>
+  }
+
+  @if (orders && orders.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="status">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.order.status">Status</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="date">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.order.date">Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="amount">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.order.amount">Amount</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="meanOfPayment">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.order.meanOfPayment">Mean Of Payment</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="client.id">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.order.client">Client</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (order of orders; track trackId(order)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/order', order.id, 'view']">{{ order.id }}</a>
+              </td>
+              <td [jhiTranslate]="'weebSportApp.Status.' + (order.status ?? 'null')">
+                {{ { null: '', BASKET: 'BASKET', PAID: 'PAID' }[order.status ?? 'null'] }}
+              </td>
+              <td>{{ order.date | formatMediumDate }}</td>
+              <td>{{ order.amount }}</td>
+              <td [jhiTranslate]="'weebSportApp.MeansOfPayment.' + (order.meanOfPayment ?? 'null')">
+                {{ { null: '', CB: 'CB', ONLINEPAYMENT: 'ONLINEPAYMENT' }[order.meanOfPayment ?? 'null'] }}
+              </td>
+              <td>
+                @if (order.client) {
+                  <div>
+                    <a [routerLink]="['/subscribed-clients', order.client.id, 'view']">{{ order.client.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/order', order.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a [routerLink]="['/order', order.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(order)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

@@ -1,0 +1,45 @@
+{
+  "annotations": {
+    "changelogDate": "20241107152831"
+  },
+  "applications": "*",
+  "entityTableName": "jhi_order",
+  "fields": [
+    {
+      "fieldName": "status",
+      "fieldType": "Status",
+      "fieldValues": "BASKET,PAID"
+    },
+    {
+      "fieldName": "date",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "amount",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "meanOfPayment",
+      "fieldType": "MeansOfPayment",
+      "fieldValues": "CB,ONLINEPAYMENT"
+    }
+  ],
+  "name": "Order",
+  "relationships": [
+    {
+      "otherEntityName": "subscribedClients",
+      "otherEntityRelationshipName": "historique",
+      "relationshipName": "client",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "orderLine",
+      "otherEntityRelationshipName": "order",
+      "relationshipName": "orderline",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

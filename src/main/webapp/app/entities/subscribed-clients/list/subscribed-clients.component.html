@@ -1,0 +1,185 @@
+<div>
+  <h2 id="page-heading" data-cy="SubscribedClientsHeading">
+    <span jhiTranslate="weebSportApp.subscribedClients.home.title">Subscribed Clients</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="weebSportApp.subscribedClients.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-subscribed-clients"
+        [routerLink]="['/subscribed-clients/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="weebSportApp.subscribedClients.home.createLabel">Create a new Subscribed Clients</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (subscribedClients?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="weebSportApp.subscribedClients.home.notFound">No Subscribed Clients found</span>
+    </div>
+  }
+
+  @if (subscribedClients && subscribedClients.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="lastname">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.subscribedClients.lastname">Lastname</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="firstname">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.subscribedClients.firstname">Firstname</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="birthday">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.subscribedClients.birthday">Birthday</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="email">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.subscribedClients.email">Email</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="passworld">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.subscribedClients.passworld">Passworld</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="address">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.subscribedClients.address">Address</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="bankCard">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.subscribedClients.bankCard">Banck Card</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="phone">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.subscribedClients.phone">Phone</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="points">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.subscribedClients.points">Points</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="basket.id">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.subscribedClients.basket">Basket</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="favoris.id">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.subscribedClients.favoris">Favoris</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (subscribedClients of subscribedClients; track trackId(subscribedClients)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/subscribed-clients', subscribedClients.id, 'view']">{{ subscribedClients.id }}</a>
+              </td>
+              <td>{{ subscribedClients.lastname }}</td>
+              <td>{{ subscribedClients.firstname }}</td>
+              <td>{{ subscribedClients.birthday | formatMediumDate }}</td>
+              <td>{{ subscribedClients.email }}</td>
+              <td>{{ subscribedClients.passworld }}</td>
+              <td>{{ subscribedClients.address }}</td>
+              <td>{{ subscribedClients.bankCard }}</td>
+              <td>{{ subscribedClients.phone }}</td>
+              <td>{{ subscribedClients.points }}</td>
+              <td>
+                @if (subscribedClients.basket) {
+                  <div>
+                    <a [routerLink]="['/order', subscribedClients.basket.id, 'view']">{{ subscribedClients.basket.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @for (favoris of subscribedClients.favorises; track $index; let last = $last) {
+                  <span>
+                    <a class="form-control-static" [routerLink]="['/clothe', favoris.id, 'view']">{{ favoris.id }}</a
+                    >{{ last ? '' : ', ' }}
+                  </span>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a
+                    [routerLink]="['/subscribed-clients', subscribedClients.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a
+                    [routerLink]="['/subscribed-clients', subscribedClients.id, 'edit']"
+                    class="btn btn-primary btn-sm"
+                    data-cy="entityEditButton"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(subscribedClients)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

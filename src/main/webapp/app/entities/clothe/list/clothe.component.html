@@ -1,0 +1,142 @@
+<div>
+  <h2 id="page-heading" data-cy="ClotheHeading">
+    <span jhiTranslate="weebSportApp.clothe.home.title">Clothes</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="weebSportApp.clothe.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-clothe"
+        [routerLink]="['/clothe/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="weebSportApp.clothe.home.createLabel">Create a new Clothe</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (clothes?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="weebSportApp.clothe.home.notFound">No Clothes found</span>
+    </div>
+  }
+
+  @if (clothes && clothes.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="type">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.clothe.type">Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="theme">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.clothe.theme">Theme</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="gender">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.clothe.gender">Gender</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="price">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.clothe.price">Price</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="description">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.clothe.description">Description</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="subscribedClients.id">
+              <div class="d-flex">
+                <span jhiTranslate="weebSportApp.clothe.subscribedClients">Subscribed Clients</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (clothe of clothes; track trackId(clothe)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/clothe', clothe.id, 'view']">{{ clothe.id }}</a>
+              </td>
+              <td [jhiTranslate]="'weebSportApp.Type.' + (clothe.type ?? 'null')">
+                {{
+                  { null: '', JOGGER: 'JOGGER', TEESHIRT: 'TEESHIRT', BRA: 'BRA', LEGGING: 'LEGGING', SHORT: 'SHORT', SWEAT: 'SWEAT' }[
+                    clothe.type ?? 'null'
+                  ]
+                }}
+              </td>
+              <td>{{ clothe.theme }}</td>
+              <td [jhiTranslate]="'weebSportApp.Gender.' + (clothe.gender ?? 'null')">
+                {{ { null: '', MAN: 'MAN', WOMAN: 'WOMAN', UNISEX: 'UNISEX', CHILD: 'CHILD' }[clothe.gender ?? 'null'] }}
+              </td>
+              <td>{{ clothe.price }}</td>
+              <td>{{ clothe.description }}</td>
+              <td>
+                @for (subscribedClients of clothe.subscribedClients; track $index; let last = $last) {
+                  <span>
+                    <a class="form-control-static" [routerLink]="['/subscribed-clients', subscribedClients.id, 'view']">{{
+                      subscribedClients.id
+                    }}</a
+                    >{{ last ? '' : ', ' }}
+                  </span>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/clothe', clothe.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a [routerLink]="['/clothe', clothe.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(clothe)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
