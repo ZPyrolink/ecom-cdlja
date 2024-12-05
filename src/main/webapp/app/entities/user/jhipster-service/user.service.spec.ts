@@ -30,7 +30,6 @@ describe('User Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       service.find(123).subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'GET' });
@@ -43,7 +42,6 @@ describe('User Service', () => {
 
       const expected = { ...sampleWithRequiredData };
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       service.query().subscribe(resp => (expectedResult = resp.body));
 
       const req = httpMock.expectOne({ method: 'GET' });

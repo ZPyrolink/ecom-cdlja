@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { combineLatest } from 'rxjs';
@@ -44,7 +44,7 @@ export default class UserManagementComponent implements OnInit {
   }
 
   trackIdentity(item: User): number {
-    return item.id;
+    return item.id!;
   }
 
   deleteUser(user: User): void {
