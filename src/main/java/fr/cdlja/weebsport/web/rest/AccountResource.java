@@ -122,13 +122,13 @@ public class AccountResource {
             .getUserWithAuthorities()
             .map(AdminUserDTO::new)
             .orElseThrow(() -> new AccountResourceException("User could not be found"));
-        LOG.info("User: {}", adminUserDTO);
+
         SubscribedClientDTO subscribedClientDTO = subscribedClientsService.getClientByEmail(adminUserDTO.getEmail());
-        LOG.info("clientabonned: {}", subscribedClientDTO);
+
         OrderDTO basketDTO = subscribedClientsService.getBasket(adminUserDTO.getEmail());
-        LOG.info("basketDTO: {}", basketDTO);
+
         List<OrderDTO> historique = subscribedClientsService.getHistorique(adminUserDTO.getEmail());
-        LOG.info("historique: {}", historique);
+
         ClientWhithAdminDTO clientWhithAdminDTO = new ClientWhithAdminDTO(subscribedClientDTO, adminUserDTO, basketDTO, historique);
 
         return ResponseEntity.ok(clientWhithAdminDTO);
@@ -141,11 +141,9 @@ public class AccountResource {
             .getUserWithAuthorities()
             .map(AdminUserDTO::new)
             .orElseThrow(() -> new AccountResourceException("User could not be found"));
-        LOG.info("User: {}", adminUserDTO);
 
         // Récupérer le panier du client connecté
         OrderDTO basketDTO = subscribedClientsService.getBasket(adminUserDTO.getEmail());
-        LOG.info("Basket: {}", basketDTO);
 
         return ResponseEntity.ok(basketDTO);
     }
@@ -156,9 +154,9 @@ public class AccountResource {
             .getUserWithAuthorities()
             .map(AdminUserDTO::new)
             .orElseThrow(() -> new AccountResourceException("User could not be found"));
-        LOG.info("User: {}", adminUserDTO);
+
         List<OrderDTO> historique = subscribedClientsService.getHistorique(adminUserDTO.getEmail());
-        LOG.info("historique: {}", historique);
+
         return ResponseEntity.ok(historique);
     }
 
@@ -168,7 +166,7 @@ public class AccountResource {
             .getUserWithAuthorities()
             .map(AdminUserDTO::new)
             .orElseThrow(() -> new AccountResourceException("User could not be found"));
-        LOG.info("User: {}", adminUserDTO);
+
         OrderDTO basketDTO = subscribedClientsService.getBasket(adminUserDTO.getEmail());
         Long nbArticles = basketService.countNbArticles(basketDTO);
         return ResponseEntity.ok(nbArticles);
@@ -176,10 +174,8 @@ public class AccountResource {
 
     @PostMapping("/client/basket/validate/{id}")
     public void validateClientBasket(@PathVariable Long id, @RequestBody OrderDTO orderdto) throws Exception {
-        // TODO
         if (id == 0) {
             try {
-                LOG.info("Client non abonné");
                 stockService.validatebasketnonabo(orderdto);
             } catch (Exception e) {
                 throw new AccountResourceException(e.getMessage());

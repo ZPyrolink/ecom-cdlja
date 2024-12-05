@@ -51,9 +51,7 @@ public class SubscribedClientsService {
         Order basket = new Order();
         basket.setDeliveryAddress(clientAbonned.getAddress());
         basket.setStatus(Status.BASKET);
-        LOG.debug("donner panié au client");
         subscribedClients.setBasket(basket);
-        LOG.debug("donner client au panier");
         basket.setClient(subscribedClients);
         subscribedClientsRepository.save(subscribedClients);
     }
@@ -69,7 +67,6 @@ public class SubscribedClientsService {
     public OrderDTO getBasket(String email) throws Exception {
         Optional<SubscribedClients> optionalClient = subscribedClientsRepository.findByEmail(email);
         Order o;
-        LOG.debug("subclienttrouvé");
         if (optionalClient.isPresent()) {
             SubscribedClients client = optionalClient.orElseThrow();
             o = client.getBasket();
@@ -78,30 +75,24 @@ public class SubscribedClientsService {
             throw new Exception("Client not found for email: " + email);
         }
 
-        Stock article;
-        StockDTO articleDTO;
-        Clothe vetement;
-        ClotheDTO vetementDTO;
+        Stock s;
+        StockDTO sDTO;
+        Clothe c;
+        ClotheDTO cDTO;
         OrderlineDTO orderLineDTO;
         OrderDTO orderDTO;
         orderDTO = new OrderDTO(o);
-        LOG.debug("recherche lignes");
         Pageable pageable = PageRequest.of(0, 5);
         Page<OrderLine> orderlines = orderLineRepository.getlines(o.getId(), pageable);
-        LOG.debug("lignes trouvés");
-        if (orderlines.isEmpty()) {
-            LOG.debug("No order lines found : " + o.getId());
-        } else {
+        if (!orderlines.isEmpty()) {
             for (OrderLine ol : orderlines) {
-                LOG.debug("recherche article");
-                article = orderLineRepository.getArticle(ol.getId());
-                articleDTO = new StockDTO(article);
-                LOG.debug("recherche vetement");
-                vetement = stockRepository.getClothe(article.getId());
-                vetementDTO = new ClotheDTO(vetement);
-                articleDTO.setClotheDTO(vetementDTO);
+                s = orderLineRepository.getArticle(ol.getId());
+                sDTO = new StockDTO(s);
+                c = stockRepository.getClothe(s.getId());
+                cDTO = new ClotheDTO(c);
+                sDTO.setClotheDTO(cDTO);
                 orderLineDTO = new OrderlineDTO(ol);
-                orderLineDTO.setStockDTO(articleDTO);
+                orderLineDTO.setStockDTO(sDTO);
                 orderDTO.addArticle(orderLineDTO);
             }
         }
@@ -109,37 +100,34 @@ public class SubscribedClientsService {
         return orderDTO;
     }
 
-    public List<OrderDTO> getHistorique(String email) throws Exception {
+    public List<OrderDTO> getHistorique(String email) {
         Long client_id = subscribedClientsRepository.findByEmail(email).orElseThrow().getId();
 
         Pageable pageable = PageRequest.of(0, 5);
         Page<Order> orders = orderRepository.getHistorique(client_id, pageable);
         List<OrderDTO> historique = new ArrayList<>();
         if (orders.isEmpty()) {
-            LOG.debug("No order found for client: " + client_id);
             return historique;
         }
 
         OrderlineDTO orderLineDTO;
         OrderDTO orderDTO;
-        Stock article;
-        StockDTO articleDTO;
-        Clothe vetement;
-        ClotheDTO vetementDTO;
+        Stock s;
+        StockDTO sDTO;
+        Clothe c;
+        ClotheDTO cDTO;
         for (Order o : orders) {
             orderDTO = new OrderDTO(o);
             Page<OrderLine> orderlines = orderLineRepository.getlines(o.getId(), pageable);
-            if (orderlines.isEmpty()) {
-                LOG.debug("No order lines found : " + o.getId());
-            } else {
+            if (!orderlines.isEmpty()) {
                 for (OrderLine ol : orderlines) {
-                    article = orderLineRepository.getArticle(ol.getId());
-                    articleDTO = new StockDTO(article);
-                    vetement = stockRepository.getClothe(article.getId());
-                    vetementDTO = new ClotheDTO(vetement);
-                    articleDTO.setClotheDTO(vetementDTO);
+                    s = orderLineRepository.getArticle(ol.getId());
+                    sDTO = new StockDTO(s);
+                    c = stockRepository.getClothe(s.getId());
+                    cDTO = new ClotheDTO(c);
+                    sDTO.setClotheDTO(cDTO);
                     orderLineDTO = new OrderlineDTO(ol);
-                    orderLineDTO.setStockDTO(articleDTO);
+                    orderLineDTO.setStockDTO(sDTO);
                     orderDTO.addArticle(orderLineDTO);
                 }
             }

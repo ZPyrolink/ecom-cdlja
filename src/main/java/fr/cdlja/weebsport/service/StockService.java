@@ -58,26 +58,23 @@ public class StockService {
             Stock stock = orderLineRepository.getArticle(orderLine.getId());
             Object[][] res = stockRepository.readStock(stock.getId());
             if (res != null) {
-                LOG.debug("problem ici !!!");
                 int quantity = (int) res[0][0];
                 int version = (int) res[0][1];
                 if (quantity == 0) {
                     throw new Exception("Stock quantity is zero");
                 }
 
-                Integer nbachat = orderLine.getQuantity();
-                if (nbachat > quantity) {
+                Integer purchasequantity = orderLine.getQuantity();
+                if (purchasequantity > quantity) {
                     throw new Exception("nb souhaité superieur à la quantité disponible");
                 }
-                Integer newquantity = quantity - nbachat;
+                Integer newquantity = quantity - purchasequantity;
                 int rowsAffected = stockRepository.updateStock(newquantity, version, stock.getId());
-                if (rowsAffected > 0) {
-                    System.out.println("Update successful, rows affected: " + rowsAffected);
-                } else {
-                    throw new Exception("article non disponible");
+                if (!(rowsAffected > 0)) {
+                    throw new Exception("stock not available");
                 }
             } else {
-                System.out.println("No stock found for ID: " + stock.getId());
+                throw new Exception("No stock found for ID: " + stock.getId());
             }
         }
     }
@@ -88,7 +85,7 @@ public class StockService {
             throw new Exception("Order line is empty");
         }
         for (OrderlineDTO orderlineDTO : lines) {
-            Integer quantityachat = orderlineDTO.getQuantity();
+            Integer purchasequantity = orderlineDTO.getQuantity();
             StockDTO stockDTO = orderlineDTO.getStockDTO();
             Object[][] res = stockRepository.readStock(stockDTO.getId());
             if (res != null) {
@@ -98,20 +95,18 @@ public class StockService {
                     throw new Exception("Stock quantity is zero");
                 }
 
-                if (quantityachat > quantity) {
-                    throw new Exception("nb souhaité superieur à la quantité disponible");
+                if (purchasequantity > quantity) {
+                    throw new Exception("desired number greater than available quantity");
                 }
-                Integer newquantity = quantity - quantityachat;
+                Integer newquantity = quantity - purchasequantity;
                 //si ici on met version à O, c'est à dire une version inférieur à la dernière faites
                 //donc comme si une commande à été validée depuis la lecture la requete echou et la commande est impossible
                 int rowsAffected = stockRepository.updateStock(newquantity, version, stockDTO.getId());
-                if (rowsAffected > 0) {
-                    System.out.println("Update successful, rows affected: " + rowsAffected);
-                } else {
-                    throw new Exception("article non disponible");
+                if (!(rowsAffected > 0)) {
+                    throw new Exception("stock not available");
                 }
             } else {
-                System.out.println("No stock found for ID: " + stockDTO.getId());
+                throw new Exception("No stock found for ID: " + stockDTO.getId());
             }
         }
     }
