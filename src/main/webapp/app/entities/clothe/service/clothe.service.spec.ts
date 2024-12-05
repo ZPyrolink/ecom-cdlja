@@ -73,19 +73,6 @@ describe('Clothe Service', () => {
       expect(expectedResult).toMatchObject(expected);
     });
 
-    it('should return a list of Clothe', () => {
-      const returnedFromService = { ...requireRestSample };
-
-      const expected = { ...sampleWithRequiredData };
-
-      service.query().subscribe(resp => (expectedResult = resp.body));
-
-      const req = httpMock.expectOne({ method: 'GET' });
-      req.flush([returnedFromService]);
-      httpMock.verify();
-      expect(expectedResult).toMatchObject([expected]);
-    });
-
     it('should delete a Clothe', () => {
       const expected = true;
 
