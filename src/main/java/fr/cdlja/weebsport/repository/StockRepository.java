@@ -7,7 +7,8 @@ import fr.cdlja.weebsport.domain.enumeration.Size;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -28,4 +29,17 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 
     @Query("SELECT s.color FROM Stock s WHERE s.clothe.id= :clotheId AND s.quantity > 0 ")
     List<Color> findAvailableColorsByClotheId(@Param("clotheId") Long clotheId);
+
+    @Query("SELECT s from Stock WHERE s.size IN :sizes")
+    List<Stock> getStocksBySize(@Param("size") List<Size> sizes);
+
+    @Query("SELECT s FROM Stock WHERE s.color IN :colors")
+    List<Stock> getStocksByColor(@Param("color") List<Color> colors);
+
+    @Query(
+        "SELECT s FROM Stock s WHERE " +
+        "LOWER(s.size) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+        "LOWER(c.color) LIKE LOWER(CONCAT('%', :keyword, '%'))"
+    )
+    List<Stock> searchStockByKeyword(@Param("keyword") String keyword);
 }

@@ -1,13 +1,16 @@
 package fr.cdlja.weebsport.web.rest;
 
+import fr.cdlja.weebsport.domain.Clothe;
 import fr.cdlja.weebsport.domain.Stock;
+import fr.cdlja.weebsport.repository.ClotheRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
+import fr.cdlja.weebsport.service.StockService;
+import fr.cdlja.weebsport.service.dto.FilterDTO;
+import fr.cdlja.weebsport.service.dto.FilterSortDTO;
 import fr.cdlja.weebsport.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +25,7 @@ import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link fr.cdlja.weebsport.domain.Stock}.
+ * REST controller for managing {@link Stock}.
  */
 @RestController
 @RequestMapping("/api/stocks")
@@ -38,8 +41,14 @@ public class StockResource {
 
     private final StockRepository stockRepository;
 
-    public StockResource(StockRepository stockRepository) {
+    private final ClotheRepository clotheRepository;
+
+    private final StockService stockService;
+
+    public StockResource(StockRepository stockRepository, ClotheRepository clotheRepository, StockService stockService) {
         this.stockRepository = stockRepository;
+        this.clotheRepository = clotheRepository;
+        this.stockService = stockService;
     }
 
     /**
@@ -157,6 +166,73 @@ public class StockResource {
         Page<Stock> stocksPage = stockRepository.findAll(pageable); // Récupération de la page de stocks
 
         return ResponseEntity.ok(stocksPage); // Retour de la page dans la réponse
+    }
+
+    @GetMapping("/filters")
+    public List<Clothe> getStocksFiltered(@RequestBody FilterSortDTO filtersSort) {
+        FilterDTO filters = filtersSort.getFilter();
+        String keyWord = filtersSort.getSearch();
+        fr.cdlja.weebsport.domain.enumeration.Sort sort = filtersSort.getSort();
+
+        Set<Clothe> clothesSearch = stockService.search(keyWord);
+
+        Set<Stock> stocks = Set.of();
+        Set<Clothe> clothes = Set.of();
+
+        if (filters.getSizes() != null) {
+            stocks = new HashSet<>(stockRepository.getStocksBySize(filters.getSizes()));
+            clothes = new HashSet<>();
+            for (Stock s : stocks) {
+                clothes.add(s.getClothe());
+            }
+            clothesSearch.retainAll(clothes);
+        }
+
+        if (filters.getColors() != null) {
+            stocks = new HashSet<>(stockRepository.getStocksByColor(filters.getColors()));
+            clothes = new HashSet<>();
+            for (Stock s : stocks) {
+                clothes.add(s.getClothe());
+            }
+            clothesSearch.retainAll(clothes);
+        }
+
+        if (filters.getPrices() != null) {
+            Float minPrice = filters.getPrices().getMin();
+            Float maxPrice = filters.getPrices().getMax();
+
+            if (minPrice != null && maxPrice != null) {
+                clothes = new HashSet<>(clotheRepository.getClotheFilteredByPrice(minPrice, maxPrice));
+            } else if (minPrice != null) {
+                clothes = new HashSet<>(clotheRepository.getClotheByMinPrice(minPrice));
+            } else if (maxPrice != null) {
+                clothes = new HashSet<>(clotheRepository.getClotheByMaxPrice(maxPrice));
+            }
+            clothesSearch.retainAll(clothes);
+        }
+
+        if (filters.getGenders() != null) {
+            clothes = new HashSet<>(clotheRepository.findByGender(filters.getGenders()));
+            clothesSearch.retainAll(clothes);
+        }
+
+        if (filters.getVideogameThemes() != null) {
+            clothesSearch.retainAll(clothes);
+        }
+
+        if (filters.getAnimeThemes() != null) {
+            clothes = new HashSet<>(clotheRepository.findByAnimeThemes(filters.getAnimeThemes()));
+            clothesSearch.retainAll(clothes);
+        }
+
+        List<Clothe> clothesList = new ArrayList<>(clothesSearch);
+        if (sort == fr.cdlja.weebsport.domain.enumeration.Sort.ASCENDING) {
+            clothesList.sort(Comparator.comparing(Clothe::getPrice));
+        } else if (sort == fr.cdlja.weebsport.domain.enumeration.Sort.DESCENDING) {
+            clothesList.sort(Comparator.comparing(Clothe::getPrice).reversed());
+        }
+
+        return clothesList;
     }
 
     /**
