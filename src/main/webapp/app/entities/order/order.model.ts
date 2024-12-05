@@ -8,6 +8,7 @@ export interface IOrder {
   status?: keyof typeof Status | null;
   date?: dayjs.Dayjs | null;
   amount?: number | null;
+  deliveryAddress?: string;
   meanOfPayment?: keyof typeof MeansOfPayment | null;
   client?: ISubscribedClients | null;
 }
