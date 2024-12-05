@@ -1,10 +1,9 @@
 package fr.cdlja.weebsport.web.rest;
 
 import fr.cdlja.weebsport.repository.UserRepository;
-import fr.cdlja.weebsport.security.SecurityUtils;
 import fr.cdlja.weebsport.service.BasketService;
 import fr.cdlja.weebsport.service.SubscribedClientsService;
-import fr.cdlja.weebsport.service.dto.OrderDTO;
+import fr.cdlja.weebsport.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,45 +16,46 @@ public class BasketResource {
 
     private final BasketService basketService;
     private final UserRepository userRepository;
+    private final UserService userService;
     private final SubscribedClientsService subscribedClientsService;
 
-    public BasketResource(BasketService basketService, UserRepository userRepository, SubscribedClientsService subscribedClientsService) {
+    public BasketResource(
+        BasketService basketService,
+        UserRepository userRepository,
+        UserService userService,
+        SubscribedClientsService subscribedClientsService
+    ) {
         this.basketService = basketService;
         this.userRepository = userRepository;
+        this.userService = userService;
         this.subscribedClientsService = subscribedClientsService;
     }
 
-    @GetMapping("")
-    public ResponseEntity<OrderDTO> getPanier() throws Exception {
-        String userLogin = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new RuntimeException("User not logged in"));
-
-        String userEmail = userRepository
-            .findOneByLogin(userLogin)
-            .orElseThrow(() -> new RuntimeException("User not found with login: " + userLogin))
-            .getEmail();
-
-        OrderDTO panierDTO = subscribedClientsService.getBasket(userEmail);
-
-        return ResponseEntity.ok(panierDTO);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<OrderDTO> ajouterArticle(@PathVariable(value = "id", required = false) final long articleId) {
+    @PostMapping("/{id}")
+    public ResponseEntity<?> ajouterArticle(@PathVariable(value = "id", required = false) final long articleId) {
         try {
-            OrderDTO panier = basketService.ajouterArticle(articleId);
-            return ResponseEntity.ok(panier);
+            basketService.ajouterArticle(articleId);
+            return ResponseEntity.ok("Article ajouté avec succès");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 200 OK
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<OrderDTO> supprimerArticle(@PathVariable(value = "id", required = false) final long articleId) {
+    public ResponseEntity<?> supprimerArticle(@PathVariable(value = "id", required = false) final long articleId) {
         try {
-            OrderDTO panier = basketService.supprimerArticle(articleId);
-            return ResponseEntity.ok(panier);
+            basketService.supprimerArticle(articleId);
+            return ResponseEntity.ok("Article supprimé avec succès");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 200 OK
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/price")
+    public ResponseEntity<Float> basketPrice() {
+        return userService
+            .getUserWithAuthorities()
+            .map(user -> ResponseEntity.ok(basketService.price(user)))
+            .orElse(ResponseEntity.badRequest().header("Error-Message", "The user was not found").build());
     }
 }

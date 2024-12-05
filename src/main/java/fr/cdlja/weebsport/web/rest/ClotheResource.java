@@ -174,8 +174,33 @@ public class ClotheResource {
             .map(result -> (Clothe) result[0]) // Récupère l'entité Clothe du tableau Object[]
             .distinct() // Remove duplicates
             .collect(Collectors.toList());
-        Page<Clothe> ClothePage = new PageImpl<>(clothes);
-        return ResponseEntity.ok(ClothePage);
+        Page<Clothe> clothePage = new PageImpl<>(clothes, pageable, rawResults.getTotalElements());
+        return ResponseEntity.ok(clothePage);
+    }
+
+    @GetMapping("/size/{id}/{color}")
+    public ResponseEntity<List<Size>> getClotheSize(@PathVariable Long id, @PathVariable Color color) {
+        List<Size> availableSizes = stockRepository.findAvailableSizesByClotheIdAndColorId(id, color);
+        return ResponseEntity.ok(availableSizes);
+    }
+
+    @GetMapping("/color/{id}")
+    public ResponseEntity<List<Color>> getClotheColor(@PathVariable Long id) {
+        // recupère toute couleur dispo pour un vetement
+        List<Color> availablesColor = stockRepository.findAvailableColorsByClotheId(id);
+        return ResponseEntity.ok(availablesColor);
+    }
+
+    @GetMapping("/category/videogame")
+    public ResponseEntity<List<String>> getThemesVideogame() {
+        List<String> themes = clotheRepository.findAllThemes(Category.VIDEOGAME);
+        return ResponseEntity.ok(themes);
+    }
+
+    @GetMapping("/category/anime")
+    public ResponseEntity<List<String>> getThemesAnime() {
+        List<String> themes = clotheRepository.findAllThemes(Category.ANIME);
+        return ResponseEntity.ok(themes);
     }
 
     @GetMapping("/size/{id}/{color}")
