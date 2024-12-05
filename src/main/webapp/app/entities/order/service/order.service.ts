@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 
 import dayjs from 'dayjs/esm';
@@ -9,6 +9,7 @@ import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IOrder, NewOrder } from '../order.model';
+import { PaginatedResponse } from '../../../core/request/paginated-response.model';
 
 export type PartialUpdateOrder = Partial<IOrder> & Pick<IOrder, 'id'>;
 
@@ -57,11 +58,20 @@ export class OrderService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
+  query(req?: any): Observable<HttpResponse<PaginatedResponse<RestOrder>>> | undefined {
+    // const token = window.sessionStorage['id_storage'];
+    // TODO
+    const token =
+      'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huZG9lIiwiZXhwIjoxNzM1OTgyNDkzLCJhdXRoIjoiIiwiaWF0IjoxNzMzMzkwNDkzfQ.O-mnnByYlD3bnuUr8lyv4ktINDW9c5DAUxx_gKSkaoZ8nI-7YT5DDpClzXUsAm4tb83XG4wcscNtOKWJ7EZOFA';
+
+    // if (!token) {
+    // window.console.log('Token vide');
+    //  return;
+    // } else {
     const options = createRequestOption(req);
-    return this.http
-      .get<RestOrder[]>(this.resourceUrl, { params: options, observe: 'response' })
-      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.get<PaginatedResponse<RestOrder>>(this.resourceUrl, { params: options, headers, observe: 'response' }); // }
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
