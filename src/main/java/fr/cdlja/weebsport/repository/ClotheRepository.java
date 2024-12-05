@@ -20,4 +20,9 @@ public interface ClotheRepository extends JpaRepository<Clothe, Long> {
 
     @Query("SELECT DISTINCT c.theme FROM Clothe c JOIN c.Categories cat WHERE cat = :category")
     List<String> findAllThemes(@Param("category") Category category);
+
+    @Query(
+        "SELECT DISTINCT c.theme FROM Clothe c JOIN c.Categories cat WHERE cat = :category AND LOWER(c.theme) LIKE  LOWER(CONCAT('%',:search,'%' )) "
+    )
+    List<String> findAllThemesWithSearch(@Param("category") Category category, @Param("search") String search);
 }
