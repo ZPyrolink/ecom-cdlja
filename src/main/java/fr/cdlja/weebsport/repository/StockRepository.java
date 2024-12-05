@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -29,6 +30,16 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 
     @Query("SELECT s.color FROM Stock s WHERE s.clothe.id= :clotheId AND s.quantity > 0 ")
     List<Color> findAvailableColorsByClotheId(@Param("clotheId") Long clotheId);
+
+    @Query("SELECT s.quantity, s.version FROM Stock s WHERE s.id= :stockID")
+    Object[][] readStock(@Param("stockID") Long stockID);
+
+    @Query("SELECT s.version FROM Stock s WHERE s.id= :stockID")
+    Long readVersion(@Param("stockID") Long stockID);
+
+    @Modifying
+    @Query("UPDATE Stock s SET s.quantity=:quantity, s.version=: version+1 WHERE s.id = :id and s.version =:version ")
+    int updateStock(@Param("quantity") Integer quantity, @Param("version") Integer version, @Param("id") Long id);
 
     @Query("SELECT s from Stock WHERE s.size IN :sizes")
     List<Stock> getStocksBySize(@Param("size") List<Size> sizes);

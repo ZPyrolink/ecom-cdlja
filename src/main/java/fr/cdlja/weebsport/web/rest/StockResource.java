@@ -136,9 +136,6 @@ public class StockResource {
                 if (stock.getSize() != null) {
                     existingStock.setSize(stock.getSize());
                 }
-                if (stock.getQuantity() != null) {
-                    existingStock.setQuantity(stock.getQuantity());
-                }
 
                 return existingStock;
             })

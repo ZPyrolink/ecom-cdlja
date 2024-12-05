@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -14,6 +14,7 @@ import { ClotheService } from 'app/entities/clothe/service/clothe.service';
 import { SubscribedClientsService } from '../service/subscribed-clients.service';
 import { ISubscribedClients } from '../subscribed-clients.model';
 import { SubscribedClientsFormGroup, SubscribedClientsFormService } from './subscribed-clients-form.service';
+import { PaginatedResponse } from '../../../core/request/paginated-response.model';
 
 @Component({
   standalone: true,
@@ -105,8 +106,8 @@ export class SubscribedClientsUpdateComponent implements OnInit {
 
     this.clotheService
       .query()
-      .pipe(map((res: HttpResponse<IClothe[]>) => res.body ?? []))
       .pipe(
+        map((res: HttpResponse<PaginatedResponse<IClothe>>) => res.body?.content ?? []), // Extraire les éléments paginés
         map((clothes: IClothe[]) =>
           this.clotheService.addClotheToCollectionIfMissing<IClothe>(clothes, ...(this.subscribedClients?.favorises ?? [])),
         ),

@@ -3,6 +3,7 @@
   flex-direction: row;
   background-color: var(--background-color);
   height: 80vh;
+  overflow: hidden;
 }
 
 .side-filter-menu {
@@ -16,4 +17,7 @@
   border: none;
   flex: 1;
   width: 100%;
+  overflow: auto;
+  max-height: 100%;
+  box-sizing: border-box;
 }
