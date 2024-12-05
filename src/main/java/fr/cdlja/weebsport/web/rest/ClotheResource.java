@@ -179,8 +179,8 @@ public class ClotheResource {
             .map(result -> (Clothe) result[0]) // Récupère l'entité Clothe du tableau Object[]
             .distinct() // Remove duplicates
             .collect(Collectors.toList());
-        Page<Clothe> ClothePage = new PageImpl<>(clothes);
-        return ResponseEntity.ok(ClothePage);
+        Page<Clothe> clothePage = new PageImpl<>(clothes, pageable, rawResults.getTotalElements());
+        return ResponseEntity.ok(clothePage);
     }
 
     @GetMapping("/size/{id}/{color}")
