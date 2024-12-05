@@ -1,9 +1,6 @@
 package fr.cdlja.weebsport.service;
 
-import fr.cdlja.weebsport.domain.Order;
-import fr.cdlja.weebsport.domain.OrderLine;
-import fr.cdlja.weebsport.domain.Stock;
-import fr.cdlja.weebsport.domain.SubscribedClients;
+import fr.cdlja.weebsport.domain.*;
 import fr.cdlja.weebsport.repository.OrderLineRepository;
 import fr.cdlja.weebsport.repository.OrderRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
@@ -125,5 +122,9 @@ public class BasketService {
     public Long countNbArticles(OrderDTO panierDTO) throws Exception {
         //recupère le nb d'article de chaque ligne de commande et additionne
         return orderLineRepository.getQuantity(panierDTO.getId());
+    }
+
+    public Float price(User user) {
+        return orderRepository.getPrice(user.getId());
     }
 }
