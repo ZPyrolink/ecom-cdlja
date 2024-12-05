@@ -5,10 +5,14 @@ import fr.cdlja.weebsport.repository.OrderLineRepository;
 import fr.cdlja.weebsport.repository.OrderRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
 import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
+import fr.cdlja.weebsport.repository.UserRepository;
 import fr.cdlja.weebsport.service.dto.OrderDTO;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +22,7 @@ public class BasketService {
     public final SubscribedClientsService subscribedClientsService;
     private final OrderLineRepository orderLineRepository;
     private final StockRepository stockRepository;
+
     private final OrderRepository orderRepository;
     private final SubscribedClientsRepository subscribedClientsRepository;
     private final UserService userService;
@@ -26,6 +31,7 @@ public class BasketService {
         SubscribedClientsService subscribedClientsService,
         OrderLineRepository orderLineRepository,
         StockRepository stockRepository,
+        UserRepository userRepository,
         OrderRepository orderRepository,
         SubscribedClientsRepository subscribedClientsRepository,
         UserService userService
