@@ -30,6 +30,9 @@ public interface SubscribedClientsRepository
         return this.fetchBagRelationships(this.findAll(pageable));
     }
 
+    @Query("SELECT sc FROM SubscribedClients sc WHERE sc.id =:id")
+    Optional<SubscribedClients> findById(@Param("id") Long id);
+
     @Query("SELECT sc FROM SubscribedClients sc WHERE sc.email = :email")
     Optional<SubscribedClients> findByEmail(@Param("email") String email);
 

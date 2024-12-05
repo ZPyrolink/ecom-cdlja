@@ -1,30 +1,34 @@
 package fr.cdlja.weebsport.web.rest;
 
+import fr.cdlja.weebsport.config.Constants;
+import fr.cdlja.weebsport.domain.Order;
+import fr.cdlja.weebsport.domain.SubscribedClients;
 import fr.cdlja.weebsport.domain.User;
-import fr.cdlja.weebsport.repository.OrderRepository;
-import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
-import fr.cdlja.weebsport.repository.UserRepository;
+import fr.cdlja.weebsport.domain.enumeration.Status;
+import fr.cdlja.weebsport.repository.*;
+import fr.cdlja.weebsport.security.AuthoritiesConstants;
 import fr.cdlja.weebsport.security.SecurityUtils;
-import fr.cdlja.weebsport.service.BasketService;
-import fr.cdlja.weebsport.service.MailService;
-import fr.cdlja.weebsport.service.SubscribedClientsService;
-import fr.cdlja.weebsport.service.UserService;
+import fr.cdlja.weebsport.service.*;
 import fr.cdlja.weebsport.service.dto.*;
+import fr.cdlja.weebsport.web.rest.errors.*;
 import fr.cdlja.weebsport.web.rest.errors.EmailAlreadyUsedException;
 import fr.cdlja.weebsport.web.rest.errors.InvalidPasswordException;
-import fr.cdlja.weebsport.web.rest.errors.LoginAlreadyUsedException;
 import fr.cdlja.weebsport.web.rest.vm.KeyAndPasswordVM;
 import fr.cdlja.weebsport.web.rest.vm.ManagedUserVM;
 import fr.cdlja.weebsport.web.rest.vm.RegisterAccountVM;
+import io.undertow.util.BadRequestException;
 import jakarta.validation.Valid;
-import java.util.List;
-import java.util.Optional;
+import jakarta.validation.constraints.Pattern;
+import java.io.Console;
+import java.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import tech.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing the current user's account.
@@ -52,7 +56,13 @@ public class AccountResource {
 
     private final OrderRepository orderRepository;
 
+    private final OrderLineRepository orderLineRepository;
+
+    private final StockRepository stockRepository;
+
     private final BasketService basketService;
+
+    private final StockService stockService;
 
     public AccountResource(
         UserRepository userRepository,
@@ -61,14 +71,20 @@ public class AccountResource {
         MailService mailService,
         SubscribedClientsService subscribedClientsService,
         OrderRepository OrderRepository,
-        BasketService basketService
+        OrderLineRepository OrderLineRepository,
+        BasketService basketService,
+        StockRepository stockRepository,
+        StockService stockService
     ) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
         this.subscribedClientsService = subscribedClientsService;
         this.orderRepository = OrderRepository;
+        this.orderLineRepository = OrderLineRepository;
         this.basketService = basketService;
+        this.stockRepository = stockRepository;
+        this.stockService = stockService;
     }
 
     // Logique métier pour créer les entités User et ClientAbonne et panié asso
@@ -106,13 +122,13 @@ public class AccountResource {
             .getUserWithAuthorities()
             .map(AdminUserDTO::new)
             .orElseThrow(() -> new AccountResourceException("User could not be found"));
-        LOG.info("User: {}", adminUserDTO);
+
         SubscribedClientDTO subscribedClientDTO = subscribedClientsService.getClientByEmail(adminUserDTO.getEmail());
-        LOG.info("clientabonned: {}", subscribedClientDTO);
+
         OrderDTO basketDTO = subscribedClientsService.getBasket(adminUserDTO.getEmail());
-        LOG.info("basketDTO: {}", basketDTO);
+
         List<OrderDTO> historique = subscribedClientsService.getHistorique(adminUserDTO.getEmail());
-        LOG.info("historique: {}", historique);
+
         ClientWhithAdminDTO clientWhithAdminDTO = new ClientWhithAdminDTO(subscribedClientDTO, adminUserDTO, basketDTO, historique);
 
         return ResponseEntity.ok(clientWhithAdminDTO);
@@ -125,11 +141,9 @@ public class AccountResource {
             .getUserWithAuthorities()
             .map(AdminUserDTO::new)
             .orElseThrow(() -> new AccountResourceException("User could not be found"));
-        LOG.info("User: {}", adminUserDTO);
 
         // Récupérer le panier du client connecté
         OrderDTO basketDTO = subscribedClientsService.getBasket(adminUserDTO.getEmail());
-        LOG.info("Basket: {}", basketDTO);
 
         return ResponseEntity.ok(basketDTO);
     }
@@ -140,9 +154,9 @@ public class AccountResource {
             .getUserWithAuthorities()
             .map(AdminUserDTO::new)
             .orElseThrow(() -> new AccountResourceException("User could not be found"));
-        LOG.info("User: {}", adminUserDTO);
+
         List<OrderDTO> historique = subscribedClientsService.getHistorique(adminUserDTO.getEmail());
-        LOG.info("historique: {}", historique);
+
         return ResponseEntity.ok(historique);
     }
 
@@ -152,10 +166,30 @@ public class AccountResource {
             .getUserWithAuthorities()
             .map(AdminUserDTO::new)
             .orElseThrow(() -> new AccountResourceException("User could not be found"));
-        LOG.info("User: {}", adminUserDTO);
+
         OrderDTO basketDTO = subscribedClientsService.getBasket(adminUserDTO.getEmail());
         Long nbArticles = basketService.countNbArticles(basketDTO);
         return ResponseEntity.ok(nbArticles);
+    }
+
+    @PostMapping("/client/basket/validate/{id}")
+    public void validateClientBasket(@PathVariable Long id, @RequestBody OrderDTO orderdto) throws Exception {
+        if (id == 0) {
+            try {
+                stockService.validatebasketnonabo(orderdto);
+            } catch (Exception e) {
+                throw new AccountResourceException(e.getMessage());
+            }
+        } else {
+            try {
+                stockService.validebasketabo(id);
+            } catch (Exception e) {
+                throw new AccountResourceException(e.getMessage());
+            }
+        }
+        //si body vide alors client abonné recuperer son panier et lui réserver ses articles
+        // si id null alors panier du client non abonné dans le body, récupérer les articles et lui les reserver
+        //reserver = verif si dispo/ gestion de la concurence et mise à jour du nombre d'article et de la version dans le stock
     }
 
     /**

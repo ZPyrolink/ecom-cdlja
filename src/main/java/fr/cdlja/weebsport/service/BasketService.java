@@ -1,17 +1,18 @@
 package fr.cdlja.weebsport.service;
 
-import fr.cdlja.weebsport.domain.Order;
-import fr.cdlja.weebsport.domain.OrderLine;
-import fr.cdlja.weebsport.domain.Stock;
-import fr.cdlja.weebsport.domain.SubscribedClients;
+import fr.cdlja.weebsport.domain.*;
 import fr.cdlja.weebsport.repository.OrderLineRepository;
 import fr.cdlja.weebsport.repository.OrderRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
 import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
+import fr.cdlja.weebsport.repository.UserRepository;
 import fr.cdlja.weebsport.service.dto.OrderDTO;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +22,7 @@ public class BasketService {
     public final SubscribedClientsService subscribedClientsService;
     private final OrderLineRepository orderLineRepository;
     private final StockRepository stockRepository;
+
     private final OrderRepository orderRepository;
     private final SubscribedClientsRepository subscribedClientsRepository;
     private final UserService userService;
@@ -29,6 +31,7 @@ public class BasketService {
         SubscribedClientsService subscribedClientsService,
         OrderLineRepository orderLineRepository,
         StockRepository stockRepository,
+        UserRepository userRepository,
         OrderRepository orderRepository,
         SubscribedClientsRepository subscribedClientsRepository,
         UserService userService
@@ -119,5 +122,9 @@ public class BasketService {
     public Long countNbArticles(OrderDTO panierDTO) throws Exception {
         //recupère le nb d'article de chaque ligne de commande et additionne
         return orderLineRepository.getQuantity(panierDTO.getId());
+    }
+
+    public Float price(User user) {
+        return orderRepository.getPrice(user.getId());
     }
 }
