@@ -1,11 +1,12 @@
 export interface IUser {
   id: number | null;
   login?: string;
+  email?: string;
+  password?: string;
   firstName?: string | null;
   lastName?: string | null;
-  email?: string;
-  activated?: boolean;
   langKey?: string;
+  activated?: boolean;
   authorities?: string[];
   createdBy?: string;
   createdDate?: Date;
@@ -17,15 +18,12 @@ export class User implements IUser {
   constructor(
     public id: number | null,
     public login?: string,
+    public email?: string,
+    public password?: string,
     public firstName?: string | null,
     public lastName?: string | null,
-    public email?: string,
-    public activated?: boolean,
     public langKey?: string,
-    public authorities?: string[],
-    public createdBy?: string,
-    public createdDate?: Date,
-    public lastModifiedBy?: string,
-    public lastModifiedDate?: Date,
   ) {}
 }
+
+export type NewUser = Omit<User, 'id'> & { id: null };

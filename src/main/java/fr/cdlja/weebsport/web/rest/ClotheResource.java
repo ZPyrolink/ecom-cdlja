@@ -1,12 +1,14 @@
 package fr.cdlja.weebsport.web.rest;
 
 import fr.cdlja.weebsport.domain.Clothe;
-import fr.cdlja.weebsport.domain.Stock;
 import fr.cdlja.weebsport.domain.enumeration.Category;
 import fr.cdlja.weebsport.domain.enumeration.Color;
 import fr.cdlja.weebsport.domain.enumeration.Size;
 import fr.cdlja.weebsport.repository.ClotheRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
+import fr.cdlja.weebsport.service.ClotheService;
+import fr.cdlja.weebsport.service.dto.SearchDTO;
+import fr.cdlja.weebsport.service.dto.ThemeDTO;
 import fr.cdlja.weebsport.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -41,10 +43,12 @@ public class ClotheResource {
 
     private final ClotheRepository clotheRepository;
     private final StockRepository stockRepository;
+    private final ClotheService clotheService;
 
-    public ClotheResource(ClotheRepository clotheRepository, StockRepository stockRepository) {
+    public ClotheResource(ClotheRepository clotheRepository, StockRepository stockRepository, ClotheService clotheService) {
         this.clotheRepository = clotheRepository;
         this.stockRepository = stockRepository;
+        this.clotheService = clotheService;
     }
 
     /**
@@ -201,6 +205,17 @@ public class ClotheResource {
     public ResponseEntity<List<String>> getThemesAnime() {
         List<String> themes = clotheRepository.findAllThemes(Category.ANIME);
         return ResponseEntity.ok(themes);
+    }
+
+    @GetMapping("/category/search")
+    public ResponseEntity<ThemeDTO> getThemesSearch(@ModelAttribute SearchDTO searchDTO) {
+        ThemeDTO themeDTO = new ThemeDTO();
+        String theme = searchDTO.getSearch();
+        List<String> animethemes = clotheService.getThemesByCategoryAndSearch(Category.ANIME, theme);
+        List<String> videogamethemes = clotheService.getThemesByCategoryAndSearch(Category.VIDEOGAME, theme);
+        themeDTO.setAnimeThemes(animethemes);
+        themeDTO.setVideogameThemes(videogamethemes);
+        return ResponseEntity.ok(themeDTO);
     }
 
     /**

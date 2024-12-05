@@ -1,5 +1,5 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import SharedModule from 'app/shared/shared.module';
@@ -25,26 +25,26 @@ export default class UserManagementUpdateComponent implements OnInit {
   authorities = signal<string[]>([]);
   isSaving = signal(false);
 
-  editForm = new FormGroup({
-    id: new FormControl(userTemplate.id),
-    login: new FormControl(userTemplate.login, {
-      nonNullable: true,
-      validators: [
+  fb = inject(FormBuilder);
+
+  editForm = this.fb.group({
+    id: [userTemplate.id],
+    login: [
+      userTemplate.login,
+      [
         Validators.required,
         Validators.minLength(1),
         Validators.maxLength(50),
         Validators.pattern('^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$'),
       ],
-    }),
-    firstName: new FormControl(userTemplate.firstName, { validators: [Validators.maxLength(50)] }),
-    lastName: new FormControl(userTemplate.lastName, { validators: [Validators.maxLength(50)] }),
-    email: new FormControl(userTemplate.email, {
-      nonNullable: true,
-      validators: [Validators.minLength(5), Validators.maxLength(254), Validators.email],
-    }),
-    activated: new FormControl(userTemplate.activated, { nonNullable: true }),
-    langKey: new FormControl(userTemplate.langKey, { nonNullable: true }),
-    authorities: new FormControl(userTemplate.authorities, { nonNullable: true }),
+    ],
+    email: [userTemplate.email, [Validators.minLength(5), Validators.maxLength(254), Validators.email]],
+    password: [userTemplate.password, [Validators.minLength(4), Validators.maxLength(254)]],
+    firstName: [userTemplate.firstName, [Validators.maxLength(50)]],
+    lastName: [userTemplate.lastName, [Validators.maxLength(50)]],
+    langKey: [userTemplate.langKey],
+    activated: [userTemplate.activated],
+    authorities: [userTemplate.authorities ?? []],
   });
 
   private userService = inject(UserManagementService);
@@ -67,7 +67,18 @@ export default class UserManagementUpdateComponent implements OnInit {
 
   save(): void {
     this.isSaving.set(true);
-    const user = this.editForm.getRawValue();
+    const formValue = this.editForm.getRawValue();
+    const user: IUser = {
+      id: formValue.id,
+      login: formValue.login ?? undefined,
+      email: formValue.email ?? undefined,
+      password: formValue.password ?? undefined,
+      firstName: formValue.firstName ?? null,
+      lastName: formValue.lastName ?? null,
+      langKey: formValue.langKey!,
+      activated: formValue.activated!,
+      authorities: formValue.authorities ?? [],
+    };
     if (user.id !== null) {
       this.userService.update(user).subscribe({
         next: () => this.onSaveSuccess(),

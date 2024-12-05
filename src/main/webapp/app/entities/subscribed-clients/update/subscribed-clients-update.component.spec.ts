@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpResponse, provideHttpClient } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, from, of } from 'rxjs';
+import { from, of, Subject } from 'rxjs';
 
 import { IOrder } from 'app/entities/order/order.model';
 import { OrderService } from 'app/entities/order/service/order.service';
@@ -13,6 +13,7 @@ import { SubscribedClientsService } from '../service/subscribed-clients.service'
 import { SubscribedClientsFormService } from './subscribed-clients-form.service';
 
 import { SubscribedClientsUpdateComponent } from './subscribed-clients-update.component';
+import { PaginatedResponse } from '../../../core/request/paginated-response.model';
 
 describe('SubscribedClients Management Update Component', () => {
   let comp: SubscribedClientsUpdateComponent;
@@ -75,7 +76,16 @@ describe('SubscribedClients Management Update Component', () => {
       subscribedClients.favorises = favorises;
 
       const clotheCollection: IClothe[] = [{ id: 12727 }];
-      jest.spyOn(clotheService, 'query').mockReturnValue(of(new HttpResponse({ body: clotheCollection })));
+      const paginatedClotheResponse: PaginatedResponse<IClothe> = {
+        content: clotheCollection, // Votre tableau d'éléments
+        totalElements: 1, // Exemple : total d'éléments
+        totalPages: 1, // Exemple : une seule page
+        size: 1, // Exemple : première page
+        number: 1,
+        first: true,
+        last: true,
+      };
+      jest.spyOn(clotheService, 'query').mockReturnValue(of(new HttpResponse({ body: paginatedClotheResponse })));
       const additionalClothes = [...favorises];
       const expectedCollection: IClothe[] = [...additionalClothes, ...clotheCollection];
       jest.spyOn(clotheService, 'addClotheToCollectionIfMissing').mockReturnValue(expectedCollection);

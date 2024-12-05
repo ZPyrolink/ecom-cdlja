@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { ClothesTypeEnum } from '../../enums/clothes-type-enum';
 import SelectedItemsComponent from '../selected-items/selected-items.component';
 import CheckboxListComponent from '../checkbox-list/checkbox-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FilterDataService } from './service/FilterDataService';
 
 @Component({
   selector: 'jhi-filter-menu',
@@ -12,7 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   templateUrl: './filter-menu.component.html',
   styleUrl: './filter-menu.component.scss',
 })
-export default class FilterMenuComponent {
+export default class FilterMenuComponent implements OnInit {
   typesOfClothes = Object.values(ClothesTypeEnum);
   typesOfGames = [
     'Jeu 1',
@@ -57,6 +58,22 @@ export default class FilterMenuComponent {
   selectedItemsClothes: string[] = [];
   selectedItemsThemes: string[] = [];
   searchQuery = '';
+
+  constructor(
+    private filterDataService: FilterDataService,
+    private cdr: ChangeDetectorRef,
+  ) {}
+  ngOnInit(): void {
+    this.filterDataService.getThemes().subscribe(themes => {
+      this.selectedItemsThemes = themes;
+      this.cdr.detectChanges();
+    });
+    this.filterDataService.getClothes().subscribe(clothes => {
+      this.selectedItemsClothes = clothes;
+      this.cdr.detectChanges();
+    });
+  }
+
   toggleSelection(selectedItems: string[], type: string): void {
     const index = selectedItems.indexOf(type);
     if (index === -1) {
@@ -64,17 +81,25 @@ export default class FilterMenuComponent {
     } else {
       selectedItems.splice(index, 1);
     }
+    this.updateService(selectedItems);
   }
-
   removeItem(selectedItems: string[], item: string): void {
     const index = selectedItems.indexOf(item);
     if (index !== -1) {
       selectedItems.splice(index, 1);
     }
+    this.updateService(selectedItems);
+  }
+  updateService(selectedItems: string[]): void {
+    if (selectedItems === this.selectedItemsClothes) {
+      this.filterDataService.setClothes(this.selectedItemsClothes);
+    } else if (selectedItems === this.selectedItemsThemes) {
+      this.filterDataService.setThemes(this.selectedItemsThemes);
+    }
   }
 
   onSearch(): void {
     // eslint-disable-next-line no-console
-    console.log(this.searchQuery);
+    console.log('Recherche :', this.searchQuery);
   }
 }
