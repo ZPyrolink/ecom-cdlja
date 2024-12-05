@@ -1,6 +1,6 @@
-import { Component, NgZone, OnInit, inject } from '@angular/core';
+import { Component, inject, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
-import { Observable, Subscription, combineLatest, filter, tap } from 'rxjs';
+import { combineLatest, filter, Observable, Subscription, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
@@ -9,8 +9,10 @@ import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'ap
 import { FormsModule } from '@angular/forms';
 import { DEFAULT_SORT_DATA, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { IClothe } from '../clothe.model';
-import { ClotheService, EntityArrayResponseType } from '../service/clothe.service';
+import { ClotheService } from '../service/clothe.service';
 import { ClotheDeleteDialogComponent } from '../delete/clothe-delete-dialog.component';
+import { HttpResponse } from '@angular/common/http';
+import { PaginatedResponse } from '../../../core/request/paginated-response.model';
 
 @Component({
   standalone: true,
@@ -70,7 +72,7 @@ export class ClotheComponent implements OnInit {
 
   load(): void {
     this.queryBackend().subscribe({
-      next: (res: EntityArrayResponseType) => {
+      next: (res: HttpResponse<PaginatedResponse<IClothe>>) => {
         this.onResponseSuccess(res);
       },
     });
@@ -84,8 +86,8 @@ export class ClotheComponent implements OnInit {
     this.sortState.set(this.sortService.parseSortParam(params.get(SORT) ?? data[DEFAULT_SORT_DATA]));
   }
 
-  protected onResponseSuccess(response: EntityArrayResponseType): void {
-    const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
+  protected onResponseSuccess(response: HttpResponse<PaginatedResponse<IClothe>>): void {
+    const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body?.content);
     this.clothes = this.refineData(dataFromBody);
   }
 
@@ -94,11 +96,11 @@ export class ClotheComponent implements OnInit {
     return predicate && order ? data.sort(this.sortService.startSort({ predicate, order })) : data;
   }
 
-  protected fillComponentAttributesFromResponseBody(data: IClothe[] | null): IClothe[] {
+  protected fillComponentAttributesFromResponseBody(data: IClothe[] | undefined): IClothe[] {
     return data ?? [];
   }
 
-  protected queryBackend(): Observable<EntityArrayResponseType> {
+  protected queryBackend(): Observable<HttpResponse<PaginatedResponse<IClothe>>> {
     this.isLoading = true;
     const queryObject: any = {
       sort: this.sortService.buildSortParam(this.sortState()),
