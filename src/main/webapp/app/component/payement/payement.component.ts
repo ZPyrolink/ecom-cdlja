@@ -1,10 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { faCcApplePay } from '@fortawesome/free-brands-svg-icons';
 import RegexpUtils from '../../utils/regexpUtils';
 import ValidatorsExt from '../../utils/validatorsExt';
+import { HttpClient } from '@angular/common/http';
+
+type ClientWhithAdminDTO = {
+  subscribedClient: {
+    address: string;
+    phoneNumber: string;
+  };
+  adminUserDTO: {
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  panier: {
+    amount: number;
+  };
+};
 
 function onValueChanged(control: FormControl, callback: (value: string) => string): void {
   control.valueChanges.subscribe((val: string) => {
@@ -19,7 +35,8 @@ function onValueChanged(control: FormControl, callback: (value: string) => strin
   templateUrl: './payement.component.html',
   styleUrl: './payement.component.scss',
 })
-export default class PayementComponent {
+export default class PayementComponent implements OnInit {
+  client?: ClientWhithAdminDTO;
   price = 0;
 
   test = '';
@@ -71,15 +88,44 @@ export default class PayementComponent {
     postalCode: new FormControl('', { validators: ValidatorsExt.validators(true, RegexpUtils.POSTAL_CODE) }),
   });
 
-  constructor() {
+  constructor(private http: HttpClient) {
     onValueChanged(this.cardNumControl, this.groupNumbers(4));
     onValueChanged(this.expirationDateControl, this.keepNumbers);
     onValueChanged(this.cryptoControl, this.keepNumbers);
     onValueChanged(this.phoneNumControl, this.groupNumbers(2));
   }
 
+  ngOnInit(): void {
+    const token: string | undefined = window.sessionStorage['id_storage'];
+
+    if (token) {
+      this.initUser(token);
+    } else {
+      this.init();
+    }
+  }
+
   pay(): void {
     window.console.log('payed');
+  }
+
+  private initUser(token: string): void {
+    this.http.get<ClientWhithAdminDTO>('api/client').subscribe(dto => {
+      this.client = dto;
+      this.payementForm.get('firstName')!.setValue(this.client.adminUserDTO.firstName);
+      this.payementForm.get('lastName')!.setValue(this.client.adminUserDTO.lastName);
+      this.payementForm.get('email')!.setValue(this.client.adminUserDTO.email);
+      this.payementForm.get('address')!.setValue(this.client.subscribedClient.address);
+      this.phoneNumControl.setValue(this.client.subscribedClient.phoneNumber);
+
+      this.payementForm.get('cardName')!.setValue(this.client.adminUserDTO.firstName + ' ' + this.client.adminUserDTO.lastName);
+
+      this.price = this.client.panier.amount;
+    });
+  }
+
+  private init(): void {
+    window.console.log('No account');
   }
 
   private groupNumbers(groupSize: number, separator = ' '): (v: string) => string {
