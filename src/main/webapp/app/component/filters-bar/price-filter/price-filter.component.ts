@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgStyle } from '@angular/common';
 
@@ -10,18 +10,30 @@ import { NgStyle } from '@angular/common';
   styleUrl: './price-filter.component.scss',
 })
 export class PriceFilterComponent {
-  minValue = 0;
-  maxValue = 100;
+  @Input() minValue = 0;
+  @Input() maxValue = 100;
+  @Output() selectionChange = new EventEmitter<{ min: number; max: number }>();
 
   updateMin(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    const min = parseInt(target.value, 10);
-    this.minValue = Math.min(min, this.maxValue - 1); // Assure que minValue reste inférieur à maxValue
+    const newValue = Number((event.target as HTMLInputElement).value);
+    if (newValue <= this.maxValue) {
+      this.minValue = newValue;
+      this.emitSelectionChange();
+    } else {
+      (event.target as HTMLInputElement).value = String(this.minValue);
+    }
   }
 
   updateMax(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    const max = parseInt(target.value, 10);
-    this.maxValue = Math.max(max, this.minValue + 1); // Assure que maxValue reste supérieur à minValue
+    const newValue = Number((event.target as HTMLInputElement).value);
+    if (newValue >= this.minValue) {
+      this.maxValue = newValue;
+      this.emitSelectionChange();
+    } else {
+      (event.target as HTMLInputElement).value = String(this.maxValue);
+    }
+  }
+  private emitSelectionChange(): void {
+    this.selectionChange.emit({ min: this.minValue, max: this.maxValue });
   }
 }

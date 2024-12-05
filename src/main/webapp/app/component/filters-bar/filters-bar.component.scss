@@ -1,6 +1,5 @@
 .all {
-  padding: 20px;
-  font-size: 20px;
+  padding: 0 20px 0 20px;
 }
 
 .filter-container {
@@ -17,7 +16,8 @@
 }
 
 .filter-buttons button {
-  padding: 0px 2px;
+  padding: 2px 4px;
+  font-size: 14px;
   cursor: pointer;
   border-radius: 8px;
   background-color: var(--background-color);
@@ -48,6 +48,7 @@
   display: inline-flex;
   align-items: center;
   padding: 5px;
+  position: relative;
 }
 
 .arrow {
@@ -68,7 +69,9 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 10;
 }
-
+.sort:hover .sous {
+  display: block;
+}
 .sous li {
   padding: 8px 16px;
   cursor: pointer;
@@ -76,10 +79,6 @@
 
 .sous li:hover {
   background-color: #f0f0f0;
-}
-
-.sort:hover .sous {
-  display: block;
 }
 
 .text {

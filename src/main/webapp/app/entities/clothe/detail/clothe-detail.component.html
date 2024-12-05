@@ -1,0 +1,65 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (clothe(); as clotheRef) {
+      <div>
+        <h2 data-cy="clotheDetailsHeading"><span jhiTranslate="weebSportApp.clothe.detail.title">Clothe</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ clotheRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.clothe.type">Type</span></dt>
+          <dd>
+            <span [jhiTranslate]="'weebSportApp.Type.' + (clotheRef.type ?? 'null')">{{
+              { null: '', JOGGER: 'JOGGER', TEESHIRT: 'TEESHIRT', BRA: 'BRA', LEGGING: 'LEGGING', SHORT: 'SHORT', SWEAT: 'SWEAT' }[
+                clotheRef.type ?? 'null'
+              ]
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.clothe.theme">Theme</span></dt>
+          <dd>
+            <span>{{ clotheRef.theme }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.clothe.gender">Gender</span></dt>
+          <dd>
+            <span [jhiTranslate]="'weebSportApp.Gender.' + (clotheRef.gender ?? 'null')">{{
+              { null: '', MAN: 'MAN', WOMAN: 'WOMAN', UNISEX: 'UNISEX', CHILD: 'CHILD' }[clotheRef.gender ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.clothe.price">Price</span></dt>
+          <dd>
+            <span>{{ clotheRef.price }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.clothe.description">Description</span></dt>
+          <dd>
+            <span>{{ clotheRef.description }}</span>
+          </dd>
+          <dt><span jhiTranslate="weebSportApp.clothe.subscribedClients">Subscribed Clients</span></dt>
+          <dd>
+            @for (subscribedClients of clotheRef.subscribedClients; track $index; let last = $last) {
+              <span>
+                <a [routerLink]="['/subscribed-clients', subscribedClients.id, 'view']">{{ subscribedClients?.id }}</a
+                >{{ last ? '' : ', ' }}
+              </span>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/clothe', clotheRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

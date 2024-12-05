@@ -1,0 +1,27 @@
+export enum Size {
+  XXS = 'XXS',
+
+  XS = 'XS',
+
+  S = 'S',
+
+  M = 'M',
+
+  L = 'L',
+
+  XL = 'XL',
+
+  XXL = 'XXL',
+
+  FOUR = 'FOUR',
+
+  SIX = 'SIX',
+
+  EIGHT = 'EIGHT',
+
+  TEN = 'TEN',
+
+  TWELVE = 'TWELVE',
+
+  FOURTEEN = 'FOURTEEN',
+}

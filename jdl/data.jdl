@@ -1,0 +1,132 @@
+enum Type {
+  JOGGER,
+  TEESHIRT,
+  BRA,
+  LEGGING,
+  SHORT,
+  SWEAT
+}
+enum Color{
+  GREEN,
+  BLACK,
+  BLUE,
+  RED,
+  PINK,
+  BEIGE,
+  WHITE,
+  ORANGE,
+  BROWN,
+  GRAY,
+  YELLOW,
+  PURPLE
+}
+
+enum Sort{
+  ASCENDING,
+  DESCENDING
+}
+
+enum Size{
+  XXS,
+  XS,
+  S,
+  M,
+  L,
+  XL,
+  XXL,
+  FOUR,
+  SIX,
+  EIGHT,
+  TEN,
+  TWELVE,
+  FOURTEEN
+}
+
+enum Category{
+  VIDEOGAME,
+  ANIME
+}
+
+enum Gender{
+  MAN,
+  WOMAN,
+  UNISEX,
+  CHILD
+}
+
+enum MeansOfPayment{
+  CB,
+  ONLINEPAYMENT
+}
+
+enum Status{
+  BASKET,
+  PAID
+}
+
+entity Clothe {
+  type Type
+  theme String
+  gender Gender
+  price Float
+  description String
+}
+
+entity Stock{
+  color Color
+  size Size
+  quantity Integer
+}
+
+entity OrderLine{
+  quantity Integer
+  amountline Float
+}
+
+entity Order {
+  status Status
+  date LocalDate
+  amount Float
+  meanOfPayment MeansOfPayment
+
+}
+entity SubscribedClients{
+  lastname String,
+  firstname String,
+  email String,
+  address String
+  birthday LocalDate,
+  passworld String,
+  bankCard String,
+  phone String,
+  points Integer
+}
+relationship ManyToMany{
+  SubscribedClients{favoris} to Clothe
+
+}
+relationship ManyToOne {
+  Order{client} to SubscribedClients{historique}
+}
+
+//un client à une commande en cours son panier
+relationship OneToOne{
+  SubscribedClients{basket} to Order
+}
+// une commande contient plusieurs lignes de commande
+relationship  ManyToOne{
+  OrderLine{order} to Order{orderline}
+}
+
+//un article peut se trouver dans plusieurs lignes de commandes
+relationship ManyToOne {
+  OrderLine{stock} to Stock
+}
+
+// un vetements à plusieurs articles
+relationship ManyToOne {
+  Stock{clothe} to Clothe
+}
+
+
+

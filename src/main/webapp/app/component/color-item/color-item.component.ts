@@ -11,22 +11,21 @@ import { NgForOf, NgIf } from '@angular/common';
 export class ColorItemComponent {
   @Input() colors: { name: string; image: string }[] = [];
   @Input() multiSelect = true;
-  @Output() selectedColor = new EventEmitter<string[]>();
-
-  private selectedColors: string[] = [];
+  @Output() selectionChange = new EventEmitter<string[]>();
+  @Input() selectedColors: string[] = [];
 
   toggleColor(color: string): void {
     if (!this.multiSelect) {
       this.selectedColors = [color];
-    } else {
-      const index = this.selectedColors.indexOf(color);
-      if (index === -1) {
-        this.selectedColors.push(color);
-      } else {
-        this.selectedColors.splice(index, 1);
-      }
+      return;
     }
-    this.selectedColor.emit(this.selectedColors);
+    const index = this.selectedColors.indexOf(color);
+    if (index === -1) {
+      this.selectedColors.push(color);
+    } else {
+      this.selectedColors.splice(index, 1);
+    }
+    this.selectionChange.emit(this.selectedColors);
   }
 
   isSelected(color: string): boolean {
