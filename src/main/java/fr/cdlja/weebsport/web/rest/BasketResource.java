@@ -52,7 +52,7 @@ public class BasketResource {
     }
 
     @GetMapping("/price")
-    public ResponseEntity<Long> basketPrice() {
+    public ResponseEntity<Float> basketPrice() {
         return userService
             .getUserWithAuthorities()
             .map(user -> ResponseEntity.ok(basketService.price(user)))

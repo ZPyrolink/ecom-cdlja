@@ -39,13 +39,11 @@ public class BasketService {
     }
 
     public void ajouterArticle(Long articleId) throws Exception {
-        //        SubscribedClients optional = subscribedClientsRepository
-        //            .findByEmail(userService.getUserWithAuthorities().orElseThrow().getEmail())
-        //            .orElseThrow();
+        SubscribedClients optional = subscribedClientsRepository
+            .findByEmail(userService.getUserWithAuthorities().orElseThrow().getEmail())
+            .orElseThrow();
 
-        SubscribedClients client = userService.getUserWithAuthorities().orElseThrow().getSubscribedClients();
-
-        Order order = client.getBasket();
+        Order order = optional.getBasket();
         Set<OrderLine> orderLines = order.getOrderLines();
 
         if (orderLines == null) {
@@ -120,7 +118,7 @@ public class BasketService {
         return orderLineRepository.getQuantity(panierDTO.getId());
     }
 
-    public Long price(User user) {
+    public Float price(User user) {
         return orderRepository.getPrice(user.getId());
     }
 }
