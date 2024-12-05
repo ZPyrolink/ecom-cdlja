@@ -11,6 +11,8 @@ public class StockDTO {
     private Size size;
     private ClotheDTO clotheDTO;
 
+    public StockDTO() {}
+
     public StockDTO(Stock stock) {
         this.id = stock.getId();
         this.color = stock.getColor();
