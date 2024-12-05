@@ -1,0 +1,136 @@
+.login-page {
+  display: flex;
+}
+
+div.ng-invalid {
+  border: none; /* Désactiver les styles globaux */
+}
+
+.ws-logo {
+  height: 12%;
+  margin: 75px 10px 0 10px;
+  width: 12%;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: white;
+  padding: 10px 40px 10px 40px;
+  border-radius: 8px;
+  box-shadow: 1px 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 100px;
+  gap: 50px;
+
+  .separator {
+    width: 2px;
+    background-color: #ccc;
+    height: 90%;
+  }
+}
+
+.inscription-section {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+}
+
+.connexion-section {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+}
+
+h2 {
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-size: 15px;
+      margin-bottom: 3px;
+    }
+
+    input {
+      padding: 5px;
+      border-radius: 4px;
+      font-size: 13px;
+      margin-bottom: 5px;
+
+      &.ng-untouched {
+        border: 1px solid #ccc !important;
+      }
+
+      &.ng-valid {
+        border: 1px solid #ccc;
+      }
+
+      &.ng-invalid {
+        border: 1px solid red;
+      }
+    }
+  }
+}
+
+.inscription-inline {
+  display: flex;
+  gap: 5px;
+  width: 600px;
+
+  div {
+    flex: 1;
+  }
+}
+
+.connexion-checkbox {
+  display: flex;
+  margin-left: 2px;
+  gap: 7px;
+
+  div {
+    flex: 1;
+  }
+}
+
+.btn-primary {
+  background-color: black;
+  color: white;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #333;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+}
+
+.guest-mode {
+  margin-top: 20px;
+  text-align: center;
+
+  a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

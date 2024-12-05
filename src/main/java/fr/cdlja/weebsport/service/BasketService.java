@@ -127,4 +127,10 @@ public class BasketService {
     public Float price(User user) {
         return orderRepository.getPrice(user.getId());
     }
+
+    public Long countnbArticles(OrderDTO panierDTO) throws Exception {
+        //recupère le nb d'article de chaque ligne de commande et additionne
+        Long nbarticles = orderLineRepository.getQuantity(panierDTO.getId());
+        return nbarticles;
+    }
 }

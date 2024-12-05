@@ -8,24 +8,39 @@ export const sampleWithRequiredData: ISubscribedClients = {
 
 export const sampleWithPartialData: ISubscribedClients = {
   id: 22740,
-  firstname: 'savour tempting',
-  birthday: dayjs('2024-11-06'),
-  passworld: 'since',
-  phone: '317.542.0946 x50780',
-  points: 2797,
+  email: 'email.email@email.com',
+  phoneNumber: '317.542.0946 x50780',
 };
 
 export const sampleWithFullData: ISubscribedClients = {
   id: 27410,
-  lastname: 'cake basic',
-  firstname: 'hm pivot into',
-  birthday: dayjs('2024-11-07'),
   email: 'Saige.Runte@yahoo.com',
-  passworld: 'for midst draft',
   address: 'despite punctual',
-  bankCard: 'skeletal yippee',
-  phone: '780-425-0607 x827',
-  points: 8899,
+  phoneNumber: '780-425-0607 x827',
+  basket: {
+    id: 7782,
+    status: 'BASKET',
+    date: dayjs(),
+    amount: 0,
+    meanOfPayment: 'CB',
+    client: {
+      id: 27410,
+    },
+  },
+  favorises: [
+    {
+      id: 6719,
+      type: 'TEESHIRT',
+      price: 10,
+    },
+    {
+      id: 6719,
+      type: 'SHORT',
+      gender: 'MAN',
+      price: 25,
+      description: 'un short basique pour homme',
+    },
+  ],
 };
 
 export const sampleWithNewData: NewSubscribedClients = {

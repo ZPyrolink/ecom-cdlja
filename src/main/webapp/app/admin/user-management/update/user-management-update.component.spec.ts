@@ -1,10 +1,8 @@
-import { ComponentFixture, TestBed, fakeAsync, inject, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-
-import { Authority } from 'app/config/authority.constants';
 import { UserManagementService } from '../service/user-management.service';
 import { User } from '../user-management.model';
 
@@ -24,7 +22,7 @@ describe('User Management Update Component', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            data: of({ user: new User(123, 'user', 'first', 'last', 'first@last.com', true, 'en', [Authority.USER], 'admin') }),
+            data: of({ user: new User(123, 'user', 'first@last.com', 'password', 'first', 'last', 'en') }),
           },
         },
       ],

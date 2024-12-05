@@ -1,11 +1,8 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
-
-import dayjs from 'dayjs/esm';
+import { map, Observable } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
-import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { ISubscribedClients, NewSubscribedClients } from '../subscribed-clients.model';
@@ -109,14 +106,12 @@ export class SubscribedClientsService {
   ): RestOf<T> {
     return {
       ...subscribedClients,
-      birthday: subscribedClients.birthday?.format(DATE_FORMAT) ?? null,
     };
   }
 
   protected convertDateFromServer(restSubscribedClients: RestSubscribedClients): ISubscribedClients {
     return {
       ...restSubscribedClients,
-      birthday: restSubscribedClients.birthday ? dayjs(restSubscribedClients.birthday) : undefined,
     };
   }
 

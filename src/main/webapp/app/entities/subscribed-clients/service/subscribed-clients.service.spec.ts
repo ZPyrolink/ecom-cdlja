@@ -1,8 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
-
-import { DATE_FORMAT } from 'app/config/input.constants';
 import { ISubscribedClients } from '../subscribed-clients.model';
 import { sampleWithFullData, sampleWithNewData, sampleWithPartialData, sampleWithRequiredData } from '../subscribed-clients.test-samples';
 
@@ -10,7 +8,6 @@ import { RestSubscribedClients, SubscribedClientsService } from './subscribed-cl
 
 const requireRestSample: RestSubscribedClients = {
   ...sampleWithRequiredData,
-  birthday: sampleWithRequiredData.birthday?.format(DATE_FORMAT),
 };
 
 describe('SubscribedClients Service', () => {
@@ -32,7 +29,7 @@ describe('SubscribedClients Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.find(123).subscribe(resp => (expectedResult = resp.body));
+      service.find(123).subscribe(resp => (expectedResult = resp.body as ISubscribedClients));
 
       const req = httpMock.expectOne({ method: 'GET' });
       req.flush(returnedFromService);
@@ -44,7 +41,7 @@ describe('SubscribedClients Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.create(subscribedClients).subscribe(resp => (expectedResult = resp.body));
+      service.create(subscribedClients).subscribe(resp => (expectedResult = resp.body as ISubscribedClients));
 
       const req = httpMock.expectOne({ method: 'POST' });
       req.flush(returnedFromService);
@@ -56,7 +53,7 @@ describe('SubscribedClients Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.update(subscribedClients).subscribe(resp => (expectedResult = resp.body));
+      service.update(subscribedClients).subscribe(resp => (expectedResult = resp.body as ISubscribedClients));
 
       const req = httpMock.expectOne({ method: 'PUT' });
       req.flush(returnedFromService);
@@ -68,7 +65,7 @@ describe('SubscribedClients Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.partialUpdate(patchObject).subscribe(resp => (expectedResult = resp.body));
+      service.partialUpdate(patchObject).subscribe(resp => (expectedResult = resp.body as ISubscribedClients));
 
       const req = httpMock.expectOne({ method: 'PATCH' });
       req.flush(returnedFromService);
@@ -80,7 +77,7 @@ describe('SubscribedClients Service', () => {
 
       const expected = { ...sampleWithRequiredData };
 
-      service.query().subscribe(resp => (expectedResult = resp.body));
+      service.query().subscribe(resp => (expectedResult = resp.body as ISubscribedClients[]));
 
       const req = httpMock.expectOne({ method: 'GET' });
       req.flush([returnedFromService]);
