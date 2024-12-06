@@ -56,7 +56,5 @@ export default function getSizeLabel(
   } else if (size === 'FOURTEEN') {
     return Size.FOURTEEN;
   }
-
-  // Par sécurité, renvoie un label par défaut si la taille n'est pas reconnue
   return 'Taille inconnue';
 }

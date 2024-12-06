@@ -5,6 +5,8 @@ import SelectedItemsComponent from '../selected-items/selected-items.component';
 import CheckboxListComponent from '../checkbox-list/checkbox-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterDataService } from './service/FilterDataService';
+import { VideoGameService } from '../../entities/category/service/videogame.service';
+import { AnimeService } from '../../entities/category/service/anime.service';
 
 @Component({
   selector: 'jhi-filter-menu',
@@ -15,45 +17,8 @@ import { FilterDataService } from './service/FilterDataService';
 })
 export default class FilterMenuComponent implements OnInit {
   typesOfClothes = Object.values(ClothesTypeEnum);
-  typesOfGames = [
-    'Jeu 1',
-    'Jeu 2',
-    'Jeu 3',
-    'Jeu 4',
-    'Jeu 5',
-    'Jeu 6',
-    'Jeu 7',
-    'Jeu 8',
-    'Jeu 9',
-    'Jeu 10',
-    'Jeu 11',
-    'Jeu 12',
-    'Jeu 13',
-    'Jeu 14',
-    'Jeu 15',
-    'Jeu 16',
-    'Jeu 17',
-    'Jeu 18',
-  ];
-  typesOfAnime = [
-    'Anime 1',
-    'Anime 2',
-    'Anime 3',
-    'Anime 4',
-    'Anime 5',
-    'Anime 6',
-    'Anime 7',
-    'Anime 8',
-    'Anime 9',
-    'Anime 10',
-    'Anime 11',
-    'Anime 12',
-    'Anime 13',
-    'Anime 14',
-    'Anime 15',
-    'Anime 16',
-    'Anime 17',
-  ];
+  typesOfGames: string[] = [];
+  typesOfAnime: string[] = [];
 
   selectedItemsClothes: string[] = [];
   selectedItemsThemes: string[] = [];
@@ -62,6 +27,8 @@ export default class FilterMenuComponent implements OnInit {
   constructor(
     private filterDataService: FilterDataService,
     private cdr: ChangeDetectorRef,
+    private videoGameService: VideoGameService,
+    private animeService: AnimeService,
   ) {}
   ngOnInit(): void {
     this.filterDataService.getThemes().subscribe(themes => {
@@ -71,6 +38,12 @@ export default class FilterMenuComponent implements OnInit {
     this.filterDataService.getClothes().subscribe(clothes => {
       this.selectedItemsClothes = clothes;
       this.cdr.detectChanges();
+    });
+    this.videoGameService.query().subscribe(response => {
+      this.typesOfGames = response.body ?? [];
+    });
+    this.animeService.query().subscribe(response => {
+      this.typesOfAnime = response.body ?? [];
     });
   }
 

@@ -52,7 +52,5 @@ export default function getColorLabel(
   } else if (color === 'PURPLE') {
     return Color.PURPLE;
   }
-
-  // Par sécurité, renvoie un label par défaut si la couleur n'est pas reconnue
   return 'Couleur inconnue';
 }
