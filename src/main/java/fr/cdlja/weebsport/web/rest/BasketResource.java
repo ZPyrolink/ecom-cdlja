@@ -4,6 +4,7 @@ import fr.cdlja.weebsport.repository.UserRepository;
 import fr.cdlja.weebsport.service.BasketService;
 import fr.cdlja.weebsport.service.SubscribedClientsService;
 import fr.cdlja.weebsport.service.UserService;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,9 +35,10 @@ public class BasketResource {
     @PostMapping("/{id}")
     public ResponseEntity<?> ajouterArticle(
         @PathVariable(value = "id", required = false) final long articleId,
-        @RequestParam(value = "quantite", defaultValue = "1") int quantite
+        @RequestBody(required = false) Map<String, Integer> body
     ) {
         try {
+            int quantite = body != null && body.containsKey("quantite") ? body.get("quantite") : 1;
             basketService.ajouterArticle(articleId, quantite);
             return ResponseEntity.ok("Article ajouté avec succès");
         } catch (Exception e) {
@@ -47,9 +49,10 @@ public class BasketResource {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> supprimerArticle(
         @PathVariable(value = "id", required = false) final long articleId,
-        @RequestParam(value = "quantite", defaultValue = "1") int quantite
+        @RequestBody(required = false) Map<String, Integer> body
     ) {
         try {
+            int quantite = body != null && body.containsKey("quantite") ? body.get("quantite") : 1;
             basketService.supprimerArticle(articleId, quantite);
             return ResponseEntity.ok("Article supprimé avec succès");
         } catch (Exception e) {
