@@ -7,7 +7,7 @@
   <jhi-filter-menu *ngIf="isVisible" class="side-filter-menu"></jhi-filter-menu>
 
   <div class="principal-page">
-    <jhi-arrow></jhi-arrow>
+    <jhi-arrow *ngIf="!isVisible"></jhi-arrow>
     <router-outlet></router-outlet>
   </div>
 </div>

@@ -9,7 +9,7 @@ import PageRibbonComponent from '../profiles/page-ribbon.component';
 import FooterComponent from '../footer/footer.component';
 import NavbarComponent from '../navbar/navbar.component';
 import FilterMenuComponent from '../../component/filter-menu/filtrer-menu.component';
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import ArrowComponent from '../../component/arrow/arrow.component';
 
 @Component({
@@ -18,7 +18,7 @@ import ArrowComponent from '../../component/arrow/arrow.component';
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
   providers: [AppPageTitleStrategy],
-  imports: [RouterOutlet, FooterComponent, NavbarComponent, PageRibbonComponent, FilterMenuComponent, NgIf, ArrowComponent],
+  imports: [RouterOutlet, FooterComponent, NavbarComponent, PageRibbonComponent, FilterMenuComponent, NgIf, ArrowComponent, NgClass],
 })
 export default class MainComponent implements OnInit {
   isVisible = false;
