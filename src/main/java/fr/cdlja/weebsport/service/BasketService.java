@@ -1,12 +1,14 @@
 package fr.cdlja.weebsport.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.cdlja.weebsport.domain.*;
 import fr.cdlja.weebsport.domain.enumeration.MeansOfPayment;
 import fr.cdlja.weebsport.domain.enumeration.Status;
-import fr.cdlja.weebsport.repository.*;
+import fr.cdlja.weebsport.repository.OrderLineRepository;
+import fr.cdlja.weebsport.repository.OrderRepository;
+import fr.cdlja.weebsport.repository.StockRepository;
+import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
 import fr.cdlja.weebsport.service.dto.OrderDTO;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 import org.slf4j.Logger;
@@ -26,17 +28,14 @@ public class BasketService {
     private final OrderRepository orderRepository;
     private final SubscribedClientsRepository subscribedClientsRepository;
     private final UserService userService;
-    private final ObjectMapper jacksonObjectMapper;
 
     public BasketService(
         SubscribedClientsService subscribedClientsService,
         OrderLineRepository orderLineRepository,
         StockRepository stockRepository,
-        UserRepository userRepository,
         OrderRepository orderRepository,
         SubscribedClientsRepository subscribedClientsRepository,
-        UserService userService,
-        ObjectMapper jacksonObjectMapper
+        UserService userService
     ) {
         this.subscribedClientsService = subscribedClientsService;
         this.orderLineRepository = orderLineRepository;
@@ -44,7 +43,6 @@ public class BasketService {
         this.orderRepository = orderRepository;
         this.subscribedClientsRepository = subscribedClientsRepository;
         this.userService = userService;
-        this.jacksonObjectMapper = jacksonObjectMapper;
     }
 
     public void ajouterArticle(Long articleId) throws Exception {
@@ -139,6 +137,7 @@ public class BasketService {
 
     public enum PaymentResult {
         Success("Your payement succeeded", HttpStatus.OK),
+        OnlineSuccess("Apple Pay worked", HttpStatus.OK),
         CardNb("The card number is invalid"),
         Expired("The card has expired"),
         Crypto("The crypto is incorrect");
@@ -158,6 +157,11 @@ public class BasketService {
 
     public PaymentResult pay(String cardNum, int month, int year, String crypto, OrderDTO basket, MeansOfPayment meanOfPayment)
         throws InterruptedException {
+        if (meanOfPayment == MeansOfPayment.ONLINEPAYMENT) {
+            saveToHistory(basket, meanOfPayment);
+            return PaymentResult.OnlineSuccess;
+        }
+
         if (cardNum.charAt(0) != '8' || cardNum.charAt(cardNum.length() - 1) != '2') {
             return PaymentResult.CardNb;
         }
@@ -178,22 +182,22 @@ public class BasketService {
             return PaymentResult.Crypto;
         }
 
+        saveToHistory(basket, meanOfPayment);
+
+        return PaymentResult.Success;
+    }
+
+    private void saveToHistory(OrderDTO basket, MeansOfPayment meanOfPayment) throws InterruptedException {
         if (basket != null) {
             Thread.sleep(1_000);
-            return PaymentResult.Success;
+            return;
         }
 
         SubscribedClients subscribedClients = subscribedClientsRepository
             .findByEmail(userService.getUserWithAuthorities().orElseThrow().getEmail())
             .orElseThrow();
 
-        Order basketOrder = subscribedClients.getBasket().status(Status.PAID).meanOfPayment(meanOfPayment);
-
-        try {
-            LOG.debug(jacksonObjectMapper.writeValueAsString(basketOrder));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        Order basketOrder = subscribedClients.getBasket().status(Status.PAID).meanOfPayment(meanOfPayment).date(LocalDate.now());
 
         orderRepository.save(basketOrder);
 
@@ -201,8 +205,6 @@ public class BasketService {
 
         subscribedClientsService.createBasket(subscribedClients);
         subscribedClientsRepository.save(subscribedClients);
-
-        return PaymentResult.Success;
     }
 
     private void revertStocks() {}
