@@ -11,15 +11,11 @@ import fr.cdlja.weebsport.service.dto.OrderDTO;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BasketService {
-
-    private static final Logger LOG = LoggerFactory.getLogger(BasketService.class);
 
     public final SubscribedClientsService subscribedClientsService;
     private final OrderLineRepository orderLineRepository;
