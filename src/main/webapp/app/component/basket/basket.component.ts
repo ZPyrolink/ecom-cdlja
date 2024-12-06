@@ -68,7 +68,7 @@ export default class BasketComponent implements OnInit {
 
   decreaseQuantity(clothe: IOrderLine): void {
     if (clothe.stockDTO?.id) {
-      this.service.delete(clothe.stockDTO.id).subscribe({
+      this.service.delete(clothe.stockDTO.id, 1).subscribe({
         next() {
           window.location.reload();
         },
@@ -80,7 +80,17 @@ export default class BasketComponent implements OnInit {
   }
 
   delete(clothe: IOrderLine): void {
-    // TODO ajouter route
+    if (clothe.stockDTO?.id && clothe.quantity) {
+      this.service.delete(clothe.stockDTO.id, clothe.quantity).subscribe({
+        next(response) {
+          window.location.reload();
+        },
+        error(error) {
+          // TODO ajouter erreur si stock manquant
+          window.console.error('Erreur lors de la requête:', error);
+        },
+      });
+    }
   }
 
   onPageChange(page: number): void {

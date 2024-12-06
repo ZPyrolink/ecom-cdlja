@@ -69,13 +69,13 @@ export class OrderService {
     return this.http.get<IOrder>(this.resourceUrl, { params: options, headers, observe: 'response' });
   }
 
-  delete(id: number): Observable<HttpResponse<{}>> {
+  delete(id: number, quantity: number): Observable<HttpResponse<{}>> {
     const token = window.sessionStorage['id_storage'];
-    const options = createRequestOption();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const body = { quantite: quantity };
     return this.http.delete(`api/basket/${id}`, {
-      params: options,
       headers,
+      body,
       observe: 'response',
       responseType: 'text',
     });
