@@ -1,6 +1,7 @@
 package fr.cdlja.weebsport.service;
 
 import fr.cdlja.weebsport.domain.*;
+import fr.cdlja.weebsport.domain.enumeration.Status;
 import fr.cdlja.weebsport.repository.*;
 import fr.cdlja.weebsport.service.dto.OrderDTO;
 import java.time.LocalDateTime;
@@ -181,14 +182,18 @@ public class BasketService {
         //
         //        orderRepository.validate(basket.getId());
 
-        Order basketOrder = subscribedClientsRepository
+        SubscribedClients subscribedClients = subscribedClientsRepository
             .findByEmail(userService.getUserWithAuthorities().orElseThrow().getEmail())
-            .orElseThrow()
-            .getBasket();
+            .orElseThrow();
 
-        basketOrder.status();
+        Order basketOrder = subscribedClients.getBasket().status(Status.PAID);
+
+        orderRepository.save(basketOrder);
 
         Thread.sleep(2_000);
+
+        subscribedClientsService.createBasket(subscribedClients);
+        subscribedClientsRepository.save(subscribedClients);
 
         return PaymentResult.Success;
     }
