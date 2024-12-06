@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterDataService } from './service/FilterDataService';
 import { VideoGameService } from '../../entities/category/service/videogame.service';
 import { AnimeService } from '../../entities/category/service/anime.service';
+import { CategoryService } from '../../entities/category/service/category.service';
 
 @Component({
   selector: 'jhi-filter-menu',
@@ -29,6 +30,7 @@ export default class FilterMenuComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private videoGameService: VideoGameService,
     private animeService: AnimeService,
+    private categoryService: CategoryService,
   ) {}
   ngOnInit(): void {
     this.filterDataService.getThemes().subscribe(themes => {
@@ -72,6 +74,15 @@ export default class FilterMenuComponent implements OnInit {
   }
 
   onSearch(): void {
+    this.categoryService.search(this.searchQuery).subscribe({
+      next: data => {
+        this.typesOfAnime = data.animeThemes;
+        this.typesOfGames = data.videogameThemes;
+      },
+      error(err) {
+        console.error('Erreur lors de la recherche :', err);
+      },
+    });
     // eslint-disable-next-line no-console
     console.log('Recherche :', this.searchQuery);
   }
