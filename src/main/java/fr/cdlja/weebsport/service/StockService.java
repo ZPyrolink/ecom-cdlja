@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,9 +50,9 @@ public class StockService {
             .findById(clientid)
             .orElseThrow(() -> new RuntimeException("Client not found"));
         String email = client.getEmail();
-        OrderDTO basket = subscribedClientsService.getBasket(email);
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("id").ascending());
+        OrderDTO basket = subscribedClientsService.getBasket(email, pageable);
         Long orderid = basket.getId();
-        Pageable pageable = PageRequest.of(0, 10);
         Page<OrderLine> lines = orderLineRepository.getlines(orderid, pageable);
 
         for (OrderLine orderLine : lines) {
@@ -61,17 +62,17 @@ public class StockService {
                 int quantity = (int) res[0][0];
                 int version = (int) res[0][1];
                 if (quantity == 0) {
-                    throw new Exception("Stock quantity is zero");
+                    throw new Exception("Stock quantity is zero" + stock.getId());
                 }
 
                 Integer purchasequantity = orderLine.getQuantity();
                 if (purchasequantity > quantity) {
-                    throw new Exception("nb souhaité superieur à la quantité disponible");
+                    throw new Exception("desired number greater than available quantity");
                 }
                 Integer newquantity = quantity - purchasequantity;
                 int rowsAffected = stockRepository.updateStock(newquantity, version, stock.getId());
                 if (!(rowsAffected > 0)) {
-                    throw new Exception("stock not available");
+                    throw new Exception("stock not available" + stock.getId());
                 }
             } else {
                 throw new Exception("No stock found for ID: " + stock.getId());
@@ -92,7 +93,7 @@ public class StockService {
                 int quantity = (int) res[0][0];
                 int version = (int) res[0][1];
                 if (quantity == 0) {
-                    throw new Exception("Stock quantity is zero");
+                    throw new Exception("Stock quantity is zero" + stockDTO.getId());
                 }
 
                 if (purchasequantity > quantity) {
@@ -103,7 +104,7 @@ public class StockService {
                 //donc comme si une commande à été validée depuis la lecture la requete echou et la commande est impossible
                 int rowsAffected = stockRepository.updateStock(newquantity, version, stockDTO.getId());
                 if (!(rowsAffected > 0)) {
-                    throw new Exception("stock not available");
+                    throw new Exception("stock not available" + stockDTO.getId());
                 }
             } else {
                 throw new Exception("No stock found for ID: " + stockDTO.getId());
