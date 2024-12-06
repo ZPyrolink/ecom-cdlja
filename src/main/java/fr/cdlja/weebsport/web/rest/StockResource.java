@@ -5,6 +5,7 @@ import fr.cdlja.weebsport.domain.Stock;
 import fr.cdlja.weebsport.repository.ClotheRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
 import fr.cdlja.weebsport.service.StockService;
+import fr.cdlja.weebsport.service.dto.ClotheDTO;
 import fr.cdlja.weebsport.service.dto.FilterDTO;
 import fr.cdlja.weebsport.service.dto.FilterSortDTO;
 import fr.cdlja.weebsport.web.rest.errors.BadRequestAlertException;
@@ -166,70 +167,34 @@ public class StockResource {
     }
 
     @GetMapping("/filters")
-    public List<Clothe> getStocksFiltered(@RequestBody FilterSortDTO filtersSort) {
-        FilterDTO filters = filtersSort.getFilter();
+    public ResponseEntity<List<ClotheDTO>> getStocksFiltered(@RequestBody FilterSortDTO filtersSort) {
+        FilterDTO filters = filtersSort.getFilters();
         String keyWord = filtersSort.getSearch();
-        fr.cdlja.weebsport.domain.enumeration.Sort sort = filtersSort.getSort();
+        String sort = filtersSort.getSort();
 
-        Set<Clothe> clothesSearch = stockService.search(keyWord);
+        List<ClotheDTO> clothesDTO = new ArrayList<>();
+        Set<Clothe> clothesSet = stockService.applyFilters(filters);
+        ArrayList<Clothe> clothesList;
 
-        Set<Stock> stocks = Set.of();
-        Set<Clothe> clothes = Set.of();
-
-        if (filters.getSizes() != null) {
-            stocks = new HashSet<>(stockRepository.getStocksBySize(filters.getSizes()));
-            clothes = new HashSet<>();
-            for (Stock s : stocks) {
-                clothes.add(s.getClothe());
-            }
-            clothesSearch.retainAll(clothes);
+        if (keyWord != null) {
+            Set<Clothe> clothesSearch = stockService.search(keyWord);
+            clothesSearch.retainAll(clothesSet);
+            clothesList = new ArrayList<>(clothesSearch);
+        } else {
+            clothesList = new ArrayList<>(clothesSet);
         }
 
-        if (filters.getColors() != null) {
-            stocks = new HashSet<>(stockRepository.getStocksByColor(filters.getColors()));
-            clothes = new HashSet<>();
-            for (Stock s : stocks) {
-                clothes.add(s.getClothe());
-            }
-            clothesSearch.retainAll(clothes);
-        }
-
-        if (filters.getPrices() != null) {
-            Float minPrice = filters.getPrices().getMin();
-            Float maxPrice = filters.getPrices().getMax();
-
-            if (minPrice != null && maxPrice != null) {
-                clothes = new HashSet<>(clotheRepository.getClotheFilteredByPrice(minPrice, maxPrice));
-            } else if (minPrice != null) {
-                clothes = new HashSet<>(clotheRepository.getClotheByMinPrice(minPrice));
-            } else if (maxPrice != null) {
-                clothes = new HashSet<>(clotheRepository.getClotheByMaxPrice(maxPrice));
-            }
-            clothesSearch.retainAll(clothes);
-        }
-
-        if (filters.getGenders() != null) {
-            clothes = new HashSet<>(clotheRepository.findByGender(filters.getGenders()));
-            clothesSearch.retainAll(clothes);
-        }
-
-        if (filters.getVideogameThemes() != null) {
-            clothesSearch.retainAll(clothes);
-        }
-
-        if (filters.getAnimeThemes() != null) {
-            clothes = new HashSet<>(clotheRepository.findByAnimeThemes(filters.getAnimeThemes()));
-            clothesSearch.retainAll(clothes);
-        }
-
-        List<Clothe> clothesList = new ArrayList<>(clothesSearch);
-        if (sort == fr.cdlja.weebsport.domain.enumeration.Sort.ASCENDING) {
+        if (Objects.equals(sort, "asc")) {
             clothesList.sort(Comparator.comparing(Clothe::getPrice));
-        } else if (sort == fr.cdlja.weebsport.domain.enumeration.Sort.DESCENDING) {
+        } else if (Objects.equals(sort, "desc")) {
             clothesList.sort(Comparator.comparing(Clothe::getPrice).reversed());
         }
 
-        return clothesList;
+        for (Clothe c : clothesList) {
+            clothesDTO.add(new ClotheDTO(c));
+        }
+
+        return ResponseEntity.ok(clothesDTO);
     }
 
     /**

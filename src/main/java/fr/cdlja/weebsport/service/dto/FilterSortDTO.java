@@ -1,19 +1,17 @@
 package fr.cdlja.weebsport.service.dto;
 
-import fr.cdlja.weebsport.domain.enumeration.Sort;
-
 public class FilterSortDTO {
 
-    private FilterDTO filter;
+    private FilterDTO filters;
     private String search;
-    private Sort sort;
+    private String sort;
 
-    public FilterDTO getFilter() {
-        return filter;
+    public FilterDTO getFilters() {
+        return filters;
     }
 
     public void setFilter(FilterDTO filter) {
-        this.filter = filter;
+        this.filters = filter;
     }
 
     public String getSearch() {
@@ -24,11 +22,11 @@ public class FilterSortDTO {
         this.search = search;
     }
 
-    public Sort getSort() {
+    public String getSort() {
         return sort;
     }
 
-    public void setSort(Sort sort) {
+    public void setSort(String sort) {
         this.sort = sort;
     }
 }
