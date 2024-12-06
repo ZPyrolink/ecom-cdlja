@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import SharedModule from 'app/shared/shared.module';
 import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
 import ActiveMenuDirective from './active-menu.directive';
 import { FormsModule } from '@angular/forms';
+import { OrderService } from '../../entities/order/service/order.service';
 
 @Component({
   standalone: true,
@@ -12,10 +13,32 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './navbar.component.scss',
   imports: [RouterModule, SharedModule, HasAnyAuthorityDirective, ActiveMenuDirective, FormsModule],
 })
-export default class NavbarComponent {
+export default class NavbarComponent implements OnInit {
   searchQuery = '';
   isVisible = false;
+  orderQuantity = 0;
   @Output() visibilityChange = new EventEmitter<boolean>();
+
+  constructor(private serviceOrder: OrderService) {}
+
+  ngOnInit(): void {
+    this.serviceOrder.query()?.subscribe({
+      next: response => {
+        if (response.body) {
+          if (response.body.orderLines) {
+            for (const line of response.body.orderLines) {
+              if (line.quantity) {
+                this.orderQuantity += line.quantity;
+              }
+            }
+          }
+        } else {
+          // TODO gerer si pas connecter et pour supprimer et ajouter quantite
+        }
+      },
+    });
+  }
+
   openPanel(): void {
     this.isVisible = !this.isVisible;
     this.visibilityChange.emit(this.isVisible);
