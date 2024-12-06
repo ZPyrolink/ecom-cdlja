@@ -131,13 +131,22 @@ public class StockService {
         Set<Clothe> clothesTemp = Set.of();
         boolean firstFilter = true;
 
+        if (filters != null) {
+            System.out.println("C'est quand-même pas nul");
+            System.out.flush();
+        }
+
+        System.out.println("Stock service et ça marche");
+        System.out.flush();
+
         if (filters.getSizes() != null) {
             stocks = new HashSet<>(stockRepository.getStocksBySize(filters.getSizes()));
             for (Stock s : stocks) {
                 clothes.add(s.getClothe());
             }
             firstFilter = false;
-            LOG.info("Taille après sizes : " + clothes.size());
+            System.out.println("Taille après sizes : " + clothes.size());
+            System.out.flush();
         }
 
         if (filters.getColors() != null) {
@@ -152,7 +161,9 @@ public class StockService {
             } else {
                 clothes.retainAll(clothesTemp);
             }
-            LOG.info("Taille après colors : " + clothes.size());
+            System.out.println("Taille de temp : " + clothesTemp.size());
+            System.out.println("Taille après colors : " + clothes.size());
+            System.out.flush();
         }
 
         if (filters.getPrices() != null) {
@@ -174,7 +185,9 @@ public class StockService {
             } else {
                 clothes.retainAll(clothesTemp);
             }
-            LOG.info("Taille après price : " + clothes.size());
+            System.out.println("Taille de temp : " + clothesTemp.size());
+            System.out.println("Taille après price : " + clothes.size());
+            System.out.flush();
         }
 
         if (filters.getGenders() != null) {
@@ -185,7 +198,9 @@ public class StockService {
             } else {
                 clothes.retainAll(clothesTemp);
             }
-            LOG.info("Taille après genders : " + clothes.size());
+            System.out.println("Taille de temp : " + clothesTemp.size());
+            System.out.println("Taille après genders : " + clothes.size());
+            System.out.flush();
         }
 
         if (filters.getVideogameThemes() != null) {
@@ -196,17 +211,25 @@ public class StockService {
             } else {
                 clothes.retainAll(clothesTemp);
             }
-            LOG.info("Taille après videoGameTheme: " + clothes.size());
+            System.out.println("Taille de temp : " + clothesTemp.size());
+            System.out.println("Taille après videoGameTheme: " + clothes.size());
+            System.out.flush();
         }
 
         if (filters.getAnimeThemes() != null) {
             clothesTemp = new HashSet<>(clotheRepository.findByAnimeThemes(filters.getAnimeThemes()));
             if (firstFilter) {
-                return clothesTemp;
+                clothes.addAll(clothesTemp);
+                firstFilter = false;
             } else {
                 clothes.retainAll(clothesTemp);
             }
-            LOG.info("Taille après animesThemes : " + clothes.size());
+            System.out.println("Taille de temp : " + clothesTemp.size());
+            System.out.println("Taille après animesThemes : " + clothes.size());
+            System.out.flush();
+        }
+        if (firstFilter) {
+            System.out.println("Aucun filtre n'a été pris en considération");
         }
         return clothes;
     }

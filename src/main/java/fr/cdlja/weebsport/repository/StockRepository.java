@@ -42,15 +42,11 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     int updateStock(@Param("quantity") Integer quantity, @Param("version") Integer version, @Param("id") Long id);
 
     @Query("SELECT s from Stock s WHERE s.size IN :sizes")
-    List<Stock> getStocksBySize(@Param("size") List<Size> sizes);
+    List<Stock> getStocksBySize(@Param("sizes") List<Size> sizes);
 
     @Query("SELECT s FROM Stock s WHERE s.color IN :colors")
-    List<Stock> getStocksByColor(@Param("color") List<Color> colors);
+    List<Stock> getStocksByColor(@Param("colors") List<Color> colors);
 
     @Query("SELECT s FROM Stock s WHERE " + "CAST(s.size AS String) LIKE %:keyword% OR " + "CAST(s.color AS String) LIKE %:keyword%")
     List<Stock> searchStockByKeyword(String keyword);
-
-    List<Stock> findBySizeContains(@Param("keyword") String keyword);
-
-    List<Stock> findByColorContains(@Param("keyword") String keyword);
 }

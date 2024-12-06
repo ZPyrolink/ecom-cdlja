@@ -1,5 +1,6 @@
 package fr.cdlja.weebsport.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.cdlja.weebsport.domain.enumeration.Color;
 import fr.cdlja.weebsport.domain.enumeration.Gender;
 import fr.cdlja.weebsport.domain.enumeration.Size;
@@ -7,11 +8,22 @@ import java.util.List;
 
 public class FilterDTO {
 
+    @JsonProperty("size")
     private List<Size> sizes;
+
+    @JsonProperty("couleur")
     private List<Color> colors;
+
+    @JsonProperty("price")
     private PriceFilterDTO prices;
+
+    @JsonProperty("gender")
     private List<Gender> genders;
+
+    @JsonProperty("videogame")
     private List<String> videogameThemes;
+
+    @JsonProperty("anime")
     private List<String> animeThemes;
 
     public List<Size> getSizes() {

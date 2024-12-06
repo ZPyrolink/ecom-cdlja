@@ -168,6 +168,9 @@ public class StockResource {
 
     @GetMapping("/filters")
     public ResponseEntity<List<ClotheDTO>> getStocksFiltered(@RequestBody FilterSortDTO filtersSort) {
+        if (filtersSort == null) {
+            throw new RuntimeException("Problems with the body");
+        }
         FilterDTO filters = filtersSort.getFilters();
         String keyWord = filtersSort.getSearch();
         String sort = filtersSort.getSort();

@@ -38,7 +38,7 @@ public interface ClotheRepository extends JpaRepository<Clothe, Long> {
     List<Clothe> getClotheFilteredByPrice(@Param("minPrice") Float minPrice, @Param("maxPrice") Float maxPrice);
 
     @Query("SELECT c FROM Clothe c WHERE c.gender IN :genders")
-    List<Clothe> findByGender(@Param("gender") List<Gender> genders);
+    List<Clothe> findByGender(@Param("genders") List<Gender> genders);
 
     @Query("SELECT c FROM Clothe c WHERE c.theme IN :videoGameThemes")
     List<Clothe> findByVideoGameThemes(@Param("videoGameThemes") List<String> videoGameThemes);
