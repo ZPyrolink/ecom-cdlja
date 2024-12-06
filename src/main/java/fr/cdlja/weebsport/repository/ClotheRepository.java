@@ -40,17 +40,17 @@ public interface ClotheRepository extends JpaRepository<Clothe, Long> {
     @Query("SELECT c FROM Clothe c WHERE c.gender IN :genders")
     List<Clothe> findByGender(@Param("genders") List<Gender> genders);
 
-    @Query("SELECT c FROM Clothe c WHERE c.theme IN :videoGameThemes")
+    @Query("SELECT c FROM Clothe c WHERE UPPER(c.theme) IN :videoGameThemes")
     List<Clothe> findByVideoGameThemes(@Param("videoGameThemes") List<String> videoGameThemes);
 
-    @Query("SELECT c FROM Clothe c WHERE c.theme IN :animeThemes")
+    @Query("SELECT c FROM Clothe c WHERE UPPER(c.theme) IN :animeThemes")
     List<Clothe> findByAnimeThemes(@Param("animeThemes") List<String> animeThemes);
 
     @Query(
         "SELECT c FROM Clothe c WHERE " +
-        "CAST(c.theme AS String) LIKE %:keyword% OR " +
-        "CAST(c.type AS String) LIKE %:keyword% OR " +
-        "CAST(c.description AS String) LIKE %:keyword%"
+        "UPPER(CAST(c.theme AS String)) LIKE %:keyword% OR " +
+        "UPPER(CAST(c.type AS String)) LIKE %:keyword% OR " +
+        "UPPER(CAST(c.description AS String)) LIKE %:keyword%"
     )
     List<Clothe> searchClotheByKeyword(String keyword);
 }

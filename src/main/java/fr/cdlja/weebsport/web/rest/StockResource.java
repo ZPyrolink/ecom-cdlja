@@ -169,28 +169,39 @@ public class StockResource {
     @GetMapping("/filters")
     public ResponseEntity<List<ClotheDTO>> getStocksFiltered(@RequestBody FilterSortDTO filtersSort) {
         if (filtersSort == null) {
-            throw new RuntimeException("Problems with the body");
+            throw new RuntimeException("Problems with the body. Maybe it is empty");
         }
         FilterDTO filters = filtersSort.getFilters();
         String keyWord = filtersSort.getSearch();
         String sort = filtersSort.getSort();
 
         List<ClotheDTO> clothesDTO = new ArrayList<>();
-        Set<Clothe> clothesSet = stockService.applyFilters(filters);
+        Set<Clothe> clothesSet;
         ArrayList<Clothe> clothesList;
 
         if (keyWord != null) {
-            Set<Clothe> clothesSearch = stockService.search(keyWord);
-            clothesSearch.retainAll(clothesSet);
+            Set<Clothe> clothesSearch = stockService.search(keyWord.toUpperCase());
+            if (filters != null) {
+                clothesSet = stockService.applyFilters(filters);
+                clothesSearch.retainAll(clothesSet);
+            }
             clothesList = new ArrayList<>(clothesSearch);
         } else {
-            clothesList = new ArrayList<>(clothesSet);
+            if (filters != null) {
+                clothesSet = stockService.applyFilters(filters);
+                clothesList = new ArrayList<>(clothesSet);
+            } else {
+                clothesList = new ArrayList<>();
+            }
         }
 
-        if (Objects.equals(sort, "asc")) {
-            clothesList.sort(Comparator.comparing(Clothe::getPrice));
-        } else if (Objects.equals(sort, "desc")) {
-            clothesList.sort(Comparator.comparing(Clothe::getPrice).reversed());
+        if (sort != null) {
+            sort = sort.toLowerCase();
+            if (Objects.equals(sort, "asc")) {
+                clothesList.sort(Comparator.comparing(Clothe::getPrice));
+            } else if (Objects.equals(sort, "desc")) {
+                clothesList.sort(Comparator.comparing(Clothe::getPrice).reversed());
+            }
         }
 
         for (Clothe c : clothesList) {

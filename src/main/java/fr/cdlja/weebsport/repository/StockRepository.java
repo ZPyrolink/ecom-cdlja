@@ -47,6 +47,10 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     @Query("SELECT s FROM Stock s WHERE s.color IN :colors")
     List<Stock> getStocksByColor(@Param("colors") List<Color> colors);
 
-    @Query("SELECT s FROM Stock s WHERE " + "CAST(s.size AS String) LIKE %:keyword% OR " + "CAST(s.color AS String) LIKE %:keyword%")
+    @Query(
+        "SELECT s FROM Stock s WHERE " +
+        "UPPER(CAST(s.size AS String)) LIKE %:keyword% OR " +
+        "UPPER(CAST(s.color AS String)) LIKE %:keyword%"
+    )
     List<Stock> searchStockByKeyword(String keyword);
 }
