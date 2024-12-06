@@ -7,6 +7,7 @@ import { IClothe } from '../../entities/clothe/clothe.model';
 import { ClotheService } from '../../entities/clothe/service/clothe.service';
 import { FilterDataService } from '../filter-menu/service/FilterDataService';
 import { Subscription } from 'rxjs';
+import getClotheTypeLabel from '../../entities/enumerations/type.model';
 
 @Component({
   selector: 'jhi-listing-product',
@@ -21,6 +22,8 @@ export default class ListingProductComponent implements OnInit, OnDestroy {
   clothes: IClothe[] = [];
   selectedItemsClothes: string[] = [];
   selectedItemsThemes: string[] = [];
+  protected readonly getClotheTypeLabel = getClotheTypeLabel;
+
   private subscriptions: Subscription = new Subscription();
 
   constructor(
