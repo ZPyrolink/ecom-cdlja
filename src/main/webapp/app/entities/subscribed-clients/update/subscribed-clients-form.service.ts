@@ -18,15 +18,9 @@ type SubscribedClientsFormDefaults = Pick<NewSubscribedClients, 'id' | 'favorise
 
 type SubscribedClientsFormGroupContent = {
   id: FormControl<ISubscribedClients['id'] | NewSubscribedClients['id']>;
-  lastname: FormControl<ISubscribedClients['lastname']>;
-  firstname: FormControl<ISubscribedClients['firstname']>;
-  birthday: FormControl<ISubscribedClients['birthday']>;
   email: FormControl<ISubscribedClients['email']>;
-  passworld: FormControl<ISubscribedClients['passworld']>;
   address: FormControl<ISubscribedClients['address']>;
-  bankCard: FormControl<ISubscribedClients['bankCard']>;
-  phone: FormControl<ISubscribedClients['phone']>;
-  points: FormControl<ISubscribedClients['points']>;
+  phoneNumber: FormControl<ISubscribedClients['phoneNumber']>;
   basket: FormControl<ISubscribedClients['basket']>;
   favorises: FormControl<ISubscribedClients['favorises']>;
 };
@@ -48,15 +42,9 @@ export class SubscribedClientsFormService {
           validators: [Validators.required],
         },
       ),
-      lastname: new FormControl(subscribedClientsRawValue.lastname),
-      firstname: new FormControl(subscribedClientsRawValue.firstname),
-      birthday: new FormControl(subscribedClientsRawValue.birthday),
       email: new FormControl(subscribedClientsRawValue.email),
-      passworld: new FormControl(subscribedClientsRawValue.passworld),
       address: new FormControl(subscribedClientsRawValue.address),
-      bankCard: new FormControl(subscribedClientsRawValue.bankCard),
-      phone: new FormControl(subscribedClientsRawValue.phone),
-      points: new FormControl(subscribedClientsRawValue.points),
+      phoneNumber: new FormControl(subscribedClientsRawValue.phoneNumber),
       basket: new FormControl(subscribedClientsRawValue.basket),
       favorises: new FormControl(subscribedClientsRawValue.favorises ?? []),
     });

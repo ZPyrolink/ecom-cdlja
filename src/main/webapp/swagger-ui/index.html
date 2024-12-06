@@ -26,7 +26,7 @@
       };
 
       const getBearerToken = () => {
-        var authToken = localStorage.getItem('jhi-authenticationToken') || sessionStorage.getItem('jhi-authenticationToken');
+        var authToken = sessionStorage.getItem('id_storage');
         if (authToken) {
           authToken = JSON.parse(authToken);
           return `Bearer ${authToken}`;
