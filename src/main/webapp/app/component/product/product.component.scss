@@ -1,0 +1,119 @@
+.product-page {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 40px 150px;
+}
+
+.imagePart {
+  display: flex;
+  margin: -30px 0 0 50px;
+}
+
+.imageList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 30px 0 0 0;
+}
+
+.mainImage {
+  width: 500px;
+  height: 550px;
+  margin: 30px 0 0 0;
+}
+
+.productDetails {
+  display: flex;
+  flex-direction: column;
+  margin: 50px 0 0 100px;
+}
+
+h1 {
+  font-size: 3.5em;
+  font-weight: bold;
+}
+
+h2 {
+  height: 50px;
+}
+
+h3 {
+  font-size: 1.5em;
+  margin: 0 0 20px 0;
+}
+
+.colorSelection,
+.sizeSelection {
+  margin-bottom: 25px;
+}
+
+.colorButton {
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  background-color: #f3f3f3;
+  border-radius: 5px;
+  border: 0.1px solid #d1d1d1;
+  color: #333;
+  cursor: pointer;
+  font-size: 14px;
+  width: 100px;
+  height: 32px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.colorButton.selected {
+  background-color: #bcbcbc;
+  color: white;
+  width: 100px;
+}
+
+.colorButton.selected::before {
+  content: '✔';
+  margin-right: 5px;
+  font-size: 12px;
+}
+
+.colorImage {
+  width: 25px;
+  height: 25px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.sizeButton {
+  background-color: white;
+  border: 0;
+  border-radius: 5px;
+  padding: 5px 10px;
+  width: 70px;
+  height: 40px;
+  margin-right: 10px;
+  cursor: pointer;
+  box-shadow:
+    0 8px 16px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.sizeButton.selected {
+  background-color: #a0a0a0;
+  color: white;
+}
+
+.addToBasket {
+  background-color: black;
+  color: white;
+  padding: 10px;
+  margin: 100px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  height: 50px;
+  width: 500px;
+
+  &:hover {
+    background-color: #333;
+  }
+}

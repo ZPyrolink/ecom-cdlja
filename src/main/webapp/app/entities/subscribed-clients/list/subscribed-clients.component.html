@@ -126,15 +126,9 @@
               <td>
                 <a [routerLink]="['/subscribed-clients', subscribedClients.id, 'view']">{{ subscribedClients.id }}</a>
               </td>
-              <td>{{ subscribedClients.lastname }}</td>
-              <td>{{ subscribedClients.firstname }}</td>
-              <td>{{ subscribedClients.birthday | formatMediumDate }}</td>
               <td>{{ subscribedClients.email }}</td>
-              <td>{{ subscribedClients.passworld }}</td>
+              <td>{{ subscribedClients.phoneNumber }}</td>
               <td>{{ subscribedClients.address }}</td>
-              <td>{{ subscribedClients.bankCard }}</td>
-              <td>{{ subscribedClients.phone }}</td>
-              <td>{{ subscribedClients.points }}</td>
               <td>
                 @if (subscribedClients.basket) {
                   <div>

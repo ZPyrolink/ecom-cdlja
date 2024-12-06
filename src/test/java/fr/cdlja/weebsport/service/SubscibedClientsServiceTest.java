@@ -3,10 +3,7 @@ package fr.cdlja.weebsport.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import fr.cdlja.weebsport.domain.*;
-import fr.cdlja.weebsport.domain.enumeration.Color;
-import fr.cdlja.weebsport.domain.enumeration.Size;
 import fr.cdlja.weebsport.domain.enumeration.Status;
-import fr.cdlja.weebsport.domain.enumeration.Type;
 import fr.cdlja.weebsport.repository.OrderLineRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
 import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
@@ -116,13 +113,13 @@ public class SubscibedClientsServiceTest {
         OrderlineDTO line1 = basketDTO.getOrderLines().get(0);
         assertEquals(101L, line1.getId());
         assertEquals(201L, line1.getStockDTO().getId());
-        assertEquals(301L, line1.getStockDTO().getClotheDTO().getId());
+        assertEquals(301L, line1.getStockDTO().getClothe().getId());
 
         // Vérifier la deuxième ligne de commande
         OrderlineDTO line2 = basketDTO.getOrderLines().get(1);
         assertEquals(102L, line2.getId());
         assertEquals(202L, line2.getStockDTO().getId());
-        assertEquals(302L, line2.getStockDTO().getClotheDTO().getId());
+        assertEquals(302L, line2.getStockDTO().getClothe().getId());
     }
 
     @Test

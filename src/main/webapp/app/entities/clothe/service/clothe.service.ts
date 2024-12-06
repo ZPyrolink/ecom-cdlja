@@ -7,6 +7,8 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 import { createRequestOption } from 'app/core/request/request-util';
 import { IClothe, NewClothe } from '../clothe.model';
 import { PaginatedResponse } from '../../../core/request/paginated-response.model';
+import { Color } from '../../enumerations/color.model';
+import { Size } from '../../enumerations/size.model';
 
 export type PartialUpdateClothe = Partial<IClothe> & Pick<IClothe, 'id'>;
 
@@ -71,5 +73,13 @@ export class ClotheService {
       return [...clothesToAdd, ...clotheCollection];
     }
     return clotheCollection;
+  }
+
+  getColorsOf(id: number): Observable<HttpResponse<Color[]>> {
+    return this.http.get<Color[]>(`${this.resourceUrl}/color/${id}`, { observe: 'response' });
+  }
+
+  getSizesByColor(id: number, color: string | undefined): Observable<HttpResponse<Size[]>> {
+    return this.http.get<Size[]>(`${this.resourceUrl}/size/${id}/${color}`, { observe: 'response' });
   }
 }
