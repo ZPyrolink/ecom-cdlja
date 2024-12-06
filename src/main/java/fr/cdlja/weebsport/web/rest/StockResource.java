@@ -10,6 +10,7 @@ import fr.cdlja.weebsport.service.StockService;
 import fr.cdlja.weebsport.service.dto.ClotheDTO;
 import fr.cdlja.weebsport.service.dto.FilterDTO;
 import fr.cdlja.weebsport.service.dto.FilterSortDTO;
+import fr.cdlja.weebsport.service.dto.StockDTO;
 import fr.cdlja.weebsport.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -227,13 +228,17 @@ public class StockResource {
     }
 
     @GetMapping("/{id}/{color}/{size}")
-    public ResponseEntity<Long> getStock(@PathVariable("id") Long id, @PathVariable("color") Color color, @PathVariable("size") Size size)
-        throws Exception {
-        Long stockId = stockRepository.idStockByColorAndSize(color, size, id);
-        if (stockId == null) {
+    public ResponseEntity<StockDTO> getStock(
+        @PathVariable("id") Long id,
+        @PathVariable("color") Color color,
+        @PathVariable("size") Size size
+    ) throws Exception {
+        Stock s = stockRepository.idStockByColorAndSize(color, size, id);
+        if (s == null) {
             throw new Exception("no stock available");
         }
-        return ResponseEntity.ok(stockId);
+        StockDTO stockDTO = new StockDTO(s);
+        return ResponseEntity.ok(stockDTO);
     }
 
     /**
