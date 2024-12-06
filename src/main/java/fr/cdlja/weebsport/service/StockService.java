@@ -62,7 +62,7 @@ public class StockService {
                 int quantity = (int) res[0][0];
                 int version = (int) res[0][1];
                 if (quantity == 0) {
-                    throw new Exception("Stock quantity is zero" + stock.getId());
+                    throw new Exception(String.valueOf(stock.getId()));
                 }
 
                 Integer purchasequantity = orderLine.getQuantity();
@@ -72,10 +72,10 @@ public class StockService {
                 Integer newquantity = quantity - purchasequantity;
                 int rowsAffected = stockRepository.updateStock(newquantity, version, stock.getId());
                 if (!(rowsAffected > 0)) {
-                    throw new Exception("stock not available" + stock.getId());
+                    throw new Exception(String.valueOf(stock.getId()));
                 }
             } else {
-                throw new Exception("No stock found for ID: " + stock.getId());
+                throw new Exception(String.valueOf(stock.getId()));
             }
         }
     }
@@ -93,7 +93,7 @@ public class StockService {
                 int quantity = (int) res[0][0];
                 int version = (int) res[0][1];
                 if (quantity == 0) {
-                    throw new Exception("Stock quantity is zero" + stockDTO.getId());
+                    throw new Exception(String.valueOf(stockDTO.getId()));
                 }
 
                 if (purchasequantity > quantity) {
@@ -104,10 +104,10 @@ public class StockService {
                 //donc comme si une commande à été validée depuis la lecture la requete echou et la commande est impossible
                 int rowsAffected = stockRepository.updateStock(newquantity, version, stockDTO.getId());
                 if (!(rowsAffected > 0)) {
-                    throw new Exception("stock not available" + stockDTO.getId());
+                    throw new Exception(String.valueOf(stockDTO.getId()));
                 }
             } else {
-                throw new Exception("No stock found for ID: " + stockDTO.getId());
+                throw new Exception(String.valueOf(stockDTO.getId()));
             }
         }
     }
