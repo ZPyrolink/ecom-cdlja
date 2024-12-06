@@ -8,6 +8,8 @@ public class ClotheDTO {
     private Long id;
     private Type type;
     private String theme;
+    private float price;
+    private String description;
 
     public ClotheDTO() {}
 
@@ -15,6 +17,8 @@ public class ClotheDTO {
         this.id = clothe.getId();
         this.type = clothe.getType();
         this.theme = clothe.getTheme();
+        this.price = clothe.getPrice();
+        this.description = clothe.getDescription();
     }
 
     public Long getId() {
@@ -39,5 +43,21 @@ public class ClotheDTO {
 
     public void setTheme(String theme) {
         this.theme = theme;
+    }
+
+    public float getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

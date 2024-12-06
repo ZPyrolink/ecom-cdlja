@@ -98,6 +98,8 @@ export default class ProductComponent implements OnInit {
       .subscribe({
         next: stockResponse => {
           this.stock = stockResponse.body;
+          window.console.log('Stock mis à jour:', stockResponse.body);
+          window.console.log('Stock mis à jour:', stockResponse.body?.clothe);
           window.console.log('Stock mis à jour:', this.stock);
           this.productName = (this.stock?.clothe?.theme ?? '') + ' ' + (this.stock?.clothe?.type ?? '');
         },

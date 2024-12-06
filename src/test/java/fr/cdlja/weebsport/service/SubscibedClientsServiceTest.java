@@ -3,10 +3,7 @@ package fr.cdlja.weebsport.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import fr.cdlja.weebsport.domain.*;
-import fr.cdlja.weebsport.domain.enumeration.Color;
-import fr.cdlja.weebsport.domain.enumeration.Size;
 import fr.cdlja.weebsport.domain.enumeration.Status;
-import fr.cdlja.weebsport.domain.enumeration.Type;
 import fr.cdlja.weebsport.repository.OrderLineRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
 import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
@@ -85,11 +82,8 @@ public class SubscibedClientsServiceTest {
         // Configurer getlines pour retourner les lignes de commande d'une commande
         Mockito.when(orderLineRepository.getlines(Mockito.anyLong(), Mockito.any(Pageable.class))).thenAnswer(invocation -> {
             Long orderId = invocation.getArgument(0);
-            Pageable pageable = invocation.getArgument(1);
             Pageable pageable2 = invocation.getArgument(1);
             List<OrderLine> orderLines = orderToOrderLinesDatabase.get(orderId);
-            if (orderLines == null) return Page.empty(pageable);
-            return new PageImpl<>(orderLines, pageable, orderLines.size());
             if (orderLines == null) return Page.empty(pageable2);
             return new PageImpl<>(orderLines, pageable2, orderLines.size());
         });
@@ -119,13 +113,13 @@ public class SubscibedClientsServiceTest {
         OrderlineDTO line1 = basketDTO.getOrderLines().get(0);
         assertEquals(101L, line1.getId());
         assertEquals(201L, line1.getStockDTO().getId());
-        assertEquals(301L, line1.getStockDTO().getClotheDTO().getId());
+        assertEquals(301L, line1.getStockDTO().getClothe().getId());
 
         // Vérifier la deuxième ligne de commande
         OrderlineDTO line2 = basketDTO.getOrderLines().get(1);
         assertEquals(102L, line2.getId());
         assertEquals(202L, line2.getStockDTO().getId());
-        assertEquals(302L, line2.getStockDTO().getClotheDTO().getId());
+        assertEquals(302L, line2.getStockDTO().getClothe().getId());
     }
 
     @Test
