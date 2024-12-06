@@ -34,7 +34,6 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i github-ec2.pem $EC2_USER@${{ secrets.EC2_HOST }} "echo 'SSH connection successful'"
 
       - name: Build the app
-        working-directory: ${{ env.APP_DIR }}
         run: |
           ./mvnw -Pprod clean verify
       - name: Transfer JAR to EC2
