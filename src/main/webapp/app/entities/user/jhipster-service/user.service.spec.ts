@@ -30,7 +30,7 @@ describe('User Service', () => {
       const returnedFromService = { ...requireRestSample };
       const expected = { ...sampleWithRequiredData };
 
-      service.find(123).subscribe(resp => (expectedResult = resp.body));
+      service.find(123).subscribe(resp => (expectedResult = resp.body as IUser));
 
       const req = httpMock.expectOne({ method: 'GET' });
       req.flush(returnedFromService);
@@ -42,7 +42,7 @@ describe('User Service', () => {
 
       const expected = { ...sampleWithRequiredData };
 
-      service.query().subscribe(resp => (expectedResult = resp.body));
+      service.query().subscribe(resp => (expectedResult = resp.body as IUser[]));
 
       const req = httpMock.expectOne({ method: 'GET' });
       req.flush([returnedFromService]);
