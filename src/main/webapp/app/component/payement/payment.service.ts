@@ -1,6 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { IOrder } from '../../entities/order/order.model';
+import { MeansOfPayment } from '../../entities/enumerations/means-of-payment.model';
 
 export type ClientWhithAdminDTO = {
   subscribedClient: {
@@ -17,11 +19,30 @@ export type ClientWhithAdminDTO = {
   };
 };
 
+export type PaymentDTO =
+  | {
+      cardNum: string;
+      month: number;
+      year: number;
+      crypto: string;
+      basket?: IOrder;
+      meanOfPayement: Exclude<MeansOfPayment, MeansOfPayment.ONLINEPAYMENT>;
+    }
+  | {
+      meanOfPayement: MeansOfPayment.ONLINEPAYMENT;
+    };
+
 @Injectable({ providedIn: 'root' })
 export class PaymentService {
   private http = inject(HttpClient);
 
   getClient(): Observable<ClientWhithAdminDTO> {
     return this.http.get<ClientWhithAdminDTO>('api/client');
+  }
+
+  pay(data: PaymentDTO): Observable<string> {
+    const headers: HttpHeaders = new HttpHeaders({ 'Accept-Type': 'text/plain' });
+
+    return this.http.post('api/basket/pay', data, { headers, responseType: 'text' });
   }
 }

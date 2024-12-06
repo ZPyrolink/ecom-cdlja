@@ -5,7 +5,9 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { faCcApplePay } from '@fortawesome/free-brands-svg-icons';
 import RegexpUtils from '../../utils/regexpUtils';
 import ValidatorsExt from '../../utils/validatorsExt';
-import { ClientWhithAdminDTO, PaymentService } from './payment.service';
+import { ClientWhithAdminDTO, PaymentDTO, PaymentService } from './payment.service';
+import { MeansOfPayment } from '../../entities/enumerations/means-of-payment.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 function onValueChanged(control: FormControl, callback: (value: string) => string): void {
   control.valueChanges.subscribe((val: string) => {
@@ -21,7 +23,10 @@ function onValueChanged(control: FormControl, callback: (value: string) => strin
   styleUrl: './payement.component.scss',
 })
 export default class PayementComponent implements OnInit {
+  private static readonly APPLE_PAY: PaymentDTO = { meanOfPayement: MeansOfPayment.ONLINEPAYMENT };
+
   client?: ClientWhithAdminDTO;
+
   price = 0;
 
   test = '';
@@ -73,7 +78,7 @@ export default class PayementComponent implements OnInit {
     postalCode: new FormControl('', { validators: ValidatorsExt.validators(true, RegexpUtils.POSTAL_CODE) }),
   });
 
-  constructor(private service: PaymentService) {
+  constructor(protected service: PaymentService) {
     onValueChanged(this.cardNumControl, this.groupNumbers(4));
     onValueChanged(this.expirationDateControl, this.keepNumbers);
     onValueChanged(this.cryptoControl, this.keepNumbers);
@@ -90,8 +95,31 @@ export default class PayementComponent implements OnInit {
     }
   }
 
-  pay(): void {
-    window.console.log('payed');
+  pay(apple: boolean): void {
+    let data: PaymentDTO;
+
+    if (apple) {
+      data = PayementComponent.APPLE_PAY;
+    } else {
+      const expirationDate = this.expirationDateControl.value.split('/');
+
+      data = {
+        basket: sessionStorage['basket'],
+        cardNum: this.cardNumControl.value,
+        crypto: this.payementForm.get('crypto')!.value,
+        month: +expirationDate[0],
+        year: +expirationDate[1] + 2000,
+        meanOfPayement: MeansOfPayment.CB,
+      };
+    }
+
+    this.service.pay(data).subscribe({
+      next: resp => alert(resp),
+      error(err: HttpErrorResponse) {
+        window.console.error(err);
+        alert('Erreur lors du paiement : ' + (err.error as string));
+      },
+    });
   }
 
   private initUser(): void {
