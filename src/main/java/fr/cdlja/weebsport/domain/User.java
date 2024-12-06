@@ -236,4 +236,8 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
             ", activationKey='" + activationKey + '\'' +
             "}";
     }
+
+    public SubscribedClients getSubscribedClients() {
+        return subscribedClients;
+    }
 }

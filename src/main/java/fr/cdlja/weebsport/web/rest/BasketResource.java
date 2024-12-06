@@ -3,6 +3,7 @@ package fr.cdlja.weebsport.web.rest;
 import fr.cdlja.weebsport.repository.UserRepository;
 import fr.cdlja.weebsport.service.BasketService;
 import fr.cdlja.weebsport.service.SubscribedClientsService;
+import fr.cdlja.weebsport.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,11 +16,18 @@ public class BasketResource {
 
     private final BasketService basketService;
     private final UserRepository userRepository;
+    private final UserService userService;
     private final SubscribedClientsService subscribedClientsService;
 
-    public BasketResource(BasketService basketService, UserRepository userRepository, SubscribedClientsService subscribedClientsService) {
+    public BasketResource(
+        BasketService basketService,
+        UserRepository userRepository,
+        UserService userService,
+        SubscribedClientsService subscribedClientsService
+    ) {
         this.basketService = basketService;
         this.userRepository = userRepository;
+        this.userService = userService;
         this.subscribedClientsService = subscribedClientsService;
     }
 
@@ -47,5 +55,13 @@ public class BasketResource {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/price")
+    public ResponseEntity<Float> basketPrice() {
+        return userService
+            .getUserWithAuthorities()
+            .map(user -> ResponseEntity.ok(basketService.price(user)))
+            .orElse(ResponseEntity.badRequest().header("Error-Message", "The user was not found").build());
     }
 }

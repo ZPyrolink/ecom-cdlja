@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -6,6 +6,7 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IClothe, NewClothe } from '../clothe.model';
+import { PaginatedResponse } from '../../../core/request/paginated-response.model';
 
 export type PartialUpdateClothe = Partial<IClothe> & Pick<IClothe, 'id'>;
 
@@ -35,9 +36,9 @@ export class ClotheService {
     return this.http.get<IClothe>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
+  query(req?: any): Observable<HttpResponse<PaginatedResponse<IClothe>>> {
     const options = createRequestOption(req);
-    return this.http.get<IClothe[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http.get<PaginatedResponse<IClothe>>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
