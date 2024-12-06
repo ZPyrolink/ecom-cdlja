@@ -1,7 +1,6 @@
 package fr.cdlja.weebsport.web.rest;
 
 import fr.cdlja.weebsport.domain.Clothe;
-import fr.cdlja.weebsport.domain.Stock;
 import fr.cdlja.weebsport.domain.enumeration.Category;
 import fr.cdlja.weebsport.domain.enumeration.Color;
 import fr.cdlja.weebsport.domain.enumeration.Size;

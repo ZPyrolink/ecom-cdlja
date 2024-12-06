@@ -37,6 +37,9 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     @Query("SELECT s.version FROM Stock s WHERE s.id= :stockID")
     Long readVersion(@Param("stockID") Long stockID);
 
+    @Query("select s.id from Stock s where s.clothe.id= :id and s.color= :color and s.size= :size and s.quantity>0")
+    Long idStockByColorAndSize(@Param("color") Color color, @Param("size") Size size, @Param("id") Long id);
+
     @Modifying
     @Query("UPDATE Stock s SET s.quantity=:quantity, s.version=: version+1 WHERE s.id = :id and s.version =:version ")
     int updateStock(@Param("quantity") Integer quantity, @Param("version") Integer version, @Param("id") Long id);

@@ -1,18 +1,11 @@
 package fr.cdlja.weebsport.service;
 
 import fr.cdlja.weebsport.domain.*;
-import fr.cdlja.weebsport.repository.OrderLineRepository;
-import fr.cdlja.weebsport.repository.OrderRepository;
-import fr.cdlja.weebsport.repository.StockRepository;
-import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
-import fr.cdlja.weebsport.repository.UserRepository;
+import fr.cdlja.weebsport.repository.*;
 import fr.cdlja.weebsport.service.dto.OrderDTO;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -44,10 +37,13 @@ public class BasketService {
         this.userService = userService;
     }
 
-    public void ajouterArticle(Long articleId) throws Exception {
+    public void ajouterArticle(Long articleId, int quantite) throws Exception {
         SubscribedClients optional = subscribedClientsRepository
             .findByEmail(userService.getUserWithAuthorities().orElseThrow().getEmail())
             .orElseThrow();
+        if (quantite <= 0) {
+            throw new IllegalArgumentException("Quantité invalide : " + quantite);
+        }
 
         Order order = optional.getBasket();
         Set<OrderLine> orderLines = order.getOrderLines();
@@ -58,10 +54,10 @@ public class BasketService {
         boolean isPresent = false;
         for (OrderLine o : orderLines) {
             if ((o.getStock().getId()).equals(articleId)) {
-                if (o.getStock().getQuantity() == 0) {
+                if (o.getStock().getQuantity() < quantite) {
                     throw new RuntimeException("Stock is out of stock for article: " + articleId);
                 }
-                o.setQuantity(1 + (o.getQuantity()));
+                o.setQuantity(quantite + (o.getQuantity()));
                 o.setAmountline(o.getQuantity() * (o.getStock().getClothe().getPrice())); // Update the price of the orderline
                 order.setAmount(order.computeAmount()); // Update the price of the order
                 orderLineRepository.save(o);
@@ -78,7 +74,7 @@ public class BasketService {
                 throw new RuntimeException("Stock is out of stock for article : " + articleId);
             }
             o.setStock(stock);
-            o.setQuantity(1);
+            o.setQuantity(quantite);
             o.setAmountline(o.getQuantity() * (o.getStock().getClothe().getPrice()));
             o.setOrder(order);
             order.setAmount(order.computeAmount());
@@ -87,10 +83,14 @@ public class BasketService {
         }
     }
 
-    public void supprimerArticle(Long articleId) throws Exception {
+    public void supprimerArticle(Long articleId, int quantite) throws Exception {
         SubscribedClients optional = subscribedClientsRepository
             .findByEmail(userService.getUserWithAuthorities().orElseThrow().getEmail())
             .orElseThrow();
+
+        if (quantite <= 0) {
+            throw new IllegalArgumentException("Quantité invalide : " + quantite);
+        }
 
         Order order = optional.getBasket();
         Set<OrderLine> orderLines = order.getOrderLines();
@@ -99,8 +99,8 @@ public class BasketService {
         for (OrderLine o : orderLines) {
             if ((o.getStock().getId()).equals(articleId)) {
                 articleFound = true;
-                if (o.getQuantity() > 1) {
-                    o.setQuantity(-1 + (o.getQuantity()));
+                if ((o.getQuantity() - quantite) > 0) {
+                    o.setQuantity(o.getQuantity() - quantite);
                     o.setAmountline(o.getQuantity() * (o.getStock().getClothe().getPrice()));
                     order.setAmount(order.computeAmount());
                     orderLineRepository.save(o);
@@ -126,5 +126,11 @@ public class BasketService {
 
     public Float price(User user) {
         return orderRepository.getPrice(user.getId());
+    }
+
+    public Long countnbArticles(OrderDTO panierDTO) throws Exception {
+        //recupère le nb d'article de chaque ligne de commande et additionne
+        Long nbarticles = orderLineRepository.getQuantity(panierDTO.getId());
+        return nbarticles;
     }
 }

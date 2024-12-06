@@ -2,6 +2,8 @@ package fr.cdlja.weebsport.web.rest;
 
 import fr.cdlja.weebsport.domain.Clothe;
 import fr.cdlja.weebsport.domain.Stock;
+import fr.cdlja.weebsport.domain.enumeration.Color;
+import fr.cdlja.weebsport.domain.enumeration.Size;
 import fr.cdlja.weebsport.repository.ClotheRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
 import fr.cdlja.weebsport.service.StockService;
@@ -12,6 +14,10 @@ import fr.cdlja.weebsport.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +32,7 @@ import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link Stock}.
+ * REST controller for managing {@link fr.cdlja.weebsport.domain.Stock}.
  */
 @RestController
 @RequestMapping("/api/stocks")
@@ -222,6 +228,16 @@ public class StockResource {
         LOG.debug("REST request to get Stock : {}", id);
         Optional<Stock> stock = stockRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(stock);
+    }
+
+    @GetMapping("/{id}/{color}/{size}")
+    public ResponseEntity<Long> getStock(@PathVariable("id") Long id, @PathVariable("color") Color color, @PathVariable("size") Size size)
+        throws Exception {
+        Long stockId = stockRepository.idStockByColorAndSize(color, size, id);
+        if (stockId == null) {
+            throw new Exception("no stock available");
+        }
+        return ResponseEntity.ok(stockId);
     }
 
     /**
