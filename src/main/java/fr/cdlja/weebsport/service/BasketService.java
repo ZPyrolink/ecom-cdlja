@@ -1,18 +1,11 @@
 package fr.cdlja.weebsport.service;
 
 import fr.cdlja.weebsport.domain.*;
-import fr.cdlja.weebsport.repository.OrderLineRepository;
-import fr.cdlja.weebsport.repository.OrderRepository;
-import fr.cdlja.weebsport.repository.StockRepository;
-import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
-import fr.cdlja.weebsport.repository.UserRepository;
+import fr.cdlja.weebsport.repository.*;
 import fr.cdlja.weebsport.service.dto.OrderDTO;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -48,6 +41,9 @@ public class BasketService {
         SubscribedClients optional = subscribedClientsRepository
             .findByEmail(userService.getUserWithAuthorities().orElseThrow().getEmail())
             .orElseThrow();
+        if (quantite <= 0) {
+            throw new IllegalArgumentException("Quantité invalide : " + quantite);
+        }
 
         Order order = optional.getBasket();
         Set<OrderLine> orderLines = order.getOrderLines();
@@ -78,7 +74,7 @@ public class BasketService {
                 throw new RuntimeException("Stock is out of stock for article : " + articleId);
             }
             o.setStock(stock);
-            o.setQuantity(1);
+            o.setQuantity(quantite);
             o.setAmountline(o.getQuantity() * (o.getStock().getClothe().getPrice()));
             o.setOrder(order);
             order.setAmount(order.computeAmount());
@@ -92,6 +88,10 @@ public class BasketService {
             .findByEmail(userService.getUserWithAuthorities().orElseThrow().getEmail())
             .orElseThrow();
 
+        if (quantite <= 0) {
+            throw new IllegalArgumentException("Quantité invalide : " + quantite);
+        }
+
         Order order = optional.getBasket();
         Set<OrderLine> orderLines = order.getOrderLines();
 
@@ -100,7 +100,7 @@ public class BasketService {
             if ((o.getStock().getId()).equals(articleId)) {
                 articleFound = true;
                 if ((o.getQuantity() - quantite) > 0) {
-                    o.setQuantity(-quantite + (o.getQuantity()));
+                    o.setQuantity(o.getQuantity() - quantite);
                     o.setAmountline(o.getQuantity() * (o.getStock().getClothe().getPrice()));
                     order.setAmount(order.computeAmount());
                     orderLineRepository.save(o);
