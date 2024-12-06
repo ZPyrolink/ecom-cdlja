@@ -44,7 +44,7 @@ public class BasketService {
         this.userService = userService;
     }
 
-    public void ajouterArticle(Long articleId) throws Exception {
+    public void ajouterArticle(Long articleId, int quantite) throws Exception {
         SubscribedClients optional = subscribedClientsRepository
             .findByEmail(userService.getUserWithAuthorities().orElseThrow().getEmail())
             .orElseThrow();
@@ -58,10 +58,10 @@ public class BasketService {
         boolean isPresent = false;
         for (OrderLine o : orderLines) {
             if ((o.getStock().getId()).equals(articleId)) {
-                if (o.getStock().getQuantity() == 0) {
+                if (o.getStock().getQuantity() < quantite) {
                     throw new RuntimeException("Stock is out of stock for article: " + articleId);
                 }
-                o.setQuantity(1 + (o.getQuantity()));
+                o.setQuantity(quantite + (o.getQuantity()));
                 o.setAmountline(o.getQuantity() * (o.getStock().getClothe().getPrice())); // Update the price of the orderline
                 order.setAmount(order.computeAmount()); // Update the price of the order
                 orderLineRepository.save(o);
@@ -87,7 +87,7 @@ public class BasketService {
         }
     }
 
-    public void supprimerArticle(Long articleId) throws Exception {
+    public void supprimerArticle(Long articleId, int quantite) throws Exception {
         SubscribedClients optional = subscribedClientsRepository
             .findByEmail(userService.getUserWithAuthorities().orElseThrow().getEmail())
             .orElseThrow();
@@ -99,8 +99,8 @@ public class BasketService {
         for (OrderLine o : orderLines) {
             if ((o.getStock().getId()).equals(articleId)) {
                 articleFound = true;
-                if (o.getQuantity() > 1) {
-                    o.setQuantity(-1 + (o.getQuantity()));
+                if ((o.getQuantity() - quantite) > 0) {
+                    o.setQuantity(-quantite + (o.getQuantity()));
                     o.setAmountline(o.getQuantity() * (o.getStock().getClothe().getPrice()));
                     order.setAmount(order.computeAmount());
                     orderLineRepository.save(o);
