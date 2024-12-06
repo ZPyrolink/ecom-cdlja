@@ -51,6 +51,7 @@ public class Stock implements Serializable {
     private Set<String> imageUrls;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+    public Stock() {}
 
     public int getVersion() {
         return version;

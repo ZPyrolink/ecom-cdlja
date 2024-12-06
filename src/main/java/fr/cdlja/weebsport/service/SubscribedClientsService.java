@@ -90,6 +90,10 @@ public class SubscribedClientsService {
             for (OrderLine ol : orderlines) {
                 nblignes++;
                 s = orderLineRepository.getArticle(ol.getId());
+                if (s == null) {
+                    throw new IllegalStateException("Stock not found for OrderLine ID: " + ol.getId());
+                }
+
                 sDTO = new StockDTO(s);
                 c = stockRepository.getClothe(s.getId());
                 cDTO = new ClotheDTO(c);
