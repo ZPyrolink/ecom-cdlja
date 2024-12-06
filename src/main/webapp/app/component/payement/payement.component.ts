@@ -5,22 +5,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { faCcApplePay } from '@fortawesome/free-brands-svg-icons';
 import RegexpUtils from '../../utils/regexpUtils';
 import ValidatorsExt from '../../utils/validatorsExt';
-import { HttpClient } from '@angular/common/http';
-
-type ClientWhithAdminDTO = {
-  subscribedClient: {
-    address: string;
-    phoneNumber: string;
-  };
-  adminUserDTO: {
-    firstName: string;
-    lastName: string;
-    email: string;
-  };
-  panier: {
-    amount: number;
-  };
-};
+import { ClientWhithAdminDTO, PaymentService } from './payment.service';
 
 function onValueChanged(control: FormControl, callback: (value: string) => string): void {
   control.valueChanges.subscribe((val: string) => {
@@ -88,7 +73,7 @@ export default class PayementComponent implements OnInit {
     postalCode: new FormControl('', { validators: ValidatorsExt.validators(true, RegexpUtils.POSTAL_CODE) }),
   });
 
-  constructor(private http: HttpClient) {
+  constructor(private service: PaymentService) {
     onValueChanged(this.cardNumControl, this.groupNumbers(4));
     onValueChanged(this.expirationDateControl, this.keepNumbers);
     onValueChanged(this.cryptoControl, this.keepNumbers);
@@ -99,7 +84,7 @@ export default class PayementComponent implements OnInit {
     const token: string | undefined = window.sessionStorage['id_storage'];
 
     if (token) {
-      this.initUser(token);
+      this.initUser();
     } else {
       this.init();
     }
@@ -109,8 +94,8 @@ export default class PayementComponent implements OnInit {
     window.console.log('payed');
   }
 
-  private initUser(token: string): void {
-    this.http.get<ClientWhithAdminDTO>('api/client').subscribe(dto => {
+  private initUser(): void {
+    this.service.getClient().subscribe(dto => {
       this.client = dto;
       this.payementForm.get('firstName')!.setValue(this.client.adminUserDTO.firstName);
       this.payementForm.get('lastName')!.setValue(this.client.adminUserDTO.lastName);
