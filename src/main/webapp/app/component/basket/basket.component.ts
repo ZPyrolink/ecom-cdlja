@@ -1,6 +1,6 @@
 import { Component, OnInit, Type } from '@angular/core';
 import { PaginationComponent } from '../pagination/pagination.component';
-import { NgForOf, NgIf } from '@angular/common';
+import { DecimalPipe, NgForOf, NgIf } from '@angular/common';
 import { OrderService } from '../../entities/order/service/order.service';
 import { IOrder } from '../../entities/order/order.model';
 import { IOrderLine } from '../../entities/order-line/order-line.model';
@@ -11,7 +11,7 @@ import getColorLabel from '../../entities/enumerations/color.model';
 @Component({
   selector: 'jhi-basket',
   standalone: true,
-  imports: [PaginationComponent, NgForOf, NgIf],
+  imports: [PaginationComponent, NgForOf, NgIf, DecimalPipe],
   templateUrl: './basket.component.html',
   styleUrl: './basket.component.scss',
 })
@@ -51,7 +51,7 @@ export default class BasketComponent implements OnInit {
   increaseQuantity(clothe: IOrderLine): void {
     window.console.log(this.order);
     if (clothe.stockDTO?.id) {
-      this.service.add(clothe.id).subscribe({
+      this.service.add(clothe.stockDTO.id).subscribe({
         next(response) {
           window.location.reload();
         },

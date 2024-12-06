@@ -58,25 +58,19 @@ export class OrderService {
   }
 
   query(req?: any): Observable<HttpResponse<IOrder>> | undefined {
-    // const token = window.sessionStorage['id_storage'];
+    const token = window.sessionStorage['id_storage'];
     // TODO changer
-    const token =
-      'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huZG9lIiwiZXhwIjoxNzM1OTgyNDkzLCJhdXRoIjoiIiwiaWF0IjoxNzMzMzkwNDkzfQ.O-mnnByYlD3bnuUr8lyv4ktINDW9c5DAUxx_gKSkaoZ8nI-7YT5DDpClzXUsAm4tb83XG4wcscNtOKWJ7EZOFA';
-
     // if (!token) {
     // window.console.log('Token vide');
     //  return;
     // } else {
     const options = createRequestOption(req);
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
     return this.http.get<IOrder>(this.resourceUrl, { params: options, headers, observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
-    // TODO changer token
-    const token =
-      'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huZG9lIiwiZXhwIjoxNzM1OTgyNDkzLCJhdXRoIjoiIiwiaWF0IjoxNzMzMzkwNDkzfQ.O-mnnByYlD3bnuUr8lyv4ktINDW9c5DAUxx_gKSkaoZ8nI-7YT5DDpClzXUsAm4tb83XG4wcscNtOKWJ7EZOFA';
+    const token = window.sessionStorage['id_storage'];
     const options = createRequestOption();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.delete(`api/basket/${id}`, {
@@ -88,10 +82,9 @@ export class OrderService {
   }
 
   add(id: number): Observable<object> {
-    const token =
-      'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huZG9lIiwiZXhwIjoxNzM1OTgyNDkzLCJhdXRoIjoiIiwiaWF0IjoxNzMzMzkwNDkzfQ.O-mnnByYlD3bnuUr8lyv4ktINDW9c5DAUxx_gKSkaoZ8nI-7YT5DDpClzXUsAm4tb83XG4wcscNtOKWJ7EZOFA';
-    const options = createRequestOption();
+    const token = window.sessionStorage['id_storage'];
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const options = createRequestOption();
     const body = { id };
     return this.http.post(`api/basket/${id}`, body, {
       params: options,
