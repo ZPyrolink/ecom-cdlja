@@ -41,6 +41,7 @@ public class SubscibedClientsServiceTest {
 
     @Test
     void shouldReturnBasketWithTwoOrderLines() throws Exception {
+        Pageable pageable = PageRequest.of(0, 6, Sort.by("id").ascending());
         Map<Long, List<OrderLine>> orderToOrderLinesDatabase = new HashMap<>(); // Order → List<OrderLine>
         Map<Long, Stock> orderLineToStockDatabase = new HashMap<>(); // OrderLine → Stock
         Map<Long, Clothe> stockToClotheDatabase = new HashMap<>(); // Stock → Clothe
@@ -85,9 +86,12 @@ public class SubscibedClientsServiceTest {
         Mockito.when(orderLineRepository.getlines(Mockito.anyLong(), Mockito.any(Pageable.class))).thenAnswer(invocation -> {
             Long orderId = invocation.getArgument(0);
             Pageable pageable = invocation.getArgument(1);
+            Pageable pageable2 = invocation.getArgument(1);
             List<OrderLine> orderLines = orderToOrderLinesDatabase.get(orderId);
             if (orderLines == null) return Page.empty(pageable);
             return new PageImpl<>(orderLines, pageable, orderLines.size());
+            if (orderLines == null) return Page.empty(pageable2);
+            return new PageImpl<>(orderLines, pageable2, orderLines.size());
         });
 
         // Configurer getArticle pour retourner le Stock associé à une OrderLine
@@ -103,7 +107,7 @@ public class SubscibedClientsServiceTest {
         });
 
         // Exécuter la méthode
-        OrderDTO basketDTO = subscribedClientsService.getBasket("test@example.com");
+        OrderDTO basketDTO = subscribedClientsService.getBasket("test@example.com", pageable);
 
         // Vérifier le résultat
         assertNotNull(basketDTO);
@@ -126,6 +130,7 @@ public class SubscibedClientsServiceTest {
 
     @Test
     void shouldReturnEmptyBasketWhenNoOrderLines() throws Exception {
+        Pageable pageable = PageRequest.of(0, 6, Sort.by("id").ascending());
         // Mock du client avec un panier vide
         SubscribedClients client = new SubscribedClients();
         client.setEmail("test@example.com");
@@ -144,7 +149,7 @@ public class SubscibedClientsServiceTest {
         Mockito.when(orderLineRepository.getlines(1L, PageRequest.of(0, 6, Sort.by("id").ascending()))).thenReturn(orderLines);
 
         // Exécuter la méthode
-        OrderDTO basketDTO = subscribedClientsService.getBasket("test@example.com");
+        OrderDTO basketDTO = subscribedClientsService.getBasket("test@example.com", pageable);
 
         // Vérifier le résultat
         assertNotNull(basketDTO);
@@ -154,11 +159,12 @@ public class SubscibedClientsServiceTest {
 
     @Test
     void shouldThrowExceptionWhenClientNotFound() {
+        Pageable pageable = PageRequest.of(0, 6, Sort.by("id").ascending());
         // Mock pour simuler l'absence du client
         Mockito.when(subscribedClientsRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(Exception.class, () -> {
-            subscribedClientsService.getBasket("test@example.com");
+            subscribedClientsService.getBasket("test@example.com", pageable);
         });
 
         assertEquals("Client not found for email: test@example.com", exception.getMessage());

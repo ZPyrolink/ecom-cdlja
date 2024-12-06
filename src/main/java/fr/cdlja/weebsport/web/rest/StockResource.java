@@ -1,16 +1,20 @@
 package fr.cdlja.weebsport.web.rest;
 
+import fr.cdlja.weebsport.domain.Clothe;
 import fr.cdlja.weebsport.domain.Stock;
 import fr.cdlja.weebsport.domain.enumeration.Color;
 import fr.cdlja.weebsport.domain.enumeration.Size;
+import fr.cdlja.weebsport.repository.ClotheRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
+import fr.cdlja.weebsport.service.StockService;
+import fr.cdlja.weebsport.service.dto.ClotheDTO;
+import fr.cdlja.weebsport.service.dto.FilterDTO;
+import fr.cdlja.weebsport.service.dto.FilterSortDTO;
+import fr.cdlja.weebsport.service.dto.StockDTO;
 import fr.cdlja.weebsport.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import org.apache.commons.lang3.ObjectUtils;
+import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,8 +45,14 @@ public class StockResource {
 
     private final StockRepository stockRepository;
 
-    public StockResource(StockRepository stockRepository) {
+    private final ClotheRepository clotheRepository;
+
+    private final StockService stockService;
+
+    public StockResource(StockRepository stockRepository, ClotheRepository clotheRepository, StockService stockService) {
         this.stockRepository = stockRepository;
+        this.clotheRepository = clotheRepository;
+        this.stockService = stockService;
     }
 
     /**
@@ -159,6 +169,51 @@ public class StockResource {
         return ResponseEntity.ok(stocksPage); // Retour de la page dans la réponse
     }
 
+    @GetMapping("/filters")
+    public ResponseEntity<List<ClotheDTO>> getStocksFiltered(@RequestBody FilterSortDTO filtersSort) {
+        if (filtersSort == null) {
+            throw new RuntimeException("Problems with the body. Maybe it is empty");
+        }
+        FilterDTO filters = filtersSort.getFilters();
+        String keyWord = filtersSort.getSearch();
+        String sort = filtersSort.getSort();
+
+        List<ClotheDTO> clothesDTO = new ArrayList<>();
+        Set<Clothe> clothesSet;
+        ArrayList<Clothe> clothesList;
+
+        if (keyWord != null) {
+            Set<Clothe> clothesSearch = stockService.search(keyWord.toUpperCase());
+            if (filters != null) {
+                clothesSet = stockService.applyFilters(filters);
+                clothesSearch.retainAll(clothesSet);
+            }
+            clothesList = new ArrayList<>(clothesSearch);
+        } else {
+            if (filters != null) {
+                clothesSet = stockService.applyFilters(filters);
+                clothesList = new ArrayList<>(clothesSet);
+            } else {
+                clothesList = new ArrayList<>(clotheRepository.findAll());
+            }
+        }
+
+        if (sort != null) {
+            sort = sort.toLowerCase();
+            if (Objects.equals(sort, "asc")) {
+                clothesList.sort(Comparator.comparing(Clothe::getPrice));
+            } else if (Objects.equals(sort, "desc")) {
+                clothesList.sort(Comparator.comparing(Clothe::getPrice).reversed());
+            }
+        }
+
+        for (Clothe c : clothesList) {
+            clothesDTO.add(new ClotheDTO(c));
+        }
+
+        return ResponseEntity.ok(clothesDTO);
+    }
+
     /**
      * {@code GET  /stocks/:id} : get the "id" stock.
      *
@@ -173,13 +228,17 @@ public class StockResource {
     }
 
     @GetMapping("/{id}/{color}/{size}")
-    public ResponseEntity<Long> getStock(@PathVariable("id") Long id, @PathVariable("color") Color color, @PathVariable("size") Size size)
-        throws Exception {
-        Long stockId = stockRepository.idStockByColorAndSize(color, size, id);
-        if (stockId == null) {
+    public ResponseEntity<StockDTO> getStock(
+        @PathVariable("id") Long id,
+        @PathVariable("color") Color color,
+        @PathVariable("size") Size size
+    ) throws Exception {
+        Stock s = stockRepository.idStockByColorAndSize(color, size, id);
+        if (s == null) {
             throw new Exception("no stock available");
         }
-        return ResponseEntity.ok(stockId);
+        StockDTO stockDTO = new StockDTO(s);
+        return ResponseEntity.ok(stockDTO);
     }
 
     /**
