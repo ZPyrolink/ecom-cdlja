@@ -40,9 +40,8 @@
 
   <div class="order-summary">
     <div class="total">
-      Total de la commande : {{ order?.amount }}
-      <!--{{ totalOrderPrice }}-->
-      €
+      Total de la commande :
+      <div *ngIf="order?.orderLines?.length != 0">{{ order?.amount }} €</div>
     </div>
     <button class="submit-btn" (click)="submitOrder()">Passer au paiement</button>
   </div>
