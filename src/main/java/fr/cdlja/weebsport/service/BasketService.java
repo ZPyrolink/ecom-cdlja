@@ -1,18 +1,13 @@
 package fr.cdlja.weebsport.service;
 
 import fr.cdlja.weebsport.domain.*;
-import fr.cdlja.weebsport.repository.OrderLineRepository;
-import fr.cdlja.weebsport.repository.OrderRepository;
-import fr.cdlja.weebsport.repository.StockRepository;
-import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
-import fr.cdlja.weebsport.repository.UserRepository;
+import fr.cdlja.weebsport.repository.*;
 import fr.cdlja.weebsport.service.dto.OrderDTO;
+import java.time.LocalDateTime;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -133,4 +128,70 @@ public class BasketService {
         Long nbarticles = orderLineRepository.getQuantity(panierDTO.getId());
         return nbarticles;
     }
+
+    public enum PaymentResult {
+        Success("Your payement succeeded", HttpStatus.OK),
+        CardNb("The card number is invalid"),
+        Expired("The card has expired"),
+        Crypto("The crypto is incorrect");
+
+        public final String msg;
+        public final HttpStatus status;
+
+        PaymentResult(String msg) {
+            this(msg, HttpStatus.PAYMENT_REQUIRED);
+        }
+
+        PaymentResult(String msg, HttpStatus status) {
+            this.msg = msg;
+            this.status = status;
+        }
+    }
+
+    public PaymentResult pay(String cardNum, int month, int year, String crypto, OrderDTO basket) throws InterruptedException {
+        if (cardNum.charAt(0) != '8' || cardNum.charAt(cardNum.length() - 1) != '2') {
+            return PaymentResult.CardNb;
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        if (year < now.getYear()) {
+            revertStocks();
+            return PaymentResult.Expired;
+        }
+
+        if (year == now.getYear() && month < now.getMonthValue()) {
+            revertStocks();
+            return PaymentResult.Expired;
+        }
+
+        if (crypto.equals("666")) {
+            revertStocks();
+            return PaymentResult.Crypto;
+        }
+
+        if (basket != null) {
+            Thread.sleep(1_000);
+            return PaymentResult.Success;
+        }
+
+        //        basket = new OrderDTO(subscribedClientsRepository
+        //            .findByEmail(userService.getUserWithAuthorities().orElseThrow().getEmail())
+        //            .orElseThrow()
+        //            .getBasket());
+        //
+        //        orderRepository.validate(basket.getId());
+
+        Order basketOrder = subscribedClientsRepository
+            .findByEmail(userService.getUserWithAuthorities().orElseThrow().getEmail())
+            .orElseThrow()
+            .getBasket();
+
+        basketOrder.status();
+
+        Thread.sleep(2_000);
+
+        return PaymentResult.Success;
+    }
+
+    private void revertStocks() {}
 }
