@@ -1,18 +1,20 @@
 package fr.cdlja.weebsport.service;
 
-import fr.cdlja.weebsport.domain.Order;
+import fr.cdlja.weebsport.domain.Clothe;
 import fr.cdlja.weebsport.domain.OrderLine;
 import fr.cdlja.weebsport.domain.Stock;
 import fr.cdlja.weebsport.domain.SubscribedClients;
+import fr.cdlja.weebsport.repository.ClotheRepository;
 import fr.cdlja.weebsport.repository.OrderLineRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
 import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
+import fr.cdlja.weebsport.service.dto.FilterDTO;
 import fr.cdlja.weebsport.service.dto.OrderDTO;
 import fr.cdlja.weebsport.service.dto.OrderlineDTO;
 import fr.cdlja.weebsport.service.dto.StockDTO;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -32,17 +34,20 @@ public class StockService {
     private final StockRepository stockRepository;
     private final SubscribedClientsRepository subscribedClientsRepository;
     private final SubscribedClientsService subscribedClientsService;
+    private final ClotheRepository clotheRepository;
 
     public StockService(
         OrderLineRepository orderLineRepository,
         StockRepository stockRepository,
+        ClotheRepository clotheRepository,
         SubscribedClientsRepository subscribedClientsRepository,
         SubscribedClientsService subscribedClientsService
     ) {
         this.orderLineRepository = orderLineRepository;
-        this.stockRepository = stockRepository;
         this.subscribedClientsRepository = subscribedClientsRepository;
         this.subscribedClientsService = subscribedClientsService;
+        this.clotheRepository = clotheRepository;
+        this.stockRepository = stockRepository;
     }
 
     public void validebasketabo(Long clientid) throws Exception {
@@ -54,7 +59,6 @@ public class StockService {
         OrderDTO basket = subscribedClientsService.getBasket(email, pageable);
         Long orderid = basket.getId();
         Page<OrderLine> lines = orderLineRepository.getlines(orderid, pageable);
-
         for (OrderLine orderLine : lines) {
             Stock stock = orderLineRepository.getArticle(orderLine.getId());
             Object[][] res = stockRepository.readStock(stock.getId());
@@ -64,7 +68,6 @@ public class StockService {
                 if (quantity == 0) {
                     throw new Exception(String.valueOf(stock.getId()));
                 }
-
                 Integer purchasequantity = orderLine.getQuantity();
                 if (purchasequantity > quantity) {
                     throw new Exception("desired number greater than available quantity");
@@ -110,5 +113,98 @@ public class StockService {
                 throw new Exception(String.valueOf(stockDTO.getId()));
             }
         }
+    }
+
+    public Set<Clothe> search(String keyWord) {
+        List<Stock> stocks = stockRepository.searchStockByKeyword(keyWord);
+        Set<Clothe> clothes = new HashSet<>();
+        for (Stock stock : stocks) {
+            clothes.add(stock.getClothe());
+        }
+        List<Clothe> clothesFromRepo = clotheRepository.searchClotheByKeyword(keyWord);
+        clothes.addAll(clothesFromRepo);
+        return clothes;
+    }
+
+    public Set<Clothe> applyFilters(FilterDTO filters) {
+        Set<Clothe> clothes = new HashSet<>();
+        Set<Stock> stocks = Set.of();
+        Set<Clothe> clothesTemp = Set.of();
+        boolean firstFilter = true;
+
+        if (filters.getSizes() != null) {
+            stocks = new HashSet<>(stockRepository.getStocksBySize(filters.getSizes()));
+            for (Stock s : stocks) {
+                clothes.add(s.getClothe());
+            }
+            firstFilter = false;
+        }
+
+        if (filters.getColors() != null) {
+            stocks = new HashSet<>(stockRepository.getStocksByColor(filters.getColors()));
+            clothesTemp = new HashSet<>();
+            for (Stock s : stocks) {
+                clothesTemp.add(s.getClothe());
+            }
+            if (firstFilter) {
+                clothes.addAll(clothesTemp);
+                firstFilter = false;
+            } else {
+                clothes.retainAll(clothesTemp);
+            }
+        }
+
+        if (filters.getPrices() != null) {
+            Float minPrice = filters.getPrices().getMin();
+            Float maxPrice = filters.getPrices().getMax();
+
+            if (minPrice != null && maxPrice != null) {
+                clothesTemp = new HashSet<>(clotheRepository.getClotheFilteredByPrice(minPrice, maxPrice));
+            } else if (minPrice != null) {
+                clothesTemp = new HashSet<>(clotheRepository.getClotheByMinPrice(minPrice));
+            } else if (maxPrice != null) {
+                clothesTemp = new HashSet<>(clotheRepository.getClotheByMaxPrice(maxPrice));
+            } else {
+                clothesTemp = new HashSet<>();
+            }
+            if (firstFilter) {
+                clothes.addAll(clothesTemp);
+                firstFilter = false;
+            } else {
+                clothes.retainAll(clothesTemp);
+            }
+        }
+
+        if (filters.getGenders() != null) {
+            clothesTemp = new HashSet<>(clotheRepository.findByGender(filters.getGenders()));
+            if (firstFilter) {
+                clothes.addAll(clothesTemp);
+                firstFilter = false;
+            } else {
+                clothes.retainAll(clothesTemp);
+            }
+        }
+
+        if (filters.getVideogameThemes() != null) {
+            List<String> themes = filters.getVideogameThemes().stream().map(String::toUpperCase).toList();
+            clothesTemp = new HashSet<>(clotheRepository.findByAnimeThemes(themes));
+            if (firstFilter) {
+                clothes.addAll(clothesTemp);
+                firstFilter = false;
+            } else {
+                clothes.retainAll(clothesTemp);
+            }
+        }
+
+        if (filters.getAnimeThemes() != null) {
+            List<String> themes = filters.getAnimeThemes().stream().map(String::toUpperCase).toList();
+            clothesTemp = new HashSet<>(clotheRepository.findByVideoGameThemes(themes));
+            if (firstFilter) {
+                clothes.addAll(clothesTemp);
+            } else {
+                clothes.retainAll(clothesTemp);
+            }
+        }
+        return clothes;
     }
 }
