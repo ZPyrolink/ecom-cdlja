@@ -1,5 +1,4 @@
 <div class="product-page">
-  <a href=""><img class="returnIcon" src="../../../content/images/ArrowCircleLeft.png" alt="Return" /></a>
   <div class="imagePart">
     <div class="imageList">
       <img
@@ -18,18 +17,18 @@
 
   <div class="productDetails">
     <h1>{{ productName }}</h1>
-    <h3>{{ productPrice }} €</h3>
-    <p class="productDescription">{{ productDescription }}</p>
+    <h3>{{ stock?.clothe?.price }} €</h3>
+    <p class="productDescription">{{ stock?.clothe?.description }}</p>
 
     <div class="colorSelection">
       <h2>Couleur : {{ productSelectedColor }}</h2>
       <button
         class="colorButton"
-        *ngFor="let color of productColors"
+        *ngFor="let color of productColorsEnum"
         [class.selected]="isColorSelected(color.name)"
         (click)="selectColor(color.name)"
       >
-        <img [src]="color.image" class="colorImage" alt="{{ color.name }}" />
+        <img [src]="color.image" class="colorImage" alt="{{ color }}" />
         {{ color.name }}
       </button>
     </div>
@@ -37,7 +36,7 @@
     <div class="sizeSelection">
       <h2>Taille : {{ productSelectedSize }}</h2>
       <button *ngFor="let size of productSizes" (click)="selectSize(size)" [class.selected]="isSizeSelected(size)" class="sizeButton">
-        {{ size }}
+        {{ getSizeLabelFromSize(productSelectedSize) }}
       </button>
     </div>
 

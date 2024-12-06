@@ -2,53 +2,52 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin: 1.5% 7.5%;
 }
-.returnIcon {
-  position: absolute;
-  top: 70px;
-  left: 25px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  height: 40px;
-  width: 40px;
-  color: black;
-}
+
 .imagePart {
   display: flex;
   margin: 2% 0 0 50px;
 }
+
 .imageList {
   display: flex;
   flex-direction: column;
   gap: 15px;
   margin: 30px 0 0 0;
 }
+
 .mainImage {
   width: 500px;
   height: 550px;
   margin: 30px 0 0 0;
 }
+
 .productDetails {
   display: flex;
   flex-direction: column;
-  margin: -2% 0 0 0;
+  margin: -2% 0 0 5%;
 }
+
 h1 {
   font-size: 3.5em;
   font-weight: bold;
 }
+
 h2 {
   height: 50px;
 }
+
 h3 {
   font-size: 1.5em;
   margin: 2% 0 5% 0;
 }
+
 .colorSelection,
 .sizeSelection {
   margin-bottom: 5%;
 }
+
 .colorButton {
   align-items: center;
   justify-content: center;
@@ -64,28 +63,32 @@ h3 {
   text-align: center;
   box-sizing: border-box;
 }
+
 .colorButton.selected {
   background-color: #bcbcbc;
   color: white;
   width: 100px;
 }
+
 .colorButton.selected::before {
   content: '✔';
   margin-right: 5px;
   font-size: 12px;
 }
+
 .colorImage {
   width: 25px;
   height: 25px;
   object-fit: cover;
   border-radius: 5px;
 }
+
 .sizeButton {
   background-color: white;
   border: 0;
   border-radius: 5px;
   padding: 5px 10px;
-  width: 40px;
+  width: 70px;
   height: 40px;
   margin-right: 10px;
   cursor: pointer;
@@ -93,10 +96,12 @@ h3 {
     0 8px 16px 0 rgba(0, 0, 0, 0.2),
     0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
 .sizeButton.selected {
   background-color: #a0a0a0;
   color: white;
 }
+
 .addToBasket {
   margin: 10% 0 0 0;
   width: 175%;
