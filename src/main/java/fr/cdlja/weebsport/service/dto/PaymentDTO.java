@@ -1,5 +1,7 @@
 package fr.cdlja.weebsport.service.dto;
 
+import fr.cdlja.weebsport.domain.enumeration.MeansOfPayment;
+
 public class PaymentDTO {
 
     private String cardNum;
@@ -7,6 +9,7 @@ public class PaymentDTO {
     private int year;
     private String crypto;
     private OrderDTO basket;
+    private MeansOfPayment meanOfPayment;
 
     public String getCardNum() {
         return cardNum;
@@ -26,5 +29,9 @@ public class PaymentDTO {
 
     public OrderDTO getBasket() {
         return basket;
+    }
+
+    public MeansOfPayment getMeanOfPayment() {
+        return meanOfPayment;
     }
 }

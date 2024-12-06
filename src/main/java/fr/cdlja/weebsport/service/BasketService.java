@@ -1,6 +1,9 @@
 package fr.cdlja.weebsport.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.cdlja.weebsport.domain.*;
+import fr.cdlja.weebsport.domain.enumeration.MeansOfPayment;
 import fr.cdlja.weebsport.domain.enumeration.Status;
 import fr.cdlja.weebsport.repository.*;
 import fr.cdlja.weebsport.service.dto.OrderDTO;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class BasketService {
 
     private static final Logger LOG = LoggerFactory.getLogger(BasketService.class);
+
     public final SubscribedClientsService subscribedClientsService;
     private final OrderLineRepository orderLineRepository;
     private final StockRepository stockRepository;
@@ -22,6 +26,7 @@ public class BasketService {
     private final OrderRepository orderRepository;
     private final SubscribedClientsRepository subscribedClientsRepository;
     private final UserService userService;
+    private final ObjectMapper jacksonObjectMapper;
 
     public BasketService(
         SubscribedClientsService subscribedClientsService,
@@ -30,7 +35,8 @@ public class BasketService {
         UserRepository userRepository,
         OrderRepository orderRepository,
         SubscribedClientsRepository subscribedClientsRepository,
-        UserService userService
+        UserService userService,
+        ObjectMapper jacksonObjectMapper
     ) {
         this.subscribedClientsService = subscribedClientsService;
         this.orderLineRepository = orderLineRepository;
@@ -38,6 +44,7 @@ public class BasketService {
         this.orderRepository = orderRepository;
         this.subscribedClientsRepository = subscribedClientsRepository;
         this.userService = userService;
+        this.jacksonObjectMapper = jacksonObjectMapper;
     }
 
     public void ajouterArticle(Long articleId) throws Exception {
@@ -149,7 +156,8 @@ public class BasketService {
         }
     }
 
-    public PaymentResult pay(String cardNum, int month, int year, String crypto, OrderDTO basket) throws InterruptedException {
+    public PaymentResult pay(String cardNum, int month, int year, String crypto, OrderDTO basket, MeansOfPayment meanOfPayment)
+        throws InterruptedException {
         if (cardNum.charAt(0) != '8' || cardNum.charAt(cardNum.length() - 1) != '2') {
             return PaymentResult.CardNb;
         }
@@ -175,18 +183,17 @@ public class BasketService {
             return PaymentResult.Success;
         }
 
-        //        basket = new OrderDTO(subscribedClientsRepository
-        //            .findByEmail(userService.getUserWithAuthorities().orElseThrow().getEmail())
-        //            .orElseThrow()
-        //            .getBasket());
-        //
-        //        orderRepository.validate(basket.getId());
-
         SubscribedClients subscribedClients = subscribedClientsRepository
             .findByEmail(userService.getUserWithAuthorities().orElseThrow().getEmail())
             .orElseThrow();
 
-        Order basketOrder = subscribedClients.getBasket().status(Status.PAID);
+        Order basketOrder = subscribedClients.getBasket().status(Status.PAID).meanOfPayment(meanOfPayment);
+
+        try {
+            LOG.debug(jacksonObjectMapper.writeValueAsString(basketOrder));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         orderRepository.save(basketOrder);
 

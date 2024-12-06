@@ -78,7 +78,8 @@ public class BasketResource {
             payment.getMonth(),
             payment.getYear(),
             payment.getCrypto(),
-            payment.getBasket()
+            payment.getBasket(),
+            payment.getMeanOfPayment()
         );
         return ResponseEntity.status(result.status).body(result.msg);
     }
