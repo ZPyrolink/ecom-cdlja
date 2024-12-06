@@ -14,10 +14,6 @@ import fr.cdlja.weebsport.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -197,7 +193,7 @@ public class StockResource {
                 clothesSet = stockService.applyFilters(filters);
                 clothesList = new ArrayList<>(clothesSet);
             } else {
-                clothesList = new ArrayList<>();
+                clothesList = new ArrayList<>(clotheRepository.findAll());
             }
         }
 
