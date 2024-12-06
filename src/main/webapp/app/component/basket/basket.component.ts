@@ -7,6 +7,7 @@ import { IOrderLine } from '../../entities/order-line/order-line.model';
 import getClotheTypeLabel from '../../entities/enumerations/type.model';
 import getSizeLabel from '../../entities/enumerations/size.model';
 import getColorLabel from '../../entities/enumerations/color.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-basket',
@@ -27,7 +28,10 @@ export default class BasketComponent implements OnInit {
   protected readonly getSizeLabel = getSizeLabel;
   protected readonly getColorLabel = getColorLabel;
 
-  constructor(private service: OrderService) {}
+  constructor(
+    private service: OrderService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.loadOrders(this.currentPage); // Appeler la méthode dès l'initialisation
@@ -52,7 +56,7 @@ export default class BasketComponent implements OnInit {
     window.console.log(this.order);
     if (clothe.stockDTO?.id) {
       this.service.add(clothe.stockDTO.id).subscribe({
-        next(response) {
+        next() {
           window.location.reload();
         },
         error(error) {
@@ -65,7 +69,7 @@ export default class BasketComponent implements OnInit {
   decreaseQuantity(clothe: IOrderLine): void {
     if (clothe.stockDTO?.id) {
       this.service.delete(clothe.stockDTO.id).subscribe({
-        next(response) {
+        next() {
           window.location.reload();
         },
         error(error) {
@@ -80,11 +84,21 @@ export default class BasketComponent implements OnInit {
   }
 
   onPageChange(page: number): void {
-    // eslint-disable-next-line no-console
-    console.log('Data for page', page);
+    if (page !== this.currentPage) {
+      this.loadOrders(page);
+    }
   }
 
   submitOrder(): void {
-    alert('Commande soumise avec succès !');
+    if (this.order?.id) {
+      this.service.validateBasket(this.order.id).subscribe({
+        next: () => {
+          this.router.navigate(['/pay']);
+        },
+        error(error) {
+          console.error('Erreur lors de la validation du panier :', error);
+        },
+      });
+    }
   }
 }

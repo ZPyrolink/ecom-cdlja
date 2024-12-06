@@ -94,6 +94,10 @@ export class OrderService {
     });
   }
 
+  validateBasket(id: number): Observable<object> {
+    return this.http.post(`${this.resourceUrl}/validate/${id}`, { observe: 'response' });
+  }
+
   getOrderIdentifier(order: Pick<IOrder, 'id'>): number {
     return order.id;
   }
