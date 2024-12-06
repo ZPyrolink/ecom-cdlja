@@ -96,6 +96,7 @@ export default class BasketComponent implements OnInit {
           this.router.navigate(['/pay']);
         },
         error(error) {
+          // TODO afficher article plus en stock
           console.error('Erreur lors de la validation du panier :', error);
         },
       });
