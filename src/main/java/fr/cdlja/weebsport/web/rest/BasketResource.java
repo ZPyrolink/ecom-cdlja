@@ -24,9 +24,12 @@ public class BasketResource {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<?> ajouterArticle(@PathVariable(value = "id", required = false) final long articleId) {
+    public ResponseEntity<?> ajouterArticle(
+        @PathVariable(value = "id", required = false) final long articleId,
+        @RequestParam(value = "quantite", defaultValue = "1") int quantite
+    ) {
         try {
-            basketService.ajouterArticle(articleId);
+            basketService.ajouterArticle(articleId, quantite);
             return ResponseEntity.ok("Article ajouté avec succès");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
@@ -34,9 +37,12 @@ public class BasketResource {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> supprimerArticle(@PathVariable(value = "id", required = false) final long articleId) {
+    public ResponseEntity<?> supprimerArticle(
+        @PathVariable(value = "id", required = false) final long articleId,
+        @RequestParam(value = "quantite", defaultValue = "1") int quantite
+    ) {
         try {
-            basketService.supprimerArticle(articleId);
+            basketService.supprimerArticle(articleId, quantite);
             return ResponseEntity.ok("Article supprimé avec succès");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
