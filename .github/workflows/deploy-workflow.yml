@@ -10,7 +10,7 @@ env:
   EC2_USER: ec2-user # Utilisateur SSH sur ton serveur EC2
   EC2_HOST: ${{ secrets.EC2_HOST }} # L'adresse de ton serveur EC2 (stockée dans les secrets GitHub)
   APP_DIR: /opt/weebSportApp # Répertoire de déploiement sur le serveur EC2
-  JAR_NAME: weebSportApp.jar # Nom du fichier JAR généré
+  JAR_NAME: weebSportApp-0.0.1-SNAPSHOT.jar # Nom du fichier JAR généré
 
 permissions:
   contents: read # Permet à GitHub Actions de lire le contenu du repository
