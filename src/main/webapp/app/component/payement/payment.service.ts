@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IOrder } from '../../entities/order/order.model';
+import { NewOrder } from '../../entities/order/order.model';
 import { MeansOfPayment } from '../../entities/enumerations/means-of-payment.model';
 
 export type ClientWhithAdminDTO = {
@@ -25,7 +25,7 @@ export type PaymentDTO =
       month: number;
       year: number;
       crypto: string;
-      basket?: IOrder;
+      basket?: NewOrder;
       meanOfPayement: Exclude<MeansOfPayment, MeansOfPayment.ONLINEPAYMENT>;
     }
   | {
