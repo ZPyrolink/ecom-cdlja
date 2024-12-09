@@ -231,7 +231,7 @@ public class ClotheResource {
     public ResponseEntity<Page<ClotheDTO>> getClothesFiltered(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "15") int size,
-        @RequestParam(defaultValue = "id") String sortBy,
+        @RequestParam(defaultValue = "clothe.price") String sortBy,
         @RequestBody FilterSortDTO filtersSort
     ) {
         if (filtersSort == null) {
@@ -247,7 +247,9 @@ public class ClotheResource {
         Sort sortCriteria = null;
         if (sort != null) {
             sort = sort.toLowerCase();
-            if ("clothe.price".equals(sortBy)) {
+            if (!"clothe.price".equals(sortBy)) {
+                throw new RuntimeException("The sort has to be by clothe.price");
+            } else {
                 if (Objects.equals(sort, "asc")) {
                     sortCriteria = Sort.by(Sort.Order.asc(sortBy), Sort.Order.asc("id"));
                 } else if (Objects.equals(sort, "desc")) {
@@ -255,21 +257,10 @@ public class ClotheResource {
                 } else {
                     throw new RuntimeException("The value of sort has to be ASC or DESC");
                 }
-            } else {
-                if (Objects.equals(sort, "asc")) {
-                    sortCriteria = Sort.by(Sort.Order.asc("id"));
-                } else if (Objects.equals(sort, "desc")) {
-                    sortCriteria = Sort.by(Sort.Order.desc("id"));
-                } else {
-                    throw new RuntimeException("The value of sort has to be ASC or DESC");
-                }
             }
             pageable = PageRequest.of(page, size, sortCriteria);
         } else {
-            if (sortBy != null) {
-                throw new RuntimeException("Need of precision of the direction of the sort : ASC or DESC");
-            }
-            pageable = PageRequest.of(page, size, Sort.by(sortBy));
+            pageable = PageRequest.of(page, size, Sort.by("id"));
         }
 
         List<Size> sizes = (filters != null) ? filters.getSizes() : null;
