@@ -8,6 +8,8 @@ import ValidatorsExt from '../../utils/validatorsExt';
 import { ClientWhithAdminDTO, PaymentDTO, PaymentService } from './payment.service';
 import { MeansOfPayment } from '../../entities/enumerations/means-of-payment.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { IOrder } from '../../entities/order/order.model';
 
 function onValueChanged(control: FormControl, callback: (value: string) => string): void {
   control.valueChanges.subscribe((val: string) => {
@@ -78,7 +80,10 @@ export default class PayementComponent implements OnInit {
     postalCode: new FormControl('', { validators: ValidatorsExt.validators(true, RegexpUtils.POSTAL_CODE) }),
   });
 
-  constructor(protected service: PaymentService) {
+  constructor(
+    protected service: PaymentService,
+    private router: Router,
+  ) {
     onValueChanged(this.cardNumControl, this.groupNumbers(4));
     onValueChanged(this.expirationDateControl, this.keepNumbers);
     onValueChanged(this.cryptoControl, this.keepNumbers);
@@ -103,8 +108,10 @@ export default class PayementComponent implements OnInit {
     } else {
       const expirationDate = this.expirationDateControl.value.split('/');
 
+      window.console.log(sessionStorage['basket'] as IOrder);
+
       data = {
-        basket: sessionStorage['basket'],
+        basket: JSON.parse(sessionStorage['basket']),
         cardNum: this.cardNumControl.value,
         crypto: this.payementForm.get('crypto')!.value,
         month: +expirationDate[0],
@@ -114,7 +121,10 @@ export default class PayementComponent implements OnInit {
     }
 
     this.service.pay(data).subscribe({
-      next: resp => alert(resp),
+      next: resp => {
+        alert(resp);
+        this.router.navigate(['/']);
+      },
       error(err: HttpErrorResponse) {
         window.console.error(err);
         alert('Erreur lors du paiement : ' + (err.error as string));
