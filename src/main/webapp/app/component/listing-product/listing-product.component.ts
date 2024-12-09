@@ -7,6 +7,7 @@ import { IClothe } from '../../entities/clothe/clothe.model';
 import { ClotheService } from '../../entities/clothe/service/clothe.service';
 import { FilterDataService } from '../filter-menu/service/FilterDataService';
 import { Subscription } from 'rxjs';
+import { OrderService } from '../../entities/order/service/order.service';
 
 @Component({
   selector: 'jhi-listing-product',
@@ -27,6 +28,7 @@ export default class ListingProductComponent implements OnInit, OnDestroy {
     private service: ClotheService,
     private router: Router,
     private serviceFilter: FilterDataService,
+    private serviceOrder: OrderService,
   ) {}
 
   ngOnInit(): void {
@@ -59,5 +61,9 @@ export default class ListingProductComponent implements OnInit, OnDestroy {
   }
   goToProductDetails(id: number): void {
     this.router.navigate(['/product', id]);
+  }
+
+  addArticle(clothes: IClothe): void {
+    this.serviceOrder.addClotheToOrder(clothes);
   }
 }
