@@ -24,6 +24,9 @@ import java.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -117,7 +120,12 @@ public class AccountResource {
     }
 
     @GetMapping("/client")
-    public ResponseEntity<ClientWhithAdminDTO> getConnectClient() throws Exception {
+    public ResponseEntity<ClientWhithAdminDTO> getConnectClient(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "6") int size,
+        @RequestParam(defaultValue = "id") String sortBy
+    ) throws Exception {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
         AdminUserDTO adminUserDTO = userService
             .getUserWithAuthorities()
             .map(AdminUserDTO::new)
@@ -125,9 +133,9 @@ public class AccountResource {
 
         SubscribedClientDTO subscribedClientDTO = subscribedClientsService.getClientByEmail(adminUserDTO.getEmail());
 
-        OrderDTO basketDTO = subscribedClientsService.getBasket(adminUserDTO.getEmail());
+        OrderDTO basketDTO = subscribedClientsService.getBasket(adminUserDTO.getEmail(), pageable);
 
-        List<OrderDTO> historique = subscribedClientsService.getHistorique(adminUserDTO.getEmail());
+        List<OrderDTO> historique = subscribedClientsService.getHistorique(adminUserDTO.getEmail(), pageable);
 
         ClientWhithAdminDTO clientWhithAdminDTO = new ClientWhithAdminDTO(subscribedClientDTO, adminUserDTO, basketDTO, historique);
 
@@ -135,7 +143,12 @@ public class AccountResource {
     }
 
     @GetMapping("/client/basket")
-    public ResponseEntity<OrderDTO> getClientBasket() throws Exception {
+    public ResponseEntity<OrderDTO> getClientBasket(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "6") int size,
+        @RequestParam(defaultValue = "id") String sortBy
+    ) throws Exception {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
         // Récupérer l'utilisateur connecté
         AdminUserDTO adminUserDTO = userService
             .getUserWithAuthorities()
@@ -143,31 +156,41 @@ public class AccountResource {
             .orElseThrow(() -> new AccountResourceException("User could not be found"));
 
         // Récupérer le panier du client connecté
-        OrderDTO basketDTO = subscribedClientsService.getBasket(adminUserDTO.getEmail());
+        OrderDTO basketDTO = subscribedClientsService.getBasket(adminUserDTO.getEmail(), pageable);
 
         return ResponseEntity.ok(basketDTO);
     }
 
     @GetMapping("/client/historique")
-    public ResponseEntity<List<OrderDTO>> getClientHistorique() throws Exception {
+    public ResponseEntity<List<OrderDTO>> getClientHistorique(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "6") int size,
+        @RequestParam(defaultValue = "id") String sortBy
+    ) throws Exception {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
         AdminUserDTO adminUserDTO = userService
             .getUserWithAuthorities()
             .map(AdminUserDTO::new)
             .orElseThrow(() -> new AccountResourceException("User could not be found"));
 
-        List<OrderDTO> historique = subscribedClientsService.getHistorique(adminUserDTO.getEmail());
+        List<OrderDTO> historique = subscribedClientsService.getHistorique(adminUserDTO.getEmail(), pageable);
 
         return ResponseEntity.ok(historique);
     }
 
     @GetMapping("/client/basket/count")
-    public ResponseEntity<Long> getClientBasketCount() throws Exception {
+    public ResponseEntity<Long> getClientBasketCount(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "6") int size,
+        @RequestParam(defaultValue = "id") String sortBy
+    ) throws Exception {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
         AdminUserDTO adminUserDTO = userService
             .getUserWithAuthorities()
             .map(AdminUserDTO::new)
             .orElseThrow(() -> new AccountResourceException("User could not be found"));
 
-        OrderDTO basketDTO = subscribedClientsService.getBasket(adminUserDTO.getEmail());
+        OrderDTO basketDTO = subscribedClientsService.getBasket(adminUserDTO.getEmail(), pageable);
         Long nbArticles = basketService.countNbArticles(basketDTO);
         return ResponseEntity.ok(nbArticles);
     }

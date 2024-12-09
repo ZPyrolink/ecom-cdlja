@@ -65,7 +65,7 @@ public class SubscribedClientsService {
         return new SubscribedClientDTO(client); // Transformer l'entité en DTO si nécessaire
     }
 
-    public OrderDTO getBasket(String email) throws Exception {
+    public OrderDTO getBasket(String email, Pageable pageable) throws Exception {
         Optional<SubscribedClients> optionalClient = subscribedClientsRepository.findByEmail(email);
         Order o;
         if (optionalClient.isPresent()) {
@@ -84,7 +84,6 @@ public class SubscribedClientsService {
         OrderDTO orderDTO;
         orderDTO = new OrderDTO(o);
         int nblignes = 0;
-        Pageable pageable = PageRequest.of(0, 6, Sort.by("id").ascending());
         Page<OrderLine> orderlines = orderLineRepository.getlines(o.getId(), pageable);
         if (!orderlines.isEmpty()) {
             for (OrderLine ol : orderlines) {
@@ -112,10 +111,9 @@ public class SubscribedClientsService {
         return orderDTO;
     }
 
-    public List<OrderDTO> getHistorique(String email) {
+    public List<OrderDTO> getHistorique(String email, Pageable pageable) throws Exception {
         Long client_id = subscribedClientsRepository.findByEmail(email).orElseThrow().getId();
 
-        Pageable pageable = PageRequest.of(0, 5, Sort.by("id").ascending());
         Page<Order> orders = orderRepository.getHistorique(client_id, pageable);
         List<OrderDTO> historique = new ArrayList<>();
         if (orders.isEmpty()) {

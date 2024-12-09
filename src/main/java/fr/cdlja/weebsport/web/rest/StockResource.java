@@ -1,16 +1,20 @@
 package fr.cdlja.weebsport.web.rest;
 
+import fr.cdlja.weebsport.domain.Clothe;
 import fr.cdlja.weebsport.domain.Stock;
 import fr.cdlja.weebsport.domain.enumeration.Color;
 import fr.cdlja.weebsport.domain.enumeration.Size;
 import fr.cdlja.weebsport.repository.ClotheRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
 import fr.cdlja.weebsport.service.StockService;
+import fr.cdlja.weebsport.service.dto.ClotheDTO;
+import fr.cdlja.weebsport.service.dto.FilterDTO;
+import fr.cdlja.weebsport.service.dto.FilterSortDTO;
+import fr.cdlja.weebsport.service.dto.StockDTO;
 import fr.cdlja.weebsport.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -179,13 +183,17 @@ public class StockResource {
     }
 
     @GetMapping("/{id}/{color}/{size}")
-    public ResponseEntity<Long> getStock(@PathVariable("id") Long id, @PathVariable("color") Color color, @PathVariable("size") Size size)
-        throws Exception {
-        Long stockId = stockRepository.idStockByColorAndSize(color, size, id);
-        if (stockId == null) {
+    public ResponseEntity<StockDTO> getStock(
+        @PathVariable("id") Long id,
+        @PathVariable("color") Color color,
+        @PathVariable("size") Size size
+    ) throws Exception {
+        Stock s = stockRepository.idStockByColorAndSize(color, size, id);
+        if (s == null) {
             throw new Exception("no stock available");
         }
-        return ResponseEntity.ok(stockId);
+        StockDTO stockDTO = new StockDTO(s);
+        return ResponseEntity.ok(stockDTO);
     }
 
     /**
