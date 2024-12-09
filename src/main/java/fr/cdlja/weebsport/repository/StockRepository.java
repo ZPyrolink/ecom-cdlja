@@ -3,6 +3,7 @@ package fr.cdlja.weebsport.repository;
 import fr.cdlja.weebsport.domain.Clothe;
 import fr.cdlja.weebsport.domain.Stock;
 import fr.cdlja.weebsport.domain.enumeration.Color;
+import fr.cdlja.weebsport.domain.enumeration.Gender;
 import fr.cdlja.weebsport.domain.enumeration.Size;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -44,16 +45,31 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     @Query("UPDATE Stock s SET s.quantity=:quantity, s.version=: version+1 WHERE s.id = :id and s.version =:version ")
     int updateStock(@Param("quantity") Integer quantity, @Param("version") Integer version, @Param("id") Long id);
 
-    @Query("SELECT s from Stock s WHERE s.size IN :sizes")
-    List<Stock> getStocksBySize(@Param("sizes") List<Size> sizes);
-
-    @Query("SELECT s FROM Stock s WHERE s.color IN :colors")
-    List<Stock> getStocksByColor(@Param("colors") List<Color> colors);
-
     @Query(
-        "SELECT s FROM Stock s WHERE " +
+        "SELECT s from Stock s WHERE " +
+        "(:keyword is NULL OR (" +
         "UPPER(CAST(s.size AS String)) LIKE %:keyword% OR " +
-        "UPPER(CAST(s.color AS String)) LIKE %:keyword%"
+        "UPPER(CAST(s.color AS String)) LIKE %:keyword% OR " +
+        "UPPER(CAST(s.clothe.theme AS String)) LIKE %:keyword% OR " +
+        "UPPER(CAST(s.clothe.type AS String)) LIKE %:keyword% OR " +
+        "UPPER(CAST(s.clothe.description AS String)) LIKE %:keyword%)) " +
+        "AND (:sizes is NULL OR s.size IN :sizes) " +
+        "AND (:colors is NULL OR s.color IN :colors) " +
+        "AND (:minPrice is NULL OR s.clothe.price >= :minPrice) " +
+        "AND (:maxPrice is NULL OR s.clothe.price <= :maxPrice) " +
+        "AND (:genders is NULL OR s.clothe.gender IN :genders) " +
+        "AND (:videoGameThemes is NULL OR UPPER(s.clothe.theme) IN :videoGameThemes) " +
+        "AND (:animeThemes is NULL OR UPPER(s.clothe.theme) IN :animeThemes) "
     )
-    List<Stock> searchStockByKeyword(String keyword);
+    Page<Stock> getStocksByFiltersAndSearch(
+        @Param("sizes") List<Size> sizes,
+        @Param("colors") List<Color> colors,
+        @Param("minPrice") Float minPrice,
+        @Param("maxPrice") Float maxPrice,
+        @Param("genders") List<Gender> genders,
+        @Param("videoGameThemes") List<String> videoGameThemes,
+        @Param("animeThemes") List<String> animeThemes,
+        String keyword,
+        Pageable pageable
+    );
 }
