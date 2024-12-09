@@ -9,7 +9,6 @@ import { ClientWhithAdminDTO, PaymentDTO, PaymentService } from './payment.servi
 import { MeansOfPayment } from '../../entities/enumerations/means-of-payment.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { IOrder } from '../../entities/order/order.model';
 
 function onValueChanged(control: FormControl, callback: (value: string) => string): void {
   control.valueChanges.subscribe((val: string) => {
@@ -103,15 +102,15 @@ export default class PayementComponent implements OnInit {
   pay(apple: boolean): void {
     let data: PaymentDTO;
 
+    const basket: string | undefined = sessionStorage['basket'];
+
     if (apple) {
       data = PayementComponent.APPLE_PAY;
     } else {
       const expirationDate = this.expirationDateControl.value.split('/');
 
-      window.console.log(sessionStorage['basket'] as IOrder);
-
       data = {
-        basket: JSON.parse(sessionStorage['basket']),
+        basket: basket ? JSON.parse(basket) : undefined,
         cardNum: this.cardNumControl.value,
         crypto: this.payementForm.get('crypto')!.value,
         month: +expirationDate[0],
@@ -123,6 +122,10 @@ export default class PayementComponent implements OnInit {
     this.service.pay(data).subscribe({
       next: resp => {
         alert(resp);
+        if (basket) {
+          sessionStorage['basket'] = JSON.stringify({});
+        }
+
         this.router.navigate(['/']);
       },
       error(err: HttpErrorResponse) {
