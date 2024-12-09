@@ -3,10 +3,7 @@ package fr.cdlja.weebsport.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import fr.cdlja.weebsport.domain.*;
-import fr.cdlja.weebsport.domain.enumeration.Color;
-import fr.cdlja.weebsport.domain.enumeration.Size;
 import fr.cdlja.weebsport.domain.enumeration.Status;
-import fr.cdlja.weebsport.domain.enumeration.Type;
 import fr.cdlja.weebsport.repository.OrderLineRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
 import fr.cdlja.weebsport.repository.SubscribedClientsRepository;
@@ -72,12 +69,14 @@ public class SubscibedClientsServiceTest {
 
         Clothe clothe1 = new Clothe();
         clothe1.setId(301L); // ID du vêtement
+        clothe1.setPrice(10f);
         stock1.setClothe(clothe1);
         orderLine1.setStock(stock1);
         stockToClotheDatabase.put(stock1.getId(), clothe1);
 
         Clothe clothe2 = new Clothe();
         clothe2.setId(302L); // ID du vêtement
+        clothe2.setPrice(50f);
         stock2.setClothe(clothe2);
         orderLine2.setStock(stock2);
         stockToClotheDatabase.put(stock2.getId(), clothe2);
@@ -116,13 +115,13 @@ public class SubscibedClientsServiceTest {
         OrderlineDTO line1 = basketDTO.getOrderLines().get(0);
         assertEquals(101L, line1.getId());
         assertEquals(201L, line1.getStockDTO().getId());
-        assertEquals(301L, line1.getStockDTO().getClotheDTO().getId());
+        assertEquals(301L, line1.getStockDTO().getClothe().getId());
 
         // Vérifier la deuxième ligne de commande
         OrderlineDTO line2 = basketDTO.getOrderLines().get(1);
         assertEquals(102L, line2.getId());
         assertEquals(202L, line2.getStockDTO().getId());
-        assertEquals(302L, line2.getStockDTO().getClotheDTO().getId());
+        assertEquals(302L, line2.getStockDTO().getClothe().getId());
     }
 
     @Test

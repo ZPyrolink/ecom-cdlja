@@ -1,7 +1,7 @@
 export const ColorEnum = {
   Vert: { name: 'Vert', image: '../../../content/images/vert.jpg' },
   Noir: { name: 'Noir', image: '../../../content/images/noir.png' },
-  Blanc: { name: 'Blanc', image: '../../../content/images/blanc.jpg' },
+  Blanc: { name: 'Blanc', image: '../../../content/images/blanc.png' },
   Beige: { name: 'Beige', image: '../../../content/images/beige.jpeg' },
   Rouge: { name: 'Rouge', image: '../../../content/images/rouge.avif' },
   Bleu: { name: 'Bleu', image: '../../../content/images/bleu.png' },

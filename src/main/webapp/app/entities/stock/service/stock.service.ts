@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -70,5 +70,9 @@ export class StockService {
       return [...stocksToAdd, ...stockCollection];
     }
     return stockCollection;
+  }
+
+  getStockByColorAndSize(id: number, color: string | undefined, size: string | undefined): Observable<EntityResponseType> {
+    return this.http.get<IStock>(`${this.resourceUrl}/${id}/${color}/${size}`, { observe: 'response' });
   }
 }
