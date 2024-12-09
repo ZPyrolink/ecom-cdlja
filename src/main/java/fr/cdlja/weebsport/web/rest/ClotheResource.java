@@ -228,7 +228,7 @@ public class ClotheResource {
     }
 
     @GetMapping("/filters")
-    public ResponseEntity<Page<ClotheDTO>> getStocksFiltered(
+    public ResponseEntity<Page<ClotheDTO>> getClothesFiltered(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "15") int size,
         @RequestParam(defaultValue = "id") String sortBy,
