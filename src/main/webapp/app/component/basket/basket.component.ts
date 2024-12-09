@@ -30,7 +30,12 @@ export default class BasketComponent implements OnInit {
   constructor(private service: OrderService) {}
 
   ngOnInit(): void {
-    this.loadOrders(this.currentPage); // Appeler la méthode dès l'initialisation
+    window.console.log('iccccccccccci');
+    try {
+      this.loadOrders(this.currentPage);
+    } catch (e) {
+      window.console.error('Erreur lors de la requête:', e);
+    }
   }
 
   loadOrders(page: number): void {
@@ -45,14 +50,17 @@ export default class BasketComponent implements OnInit {
           // TODO gerer si pas connecter et pour supprimer et ajouter quantite
         }
       },
+      error(error) {
+        window.console.error('Erreur lors de la requête:', error);
+      },
     });
   }
 
   increaseQuantity(clothe: IOrderLine): void {
     window.console.log(this.order);
     if (clothe.stockDTO?.id) {
-      this.service.add(clothe.stockDTO.id).subscribe({
-        next(response) {
+      this.service.add(clothe.stockDTO.id)?.subscribe({
+        next() {
           window.location.reload();
         },
         error(error) {
@@ -64,8 +72,8 @@ export default class BasketComponent implements OnInit {
 
   decreaseQuantity(clothe: IOrderLine): void {
     if (clothe.stockDTO?.id) {
-      this.service.delete(clothe.stockDTO.id, 1).subscribe({
-        next(response) {
+      this.service.delete(clothe.stockDTO.id, 1)?.subscribe({
+        next() {
           window.location.reload();
         },
         error(error) {
@@ -77,8 +85,8 @@ export default class BasketComponent implements OnInit {
 
   delete(clothe: IOrderLine): void {
     if (clothe.stockDTO?.id && clothe.quantity) {
-      this.service.delete(clothe.stockDTO.id, clothe.quantity).subscribe({
-        next(response) {
+      this.service.delete(clothe.stockDTO.id, clothe.quantity)?.subscribe({
+        next() {
           window.location.reload();
         },
         error(error) {
@@ -95,6 +103,7 @@ export default class BasketComponent implements OnInit {
   }
 
   submitOrder(): void {
+    // TODO ajouter erreur si stock manquant
     alert('Commande soumise avec succès !');
   }
 }

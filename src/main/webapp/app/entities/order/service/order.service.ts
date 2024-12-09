@@ -59,39 +59,52 @@ export class OrderService {
 
   query(req?: any): Observable<HttpResponse<IOrder>> | undefined {
     const token = window.sessionStorage['id_storage'];
-    // TODO changer
-    // if (!token) {
-    // window.console.log('Token vide');
-    //  return;
-    // } else {
-    const options = createRequestOption(req);
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<IOrder>(this.resourceUrl, { params: options, headers, observe: 'response' });
+    if (!token) {
+      // TODO
+      window.console.log('Token vide');
+      return;
+    } else {
+      const options = createRequestOption(req);
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.get<IOrder>(this.resourceUrl, { params: options, headers, observe: 'response' });
+    }
   }
 
-  delete(id: number, quantity: number): Observable<HttpResponse<{}>> {
+  delete(id: number, quantity: number): Observable<HttpResponse<{}>> | undefined {
     const token = window.sessionStorage['id_storage'];
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const body = { quantite: quantity };
-    return this.http.delete(`api/basket/${id}`, {
-      headers,
-      body,
-      observe: 'response',
-      responseType: 'text',
-    });
+    if (!token) {
+      // TODO
+      window.console.log('Token vide');
+      return;
+    } else {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      const body = { quantite: quantity };
+      return this.http.delete(`api/basket/${id}`, {
+        headers,
+        body,
+        observe: 'response',
+        responseType: 'text',
+      });
+    }
   }
 
-  add(id: number): Observable<object> {
+  add(id: number): Observable<object> | undefined {
     const token = window.sessionStorage['id_storage'];
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const options = createRequestOption();
-    const body = { id };
-    return this.http.post(`api/basket/${id}`, body, {
-      params: options,
-      headers,
-      observe: 'response',
-      responseType: 'text',
-    });
+    if (!token) {
+      // TODO
+      window.console.log('Token vide');
+      return;
+    } else {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      const options = createRequestOption();
+      const body = { id };
+      return this.http.post(`api/basket/${id}`, body, {
+        params: options,
+        headers,
+        observe: 'response',
+        responseType: 'text',
+      });
+    }
   }
 
   getOrderIdentifier(order: Pick<IOrder, 'id'>): number {
