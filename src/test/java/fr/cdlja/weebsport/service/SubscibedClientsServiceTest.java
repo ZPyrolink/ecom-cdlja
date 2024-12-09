@@ -69,12 +69,14 @@ public class SubscibedClientsServiceTest {
 
         Clothe clothe1 = new Clothe();
         clothe1.setId(301L); // ID du vêtement
+        clothe1.setPrice(10f);
         stock1.setClothe(clothe1);
         orderLine1.setStock(stock1);
         stockToClotheDatabase.put(stock1.getId(), clothe1);
 
         Clothe clothe2 = new Clothe();
         clothe2.setId(302L); // ID du vêtement
+        clothe2.setPrice(50f);
         stock2.setClothe(clothe2);
         orderLine2.setStock(stock2);
         stockToClotheDatabase.put(stock2.getId(), clothe2);
