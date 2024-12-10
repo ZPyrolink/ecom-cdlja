@@ -52,9 +52,9 @@ h3 {
   align-items: center;
   justify-content: center;
   margin-right: 10px;
-  background-color: #f3f3f3;
+  background-color: white;
   border-radius: 5px;
-  border: 0.1px solid #d1d1d1;
+  border: 0;
   color: #333;
   cursor: pointer;
   font-size: 16px;
@@ -65,7 +65,7 @@ h3 {
 }
 
 .colorButton.selected {
-  background-color: #bcbcbc;
+  background-color: #a0a0a0;
   color: white;
   width: 125px;
 }
@@ -91,9 +91,6 @@ h3 {
   height: 40px;
   margin-right: 10px;
   cursor: pointer;
-  box-shadow:
-    0 8px 16px 0 rgba(0, 0, 0, 0.2),
-    0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .sizeButton.selected {
