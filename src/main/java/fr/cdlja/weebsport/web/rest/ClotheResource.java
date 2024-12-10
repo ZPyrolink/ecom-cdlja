@@ -2,21 +2,16 @@ package fr.cdlja.weebsport.web.rest;
 
 import fr.cdlja.weebsport.domain.Clothe;
 import fr.cdlja.weebsport.domain.Stock;
-import fr.cdlja.weebsport.domain.enumeration.Category;
-import fr.cdlja.weebsport.domain.enumeration.Color;
-import fr.cdlja.weebsport.domain.enumeration.Gender;
-import fr.cdlja.weebsport.domain.enumeration.Size;
+import fr.cdlja.weebsport.domain.enumeration.*;
 import fr.cdlja.weebsport.repository.ClotheRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
 import fr.cdlja.weebsport.service.ClotheService;
 import fr.cdlja.weebsport.service.StockService;
-import fr.cdlja.weebsport.service.dto.FilterDTO;
-import fr.cdlja.weebsport.service.dto.FilterSortDTO;
-import fr.cdlja.weebsport.service.dto.SearchDTO;
-import fr.cdlja.weebsport.service.dto.ThemeDTO;
+import fr.cdlja.weebsport.service.dto.*;
 import fr.cdlja.weebsport.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -176,7 +172,7 @@ public class ClotheResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of clothes in body.
      */
     @GetMapping("")
-    public ResponseEntity<Page<Clothe>> getAllClothes(
+    public ResponseEntity<Page<ClotheDTO>> getAllClothes(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "15") int size,
         @RequestParam(defaultValue = "id") String sortBy
@@ -190,7 +186,11 @@ public class ClotheResource {
             .map(result -> (Clothe) result[0]) // Récupère l'entité Clothe du tableau Object[]
             .distinct() // Remove duplicates
             .collect(Collectors.toList());
-        Page<Clothe> clothePage = new PageImpl<>(clothes, pageable, rawResults.getTotalElements());
+        List<ClotheDTO> clothesD = new ArrayList<>();
+        for (Clothe clothe : clothes) {
+            clothesD.add(new ClotheDTO(clothe));
+        }
+        Page<ClotheDTO> clothePage = new PageImpl<>(clothesD, pageable, rawResults.getTotalElements());
         return ResponseEntity.ok(clothePage);
     }
 
@@ -231,7 +231,7 @@ public class ClotheResource {
     }
 
     @PostMapping("/filters")
-    public ResponseEntity<Page<Clothe>> getClothesFiltered(
+    public ResponseEntity<Page<ClotheDTO>> getClothesFiltered(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "15") int size,
         @RequestParam(defaultValue = "clothe.price") String sortBy,
@@ -271,6 +271,7 @@ public class ClotheResource {
         Float minPrice = (filters != null && filters.getPrices() != null) ? filters.getPrices().getMin() : null;
         Float maxPrice = (filters != null && filters.getPrices() != null) ? filters.getPrices().getMax() : null;
         List<Gender> genders = (filters != null) ? filters.getGenders() : null;
+        List<Type> types = (filters != null) ? filters.getTypes() : null;
         List<String> videoGameThemes = (filters != null) ? filters.getVideogameThemes() : null;
         List<String> animeThemes = (filters != null) ? filters.getAnimeThemes() : null;
 
@@ -280,12 +281,13 @@ public class ClotheResource {
             minPrice,
             maxPrice,
             genders,
+            types,
             videoGameThemes,
             animeThemes,
             keyWord,
             pageable
         );
-        Page<Clothe> clothesPage = stocks.map(Stock::getClothe);
+        Page<ClotheDTO> clothesPage = stocks.map(stock -> new ClotheDTO(stock.getClothe()));
         return ResponseEntity.ok(clothesPage);
     }
 
