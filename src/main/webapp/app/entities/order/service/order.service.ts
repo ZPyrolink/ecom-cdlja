@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 
 import dayjs from 'dayjs/esm';
 
@@ -9,6 +9,9 @@ import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IOrder, NewOrder } from '../order.model';
+import { IClothe } from '../../clothe/clothe.model';
+import { IOrderLine } from '../../order-line/order-line.model';
+import { IStock } from '../../stock/stock.model';
 
 export type PartialUpdateOrder = Partial<IOrder> & Pick<IOrder, 'id'>;
 
@@ -57,41 +60,91 @@ export class OrderService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  query(req?: any): Observable<HttpResponse<IOrder>> | undefined {
+  query(req?: any): Observable<IOrder> | undefined {
     const token = window.sessionStorage['id_storage'];
-    // TODO changer
-    // if (!token) {
-    // window.console.log('Token vide');
-    //  return;
-    // } else {
-    const options = createRequestOption(req);
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<IOrder>(this.resourceUrl, { params: options, headers, observe: 'response' });
+    if (!token) {
+      const basket = window.sessionStorage['basket'];
+      const order = basket ? (JSON.parse(basket) as IOrder) : undefined;
+      return order ? of(order) : undefined;
+    } else {
+      const options = createRequestOption(req);
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.get<IOrder>(this.resourceUrl, { params: options, headers, observe: 'response' }).pipe(
+        map(response => response.body as IOrder), // On extrait le corps de la réponse
+      );
+    }
   }
 
-  delete(id: number, quantity: number): Observable<HttpResponse<{}>> {
+  delete(id: number, quantity: number): Observable<HttpResponse<{}>> | undefined {
     const token = window.sessionStorage['id_storage'];
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const body = { quantite: quantity };
-    return this.http.delete(`api/basket/${id}`, {
-      headers,
-      body,
-      observe: 'response',
-      responseType: 'text',
-    });
+    if (!token) {
+      // TODO
+      window.console.log('Token vide');
+      return;
+    } else {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      const body = { quantite: quantity };
+      return this.http.delete(`api/basket/${id}`, {
+        headers,
+        body,
+        observe: 'response',
+        responseType: 'text',
+      });
+    }
   }
 
-  add(id: number): Observable<object> {
+  add(id: number): Observable<object> | undefined {
     const token = window.sessionStorage['id_storage'];
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const options = createRequestOption();
-    const body = { id };
-    return this.http.post(`api/basket/${id}`, body, {
-      params: options,
-      headers,
-      observe: 'response',
-      responseType: 'text',
-    });
+    if (!token) {
+      // TODO
+      window.console.log('Token vide');
+      return;
+    } else {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      const options = createRequestOption();
+      const body = { id };
+      return this.http.post(`api/basket/${id}`, body, {
+        params: options,
+        headers,
+        observe: 'response',
+        responseType: 'text',
+      });
+    }
+  }
+
+  addClotheToOrder(clothe: IClothe): void {
+    const existingOrder = window.sessionStorage.getItem('basket'); // Utilise getItem pour lire sessionStorage
+    let order: IOrder;
+
+    if (existingOrder) {
+      try {
+        order = JSON.parse(existingOrder) as IOrder;
+        window.console.log(order);
+        order.orderLines = order.orderLines ?? [];
+      } catch (error) {
+        console.error('Erreur lors du parsing du panier :', error);
+        order = { id: Date.now(), status: 'BASKET', date: dayjs(), orderLines: [], amount: 0 } as IOrder;
+      }
+    } else {
+      order = {
+        id: Date.now(),
+        status: 'BASKET',
+        date: dayjs(),
+        orderLines: [],
+        amount: 0,
+      } as IOrder;
+    }
+    const orderLine: IOrderLine = {
+      id: Date.now(),
+      quantity: 1,
+      amountline: clothe.price ?? 0,
+      // TODO ca a faire
+      stockDTO: { id: clothe.id } as IStock,
+    };
+    order.orderLines?.push(orderLine);
+    order.amount = order.orderLines?.reduce((total, line) => total + (line.amountline ?? 0), 0);
+    window.sessionStorage.setItem('basket', JSON.stringify(order));
+    window.console.log('Panier mis à jour :', order);
   }
 
   validateBasket(id: number): Observable<object> {
