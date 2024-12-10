@@ -5,6 +5,7 @@ import fr.cdlja.weebsport.domain.Stock;
 import fr.cdlja.weebsport.domain.enumeration.Color;
 import fr.cdlja.weebsport.domain.enumeration.Gender;
 import fr.cdlja.weebsport.domain.enumeration.Size;
+import fr.cdlja.weebsport.domain.enumeration.Type;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,6 +59,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
         "AND (:minPrice is NULL OR s.clothe.price >= :minPrice) " +
         "AND (:maxPrice is NULL OR s.clothe.price <= :maxPrice) " +
         "AND (:genders is NULL OR s.clothe.gender IN :genders) " +
+        "AND (:types is NULL OR s.clothe.type IN :types) " +
         "AND (:videoGameThemes is NULL OR UPPER(s.clothe.theme) IN :videoGameThemes) " +
         "AND (:animeThemes is NULL OR UPPER(s.clothe.theme) IN :animeThemes) "
     )
@@ -67,6 +69,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
         @Param("minPrice") Float minPrice,
         @Param("maxPrice") Float maxPrice,
         @Param("genders") List<Gender> genders,
+        @Param("types") List<Type> types,
         @Param("videoGameThemes") List<String> videoGameThemes,
         @Param("animeThemes") List<String> animeThemes,
         String keyword,
