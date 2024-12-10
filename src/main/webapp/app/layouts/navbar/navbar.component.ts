@@ -24,16 +24,12 @@ export default class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.serviceOrder.query()?.subscribe({
       next: response => {
-        if (response.body) {
-          if (response.body.orderLines) {
-            for (const line of response.body.orderLines) {
-              if (line.quantity) {
-                this.orderQuantity += line.quantity;
-              }
+        if (response.orderLines) {
+          for (const line of response.orderLines) {
+            if (line.quantity) {
+              this.orderQuantity += line.quantity;
             }
           }
-        } else {
-          // TODO gerer si pas connecter et pour supprimer et ajouter quantite
         }
       },
     });

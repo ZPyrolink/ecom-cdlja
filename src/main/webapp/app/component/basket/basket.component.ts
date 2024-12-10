@@ -7,6 +7,7 @@ import { IOrderLine } from '../../entities/order-line/order-line.model';
 import getClotheTypeLabel from '../../entities/enumerations/type.model';
 import getSizeLabel from '../../entities/enumerations/size.model';
 import getColorLabel from '../../entities/enumerations/color.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-basket',
@@ -27,7 +28,10 @@ export default class BasketComponent implements OnInit {
   protected readonly getSizeLabel = getSizeLabel;
   protected readonly getColorLabel = getColorLabel;
 
-  constructor(private service: OrderService) {}
+  constructor(
+    private service: OrderService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     window.console.log('iccccccccccci');
