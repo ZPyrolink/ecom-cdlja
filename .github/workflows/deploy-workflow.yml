@@ -51,6 +51,6 @@ jobs:
       - name: Restart application on EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i github-ec2.pem $EC2_USER@${{ secrets.EC2_HOST }} "
-            sudo systemctl daemon-reload &&
+            sudo systemctl stop weebSportAppService.service &&
             sudo systemctl restart weebSportAppService.service  # Redémarrer le service de l'application
           "
