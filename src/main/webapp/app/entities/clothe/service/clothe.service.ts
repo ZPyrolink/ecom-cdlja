@@ -38,21 +38,27 @@ export class ClotheService {
   }
 
   query(req?: any): Observable<PaginatedResponse<IClothe>> {
-    let filtresRes;
-    this.filterDataService.getFilters().subscribe(filters => {
-      filtresRes = filters;
-    });
-    const params = this.createRequestParams(req, filtresRes);
-    window.console.log('Params de la requête:', filtresRes);
+    const searchQuery = window.sessionStorage.getItem('search') ?? '';
+    const videogameFilters = JSON.parse(window.sessionStorage.getItem('filters.videogame') ?? '[]');
+    const animeFilters = JSON.parse(window.sessionStorage.getItem('filters.anime') ?? '[]');
+    const clothesFilters = JSON.parse(window.sessionStorage.getItem('item_clothes') ?? '[]');
+    const filters = {
+      // TODO changer ca
+    };
 
-    // Envoyer la requête HTTP avec les paramètres
-    return this.http.post<PaginatedResponse<IClothe>>(`${this.resourceUrl}/filters`, filtresRes, { params: req, observe: 'response' }).pipe(
+    const body = {
+      filters,
+      search: searchQuery,
+      sort: 'asc',
+    };
+    window.console.log('Paramètres de la requête:', body);
+
+    return this.http.post<PaginatedResponse<IClothe>>(`${this.resourceUrl}/filters`, body, { params: req, observe: 'response' }).pipe(
       map(response => {
         window.console.log('Réponse de la requête:', response.body);
         if (response.body) {
-          return response.body; // Retourner les données de la réponse si présentes
+          return response.body;
         } else {
-          // Retourner un objet vide avec la structure de PaginatedResponse si la réponse est nulle
           return {
             content: [],
             totalElements: 0,
@@ -67,7 +73,6 @@ export class ClotheService {
       }),
     );
   }
-
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }

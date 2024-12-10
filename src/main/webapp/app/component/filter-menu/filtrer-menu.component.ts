@@ -68,8 +68,11 @@ export default class FilterMenuComponent implements OnInit {
   updateService(selectedItems: string[]): void {
     if (selectedItems === this.selectedItemsClothes) {
       this.filterDataService.setClothes(this.selectedItemsClothes);
+      window.sessionStorage['item_clothes'] = this.selectedItemsClothes;
     } else if (selectedItems === this.selectedItemsThemes) {
       this.filterDataService.setThemes(this.selectedItemsThemes);
+      window.sessionStorage['filters.videogame'] = this.selectedItemsThemes;
+      window.sessionStorage['filters.anime'] = this.selectedItemsThemes;
     }
   }
 

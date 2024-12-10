@@ -27,6 +27,7 @@ export default class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.searchQuery = window.sessionStorage.getItem('search') ?? '';
     this.serviceOrder.query()?.subscribe({
       next: response => {
         if (response.orderLines) {
@@ -46,7 +47,8 @@ export default class NavbarComponent implements OnInit {
   }
 
   onSearch(): void {
+    window.sessionStorage['search'] = this.searchQuery;
     this.filterDataService.setSearchQuery(this.searchQuery);
-    this.router.navigate(['']);
+    window.location.reload();
   }
 }

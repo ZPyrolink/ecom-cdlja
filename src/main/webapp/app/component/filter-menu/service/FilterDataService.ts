@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -86,27 +85,5 @@ export class FilterDataService {
 
   getAnime(): Observable<string[]> {
     return this.animeSubject.asObservable();
-  }
-
-  getFilters(): Observable<any> {
-    return combineLatest([
-      this.getSize(),
-      this.getColor(),
-      this.getPrice(),
-      this.getGender(),
-      this.getVideogame(),
-      this.getAnime(),
-      this.getSearchQuery(),
-    ]).pipe(
-      map(([size, color, price, gender, videogame, anime, search]) => ({
-        size,
-        color,
-        price,
-        gender,
-        videogame,
-        anime,
-        search,
-      })),
-    );
   }
 }

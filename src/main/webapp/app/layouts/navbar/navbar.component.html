@@ -7,7 +7,12 @@
       <span class="search-icon-left">
         <img src="../../../content/images/MenuIcon.png" alt="Menu" (click)="openPanel()" />
       </span>
-      <input type="text" placeholder="Entrez votre recherche ici" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()" />
+      <input
+        type="text"
+        [placeholder]="searchQuery ? '' : 'Entrez votre recherche ici'"
+        [(ngModel)]="searchQuery"
+        (keyup.enter)="onSearch()"
+      />
       <span class="search-icon-right">
         <img src="../../../content/images/SearchIcon.png" alt="Recherche" (click)="onSearch()" />
       </span>
