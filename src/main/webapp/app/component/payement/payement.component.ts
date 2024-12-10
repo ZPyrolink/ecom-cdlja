@@ -131,9 +131,10 @@ export default class PayementComponent implements OnInit {
 
         this.router.navigate(['/']);
       },
-      error(err: HttpErrorResponse) {
-        window.console.error(err);
+      error: (err: HttpErrorResponse) => {
         alert('Erreur lors du paiement : ' + (err.error as string));
+
+        this.router.navigate(['/', 'basket']);
       },
     });
   }
