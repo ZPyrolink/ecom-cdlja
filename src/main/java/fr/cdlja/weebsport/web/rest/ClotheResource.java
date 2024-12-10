@@ -266,14 +266,26 @@ public class ClotheResource {
             pageable = PageRequest.of(page, size, Sort.by("id"));
         }
 
-        List<Size> sizes = (filters != null) ? filters.getSizes() : null;
-        List<Color> colors = (filters != null) ? filters.getColors() : null;
-        Float minPrice = (filters != null && filters.getPrices() != null) ? filters.getPrices().getMin() : null;
-        Float maxPrice = (filters != null && filters.getPrices() != null) ? filters.getPrices().getMax() : null;
-        List<Gender> genders = (filters != null) ? filters.getGenders() : null;
-        List<Type> types = (filters != null) ? filters.getTypes() : null;
-        List<String> videoGameThemes = (filters != null) ? filters.getVideogameThemes() : null;
-        List<String> animeThemes = (filters != null) ? filters.getAnimeThemes() : null;
+        List<Size> sizes = (filters == null || (filters.getSizes() != null && filters.getSizes().isEmpty())) ? null : filters.getSizes();
+        List<Color> colors = (filters == null || (filters.getColors() != null && filters.getColors().isEmpty()))
+            ? null
+            : filters.getColors();
+        Float minPrice = (filters == null || (filters.getPrices() != null && filters.getPrices().getMin() == -1))
+            ? null
+            : filters.getPrices().getMin();
+        Float maxPrice = (filters == null || (filters.getPrices() != null && filters.getPrices().getMax() == -1))
+            ? null
+            : filters.getPrices().getMax();
+        List<Gender> genders = (filters == null || (filters.getGenders() != null && filters.getGenders().isEmpty()))
+            ? null
+            : filters.getGenders();
+        List<Type> types = (filters == null || (filters.getTypes() != null && filters.getTypes().isEmpty())) ? null : filters.getTypes();
+        List<String> videoGameThemes = (filters == null || (filters.getVideogameThemes() != null && filters.getVideogameThemes().isEmpty()))
+            ? null
+            : filters.getVideogameThemes();
+        List<String> animeThemes = (filters == null || (filters.getAnimeThemes() != null && filters.getAnimeThemes().isEmpty()))
+            ? null
+            : filters.getAnimeThemes();
 
         Page<Stock> stocks = stockRepository.getStocksByFiltersAndSearch(
             sizes,
