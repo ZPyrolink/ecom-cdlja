@@ -35,6 +35,7 @@ export default class ListingProductComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    window.console.log('laaaaaaaaaaaaaaaaa');
     this.loadPage(this.currentPage);
     this.serviceFilter.getThemes().subscribe(themes => {
       this.selectedItemsThemes = themes;
@@ -49,11 +50,9 @@ export default class ListingProductComponent implements OnInit, OnDestroy {
 
   loadPage(page: number): void {
     this.service.query({ page }).subscribe(next => {
-      this.clothes = next.body?.content ?? [];
-      this.totalPages = next.body?.totalPages ?? 1;
-      this.currentPage = next.body?.number ?? 1;
-      // eslint-disable-next-line no-console
-      console.log('Data for page', page, next);
+      this.clothes = next.content;
+      this.totalPages = next.totalPages;
+      this.currentPage = next.number;
     });
   }
 

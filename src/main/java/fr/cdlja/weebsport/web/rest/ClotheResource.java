@@ -10,7 +10,10 @@ import fr.cdlja.weebsport.repository.ClotheRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
 import fr.cdlja.weebsport.service.ClotheService;
 import fr.cdlja.weebsport.service.StockService;
-import fr.cdlja.weebsport.service.dto.*;
+import fr.cdlja.weebsport.service.dto.FilterDTO;
+import fr.cdlja.weebsport.service.dto.FilterSortDTO;
+import fr.cdlja.weebsport.service.dto.SearchDTO;
+import fr.cdlja.weebsport.service.dto.ThemeDTO;
 import fr.cdlja.weebsport.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -227,8 +230,8 @@ public class ClotheResource {
         return ResponseEntity.ok(themeDTO);
     }
 
-    @GetMapping("/filters")
-    public ResponseEntity<Page<ClotheDTO>> getClothesFiltered(
+    @PostMapping("/filters")
+    public ResponseEntity<Page<Clothe>> getClothesFiltered(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "15") int size,
         @RequestParam(defaultValue = "clothe.price") String sortBy,
@@ -282,8 +285,7 @@ public class ClotheResource {
             keyWord,
             pageable
         );
-
-        Page<ClotheDTO> clothesPage = stocks.map(stock -> new ClotheDTO(stock.getClothe()));
+        Page<Clothe> clothesPage = stocks.map(Stock::getClothe);
         return ResponseEntity.ok(clothesPage);
     }
 

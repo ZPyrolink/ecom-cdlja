@@ -1,10 +1,11 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import SharedModule from 'app/shared/shared.module';
 import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
 import ActiveMenuDirective from './active-menu.directive';
 import { FormsModule } from '@angular/forms';
 import { OrderService } from '../../entities/order/service/order.service';
+import { FilterDataService } from '../../component/filter-menu/service/FilterDataService';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -19,7 +20,11 @@ export default class NavbarComponent implements OnInit {
   orderQuantity = 0;
   @Output() visibilityChange = new EventEmitter<boolean>();
 
-  constructor(private serviceOrder: OrderService) {}
+  constructor(
+    private serviceOrder: OrderService,
+    private filterDataService: FilterDataService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.serviceOrder.query()?.subscribe({
@@ -41,8 +46,7 @@ export default class NavbarComponent implements OnInit {
   }
 
   onSearch(): void {
-    // eslint-disable-next-line no-console
-    console.log('Recherche :', this.searchQuery);
-    // TODO envoyer la requete au back
+    this.filterDataService.setSearchQuery(this.searchQuery);
+    this.router.navigate(['']);
   }
 }
