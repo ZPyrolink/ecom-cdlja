@@ -39,7 +39,7 @@ public class SubscribedClients extends AbstractClient implements Serializable {
     private Integer points = 0;
 
     @JsonIgnoreProperties(value = { "client", "orderlines", "subscribedClients" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(unique = true, name = "basket_id")
     private Order basket;
 

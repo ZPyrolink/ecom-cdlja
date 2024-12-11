@@ -2,10 +2,8 @@ package fr.cdlja.weebsport.repository;
 
 import fr.cdlja.weebsport.domain.Order;
 import fr.cdlja.weebsport.domain.SubscribedClients;
-import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -27,4 +25,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("select amount from Order where client.id = :clientId and status = 'BASKET'")
     Float getPrice(@Param("clientId") Long clientId);
+    //    @Modifying
+    //    @Query("update Order set status = 'PAID' where id = :id")
+    //    void validate(@Param("id") Long orderId);
 }
