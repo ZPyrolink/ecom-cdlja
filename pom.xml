@@ -999,7 +999,7 @@
         <liquibase-plugin.driver>org.postgresql.Driver</liquibase-plugin.driver>
         <liquibase-plugin.hibernate-dialect>org.hibernate.dialect.PostgreSQLDialect</liquibase-plugin.hibernate-dialect>
         <liquibase-plugin.password>password</liquibase-plugin.password>
-        <liquibase-plugin.url>jdbc:postgresql://localhost:5432/weebSport</liquibase-plugin.url>
+        <liquibase-plugin.url>jdbc:postgresql://weebsport.c5q2e8ykague.eu-north-1.rds.amazonaws.com:5432/weebSport</liquibase-plugin.url>
         <liquibase-plugin.username>weebSport</liquibase-plugin.username>
         <profile.test>testprod</profile.test>
         <spring.profiles.active>prod${profile.api-docs}${profile.tls}${profile.e2e}${profile.no-liquibase}

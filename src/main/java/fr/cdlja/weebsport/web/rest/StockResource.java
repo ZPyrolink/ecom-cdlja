@@ -1,13 +1,19 @@
 package fr.cdlja.weebsport.web.rest;
 
 import fr.cdlja.weebsport.domain.Stock;
+import fr.cdlja.weebsport.domain.enumeration.Color;
+import fr.cdlja.weebsport.domain.enumeration.Size;
+import fr.cdlja.weebsport.repository.ClotheRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
+import fr.cdlja.weebsport.service.StockService;
+import fr.cdlja.weebsport.service.dto.StockDTO;
 import fr.cdlja.weebsport.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,8 +44,14 @@ public class StockResource {
 
     private final StockRepository stockRepository;
 
-    public StockResource(StockRepository stockRepository) {
+    private final ClotheRepository clotheRepository;
+
+    private final StockService stockService;
+
+    public StockResource(StockRepository stockRepository, ClotheRepository clotheRepository, StockService stockService) {
         this.stockRepository = stockRepository;
+        this.clotheRepository = clotheRepository;
+        this.stockService = stockService;
     }
 
     /**
@@ -156,6 +168,13 @@ public class StockResource {
         return ResponseEntity.ok(stocksPage); // Retour de la page dans la réponse
     }
 
+    @GetMapping("/clothes/{id}")
+    public ResponseEntity<List<StockDTO>> getStocksByClotheId(@PathVariable("id") Long id) {
+        List<Stock> stocks = stockRepository.findStocksByClotheId(id);
+        List<StockDTO> stocksDTO = stocks.stream().map(StockDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok(stocksDTO);
+    }
+
     /**
      * {@code GET  /stocks/:id} : get the "id" stock.
      *
@@ -167,6 +186,20 @@ public class StockResource {
         LOG.debug("REST request to get Stock : {}", id);
         Optional<Stock> stock = stockRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(stock);
+    }
+
+    @GetMapping("/{id}/{color}/{size}")
+    public ResponseEntity<StockDTO> getStock(
+        @PathVariable("id") Long id,
+        @PathVariable("color") Color color,
+        @PathVariable("size") Size size
+    ) throws Exception {
+        Stock s = stockRepository.idStockByColorAndSize(color, size, id);
+        if (s == null) {
+            throw new Exception("no stock available");
+        }
+        StockDTO stockDTO = new StockDTO(s);
+        return ResponseEntity.ok(stockDTO);
     }
 
     /**

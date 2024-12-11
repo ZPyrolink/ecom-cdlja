@@ -53,6 +53,7 @@ public class Clothe implements Serializable {
     private Set<Category> Categories;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+    public Clothe() {}
 
     public Set<Category> getCategories() {
         return Categories;

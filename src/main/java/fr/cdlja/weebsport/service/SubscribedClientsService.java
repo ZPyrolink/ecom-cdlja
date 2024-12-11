@@ -13,7 +13,6 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,12 +47,17 @@ public class SubscribedClientsService {
         subscribedClients.setBirthday(clientAbonned.getBirthday());
         subscribedClients.setPhone(clientAbonned.getPhoneNumber());
         subscribedClients.setBankCard(clientAbonned.getBankCard());
+
+        createBasket(subscribedClients);
+        subscribedClientsRepository.save(subscribedClients);
+    }
+
+    public void createBasket(SubscribedClients subscribedClients) {
         Order basket = new Order();
-        basket.setDeliveryAddress(clientAbonned.getAddress());
+        basket.setDeliveryAddress(subscribedClients.getAddress());
         basket.setStatus(Status.BASKET);
         subscribedClients.setBasket(basket);
-        basket.setClient(subscribedClients);
-        subscribedClientsRepository.save(subscribedClients);
+        orderRepository.save(basket);
     }
 
     public SubscribedClientDTO getClientByEmail(String email) {
@@ -64,7 +68,7 @@ public class SubscribedClientsService {
         return new SubscribedClientDTO(client); // Transformer l'entité en DTO si nécessaire
     }
 
-    public OrderDTO getBasket(String email) throws Exception {
+    public OrderDTO getBasket(String email, Pageable pageable) throws Exception {
         Optional<SubscribedClients> optionalClient = subscribedClientsRepository.findByEmail(email);
         Order o;
         if (optionalClient.isPresent()) {
@@ -82,11 +86,16 @@ public class SubscribedClientsService {
         OrderlineDTO orderLineDTO;
         OrderDTO orderDTO;
         orderDTO = new OrderDTO(o);
-        Pageable pageable = PageRequest.of(0, 5);
+        int nblignes = 0;
         Page<OrderLine> orderlines = orderLineRepository.getlines(o.getId(), pageable);
         if (!orderlines.isEmpty()) {
             for (OrderLine ol : orderlines) {
+                nblignes++;
                 s = orderLineRepository.getArticle(ol.getId());
+                if (s == null) {
+                    throw new IllegalStateException("Stock not found for OrderLine ID: " + ol.getId());
+                }
+
                 sDTO = new StockDTO(s);
                 c = stockRepository.getClothe(s.getId());
                 cDTO = new ClotheDTO(c);
@@ -96,14 +105,18 @@ public class SubscribedClientsService {
                 orderDTO.addArticle(orderLineDTO);
             }
         }
-
+        orderDTO.setTotalElements(nblignes);
+        orderDTO.setTotalPages(orderlines.getTotalPages());
+        orderDTO.setSize(6);
+        orderDTO.setNumber(orderlines.getNumber());
+        orderDTO.setFirst(orderlines.isFirst());
+        orderDTO.setLast(orderlines.isLast());
         return orderDTO;
     }
 
-    public List<OrderDTO> getHistorique(String email) {
+    public List<OrderDTO> getHistorique(String email, Pageable pageable) throws Exception {
         Long client_id = subscribedClientsRepository.findByEmail(email).orElseThrow().getId();
 
-        Pageable pageable = PageRequest.of(0, 5);
         Page<Order> orders = orderRepository.getHistorique(client_id, pageable);
         List<OrderDTO> historique = new ArrayList<>();
         if (orders.isEmpty()) {
@@ -116,11 +129,15 @@ public class SubscribedClientsService {
         StockDTO sDTO;
         Clothe c;
         ClotheDTO cDTO;
+        int nborder = 0;
         for (Order o : orders) {
+            nborder++;
+            int nblignes = 0;
             orderDTO = new OrderDTO(o);
             Page<OrderLine> orderlines = orderLineRepository.getlines(o.getId(), pageable);
             if (!orderlines.isEmpty()) {
                 for (OrderLine ol : orderlines) {
+                    nblignes++;
                     s = orderLineRepository.getArticle(ol.getId());
                     sDTO = new StockDTO(s);
                     c = stockRepository.getClothe(s.getId());
@@ -131,9 +148,16 @@ public class SubscribedClientsService {
                     orderDTO.addArticle(orderLineDTO);
                 }
             }
+            orderDTO.setTotalElements(nblignes);
+            orderDTO.setTotalPages(orderlines.getTotalPages());
+            orderDTO.setSize(6);
+            orderDTO.setNumber(orderlines.getNumber());
+            orderDTO.setFirst(orderlines.isFirst());
+            orderDTO.setLast(orderlines.isLast());
 
             historique.add(orderDTO);
         }
+
         return historique;
     }
 }

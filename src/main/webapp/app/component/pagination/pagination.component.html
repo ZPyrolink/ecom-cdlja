@@ -1,0 +1,26 @@
+<div class="pagination">
+  <!-- Bouton Précédent -->
+  <button class="page-btn" (click)="changePage(currentPage)" [disabled]="currentPage === 0">&laquo;</button>
+
+  <!-- Première page -->
+  <button class="page-btn" [class.active]="currentPage === 0" (click)="changePage(1)">1</button>
+
+  <!-- Points de suspension à gauche -->
+  <span *ngIf="showLeftDots" class="dots">...</span>
+
+  <!-- Pages intermédiaires -->
+  <button *ngFor="let page of middlePages" class="page-btn" [class.active]="currentPage + 1 === page" (click)="changePage(page)">
+    {{ page }}
+  </button>
+
+  <!-- Points de suspension à droite -->
+  <span *ngIf="showRightDots" class="dots">...</span>
+
+  <!-- Dernière page -->
+  <button *ngIf="totalPages > 1" class="page-btn" [class.active]="currentPage + 1 === totalPages" (click)="changePage(totalPages)">
+    {{ totalPages }}
+  </button>
+
+  <!-- Bouton Suivant -->
+  <button class="page-btn" (click)="changePage(currentPage + 2)" [disabled]="currentPage + 1 === totalPages">&raquo;</button>
+</div>

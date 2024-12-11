@@ -62,9 +62,9 @@
           </dd>
           <dt><span jhiTranslate="weebSportApp.stock.clothe">Clothe</span></dt>
           <dd>
-            @if (stock()!.clothe) {
+            @if (stock()!.clotheDTO) {
               <div>
-                <a [routerLink]="['/clothe', stock()!.clothe?.id, 'view']">{{ stockRef.clothe?.id }}</a>
+                <a [routerLink]="['/clothe', stock()!.clotheDTO?.id, 'view']">{{ stockRef.clotheDTO?.id }}</a>
               </div>
             }
           </dd>

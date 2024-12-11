@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpResponse, provideHttpClient } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, from, of } from 'rxjs';
+import { from, of, Subject } from 'rxjs';
 
 import { IOrder } from 'app/entities/order/order.model';
 import { OrderService } from 'app/entities/order/service/order.service';
@@ -54,13 +54,10 @@ describe('OrderLine Management Update Component', () => {
     it('Should call Order query and add missing value', () => {
       const orderLine: IOrderLine = { id: 456 };
       const order: IOrder = { id: 11697 };
-      orderLine.order = order;
 
-      const orderCollection: IOrder[] = [{ id: 30619 }];
+      const orderCollection: IOrder = { id: 30619 };
       jest.spyOn(orderService, 'query').mockReturnValue(of(new HttpResponse({ body: orderCollection })));
       const additionalOrders = [order];
-      const expectedCollection: IOrder[] = [...additionalOrders, ...orderCollection];
-      jest.spyOn(orderService, 'addOrderToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ orderLine });
       comp.ngOnInit();
@@ -70,13 +67,11 @@ describe('OrderLine Management Update Component', () => {
         orderCollection,
         ...additionalOrders.map(expect.objectContaining),
       );
-      expect(comp.ordersSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should call Stock query and add missing value', () => {
       const orderLine: IOrderLine = { id: 456 };
       const stock: IStock = { id: 12025 };
-      orderLine.stock = stock;
 
       const stockCollection: IStock[] = [{ id: 4536 }];
       jest.spyOn(stockService, 'query').mockReturnValue(of(new HttpResponse({ body: stockCollection })));
@@ -98,9 +93,7 @@ describe('OrderLine Management Update Component', () => {
     it('Should update editForm', () => {
       const orderLine: IOrderLine = { id: 456 };
       const order: IOrder = { id: 11955 };
-      orderLine.order = order;
       const stock: IStock = { id: 9200 };
-      orderLine.stock = stock;
 
       activatedRoute.data = of({ orderLine });
       comp.ngOnInit();

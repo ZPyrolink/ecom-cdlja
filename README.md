@@ -1,3 +1,5 @@
+[![Deploy Java Application to EC2](https://github.com/ZPyrolink/ecom-cdlja/actions/workflows/deploy-workflow.yml/badge.svg)](https://github.com/ZPyrolink/ecom-cdlja/actions/workflows/deploy-workflow.yml)
+
 # weebSport
 
 This application was generated using JHipster 8.7.1, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v8.7.1](https://www.jhipster.tech/documentation-archive/v8.7.1).

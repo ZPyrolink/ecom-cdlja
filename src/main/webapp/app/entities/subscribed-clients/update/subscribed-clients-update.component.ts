@@ -1,8 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -47,8 +47,6 @@ export class SubscribedClientsUpdateComponent implements OnInit {
       if (subscribedClients) {
         this.updateForm(subscribedClients);
       }
-
-      this.loadRelationshipsOptions();
     });
   }
 
@@ -94,23 +92,5 @@ export class SubscribedClientsUpdateComponent implements OnInit {
       this.clothesSharedCollection,
       ...(subscribedClients.favorises ?? []),
     );
-  }
-
-  protected loadRelationshipsOptions(): void {
-    this.orderService
-      .query({ filter: 'subscribedclients-is-null' })
-      .pipe(map((res: HttpResponse<IOrder[]>) => res.body ?? []))
-      .pipe(map((orders: IOrder[]) => this.orderService.addOrderToCollectionIfMissing<IOrder>(orders, this.subscribedClients?.basket)))
-      .subscribe((orders: IOrder[]) => (this.basketsCollection = orders));
-
-    this.clotheService
-      .query()
-      .pipe(map((res: HttpResponse<IClothe[]>) => res.body ?? []))
-      .pipe(
-        map((clothes: IClothe[]) =>
-          this.clotheService.addClotheToCollectionIfMissing<IClothe>(clothes, ...(this.subscribedClients?.favorises ?? [])),
-        ),
-      )
-      .subscribe((clothes: IClothe[]) => (this.clothesSharedCollection = clothes));
   }
 }

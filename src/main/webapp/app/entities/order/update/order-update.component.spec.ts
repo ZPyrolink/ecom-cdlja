@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpResponse, provideHttpClient } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, from, of } from 'rxjs';
+import { from, of, Subject } from 'rxjs';
 
 import { ISubscribedClients } from 'app/entities/subscribed-clients/subscribed-clients.model';
 import { SubscribedClientsService } from 'app/entities/subscribed-clients/service/subscribed-clients.service';
@@ -50,7 +50,6 @@ describe('Order Management Update Component', () => {
     it('Should call SubscribedClients query and add missing value', () => {
       const order: IOrder = { id: 456 };
       const client: ISubscribedClients = { id: 26099 };
-      order.client = client;
 
       const subscribedClientsCollection: ISubscribedClients[] = [{ id: 18567 }];
       jest.spyOn(subscribedClientsService, 'query').mockReturnValue(of(new HttpResponse({ body: subscribedClientsCollection })));
@@ -72,7 +71,6 @@ describe('Order Management Update Component', () => {
     it('Should update editForm', () => {
       const order: IOrder = { id: 456 };
       const client: ISubscribedClients = { id: 20630 };
-      order.client = client;
 
       activatedRoute.data = of({ order });
       comp.ngOnInit();

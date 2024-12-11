@@ -25,4 +25,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("select amount from Order where client.id = :clientId and status = 'BASKET'")
     Float getPrice(@Param("clientId") Long clientId);
+    //    @Modifying
+    //    @Query("update Order set status = 'PAID' where id = :id")
+    //    void validate(@Param("id") Long orderId);
 }

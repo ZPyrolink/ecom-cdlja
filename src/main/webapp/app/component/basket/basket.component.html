@@ -1,1 +1,51 @@
-<p>basket works!</p>
+<div class="page-basket">
+  <div class="title">Panier</div>
+  <div class="product-list">
+    <div *ngIf="clothes; else noProducts">
+      <div class="grid-container">
+        <div *ngFor="let clothe of clothes">
+          <div class="product">
+            <div class="product-item">
+              <div class="product-details">
+                <img alt="content/images/exemple.png" src="{{ getImageForClothe(clothe.stockDTO) }}" />
+                <div>
+                  <div class="name">
+                    <div>{{ getClotheTypeLabel(clothe.stockDTO?.clotheDTO?.type) }}</div>
+                    <div>{{ clothe.stockDTO?.clotheDTO?.theme }}</div>
+                  </div>
+                  <div class="info">
+                    <div>Taille : {{ getSizeLabel(clothe.stockDTO?.size) }}</div>
+                    <div>Couleur : {{ getColorLabel(clothe.stockDTO?.color) }}</div>
+                    <div class="quantity-control">
+                      Quantité : <span>{{ clothe.quantity }}</span>
+                      <div class="control">
+                        <button (click)="decreaseQuantity(clothe)">-</button> |
+                        <button (click)="increaseQuantity(clothe)">+</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="price">Prix : {{ clothe.amountline | number: '1.2-2' }} €</div>
+                </div>
+              </div>
+              <div class="delete-button">
+                <button (click)="delete(clothe)">Supprimer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <jhi-pagination [totalPages]="totalPages" [currentPage]="currentPage" (pageChanged)="onPageChange($event)"> </jhi-pagination>
+
+  <div class="order-summary">
+    <div class="total">
+      Total de la commande :
+      <span *ngIf="order?.orderLines?.length != 0">{{ order?.amount | number: '1.2-2' }} €</span>
+    </div>
+    <button class="submit-btn" [disabled]="!clothes || clothes.length === 0" (click)="submitOrder()">Passer au paiment</button>
+  </div>
+</div>
+<ng-template #noProducts>
+  <p>Panier Vide</p>
+</ng-template>

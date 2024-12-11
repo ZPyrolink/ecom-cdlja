@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({ providedIn: 'root' })
 export class StateStorageService {
   private previousUrlKey = 'previousUrl';
-  private authenticationKey = 'jhi-authenticationToken';
+  private authenticationKey = 'id_storage';
   private localeKey = 'locale';
 
   storeUrl(url: string): void {
@@ -30,8 +30,7 @@ export class StateStorageService {
   }
 
   getAuthenticationToken(): string | null {
-    const authenticationToken = localStorage.getItem(this.authenticationKey) ?? sessionStorage.getItem(this.authenticationKey);
-    return authenticationToken ? (JSON.parse(authenticationToken) as string | null) : authenticationToken;
+    return localStorage.getItem(this.authenticationKey) ?? sessionStorage.getItem(this.authenticationKey);
   }
 
   clearAuthenticationToken(): void {

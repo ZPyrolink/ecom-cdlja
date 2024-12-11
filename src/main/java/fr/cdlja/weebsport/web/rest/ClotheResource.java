@@ -1,22 +1,23 @@
 package fr.cdlja.weebsport.web.rest;
 
 import fr.cdlja.weebsport.domain.Clothe;
-import fr.cdlja.weebsport.domain.enumeration.Category;
-import fr.cdlja.weebsport.domain.enumeration.Color;
-import fr.cdlja.weebsport.domain.enumeration.Size;
+import fr.cdlja.weebsport.domain.Stock;
+import fr.cdlja.weebsport.domain.enumeration.*;
 import fr.cdlja.weebsport.repository.ClotheRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
+import fr.cdlja.weebsport.service.ClotheService;
+import fr.cdlja.weebsport.service.StockService;
+import fr.cdlja.weebsport.service.dto.*;
 import fr.cdlja.weebsport.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link fr.cdlja.weebsport.domain.Clothe}.
+ * REST controller for managing {@link Clothe}.
  */
 @RestController
 @RequestMapping("/api/clothes")
@@ -40,10 +41,19 @@ public class ClotheResource {
 
     private final ClotheRepository clotheRepository;
     private final StockRepository stockRepository;
+    private final ClotheService clotheService;
+    private final StockService stockService;
 
-    public ClotheResource(ClotheRepository clotheRepository, StockRepository stockRepository) {
+    public ClotheResource(
+        ClotheRepository clotheRepository,
+        StockRepository stockRepository,
+        ClotheService clotheService,
+        StockService stockService
+    ) {
         this.clotheRepository = clotheRepository;
         this.stockRepository = stockRepository;
+        this.clotheService = clotheService;
+        this.stockService = stockService;
     }
 
     /**
@@ -159,7 +169,7 @@ public class ClotheResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of clothes in body.
      */
     @GetMapping("")
-    public ResponseEntity<Page<Clothe>> getAllClothes(
+    public ResponseEntity<Page<ClotheDTO>> getAllClothes(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "15") int size,
         @RequestParam(defaultValue = "id") String sortBy
@@ -173,7 +183,11 @@ public class ClotheResource {
             .map(result -> (Clothe) result[0]) // Récupère l'entité Clothe du tableau Object[]
             .distinct() // Remove duplicates
             .collect(Collectors.toList());
-        Page<Clothe> clothePage = new PageImpl<>(clothes, pageable, rawResults.getTotalElements());
+        List<ClotheDTO> clothesD = new ArrayList<>();
+        for (Clothe clothe : clothes) {
+            clothesD.add(new ClotheDTO(clothe));
+        }
+        Page<ClotheDTO> clothePage = new PageImpl<>(clothesD, pageable, rawResults.getTotalElements());
         return ResponseEntity.ok(clothePage);
     }
 
@@ -200,6 +214,100 @@ public class ClotheResource {
     public ResponseEntity<List<String>> getThemesAnime() {
         List<String> themes = clotheRepository.findAllThemes(Category.ANIME);
         return ResponseEntity.ok(themes);
+    }
+
+    @GetMapping("/category/search")
+    public ResponseEntity<ThemeDTO> getThemesSearch(@ModelAttribute SearchDTO searchDTO) {
+        ThemeDTO themeDTO = new ThemeDTO();
+        String theme = searchDTO.getSearch();
+        List<String> animethemes = clotheService.getThemesByCategoryAndSearch(Category.ANIME, theme);
+        List<String> videogamethemes = clotheService.getThemesByCategoryAndSearch(Category.VIDEOGAME, theme);
+        themeDTO.setAnimeThemes(animethemes);
+        themeDTO.setVideogameThemes(videogamethemes);
+        return ResponseEntity.ok(themeDTO);
+    }
+
+    @PostMapping("/filters")
+    public ResponseEntity<Page<ClotheDTO>> getClothesFiltered(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "15") int size,
+        @RequestParam(defaultValue = "clothe.price") String sortBy,
+        @RequestBody FilterSortDTO filtersSort
+    ) {
+        if (filtersSort == null) {
+            throw new RuntimeException("Problems with the body. Maybe it is empty");
+        }
+        FilterDTO filters = filtersSort.getFilters();
+        String keyWord = filtersSort.getSearch();
+        keyWord = (keyWord != null) ? keyWord.toUpperCase() : null;
+        String sort = filtersSort.getSort();
+
+        Pageable pageable = null;
+
+        Sort sortCriteria = null;
+        if (sort != null) {
+            sort = sort.toLowerCase();
+            if (!"clothe.price".equals(sortBy)) {
+                throw new RuntimeException("The sort has to be by clothe.price");
+            } else {
+                if (Objects.equals(sort, "asc")) {
+                    sortCriteria = Sort.by(Sort.Order.asc(sortBy), Sort.Order.asc("id"));
+                } else if (Objects.equals(sort, "desc")) {
+                    sortCriteria = Sort.by(Sort.Order.desc(sortBy), Sort.Order.desc("id"));
+                } else {
+                    throw new RuntimeException("The value of sort has to be ASC or DESC");
+                }
+            }
+            pageable = PageRequest.of(page, size, sortCriteria);
+        } else {
+            pageable = PageRequest.of(page, size, Sort.by("id"));
+        }
+
+        List<Size> sizes = (filters == null || (filters.getSizes() != null && filters.getSizes().isEmpty())) ? null : filters.getSizes();
+        List<Color> colors = (filters == null || (filters.getColors() != null && filters.getColors().isEmpty()))
+            ? null
+            : filters.getColors();
+        Float minPrice = (filters == null || (filters.getPrices() != null && filters.getPrices().getMin() == -1))
+            ? null
+            : filters.getPrices().getMin();
+        Float maxPrice = (filters == null || (filters.getPrices() != null && filters.getPrices().getMax() == -1))
+            ? null
+            : filters.getPrices().getMax();
+        List<Gender> genders = (filters == null || (filters.getGenders() != null && filters.getGenders().isEmpty()))
+            ? null
+            : filters.getGenders();
+        List<Type> types = (filters == null || (filters.getTypes() != null && filters.getTypes().isEmpty())) ? null : filters.getTypes();
+        List<String> themeMin = (filters == null || (filters.getThemes() != null && filters.getThemes().isEmpty()))
+            ? null
+            : filters.getThemes();
+        List<String> theme = (themeMin == null) ? null : themeMin.stream().map(String::toUpperCase).collect(Collectors.toList());
+
+        Page<Stock> stocks = stockRepository.getStocksByFiltersAndSearch(
+            sizes,
+            colors,
+            minPrice,
+            maxPrice,
+            genders,
+            types,
+            theme,
+            keyWord,
+            pageable
+        );
+        Set<Long> addedClotheIds = new HashSet<>();
+
+        // Filtrer et mapper les stocks en ClotheDTO uniquement si l'identifiant n'est pas encore dans la liste
+        List<ClotheDTO> filteredClothes = new ArrayList<>();
+        for (Stock stock : stocks) {
+            Long clotheId = stock.getClothe().getId(); // Assurez-vous que l'ID est de type Long
+            if (!addedClotheIds.contains(clotheId)) {
+                filteredClothes.add(new ClotheDTO(stock.getClothe()));
+                addedClotheIds.add(clotheId);
+            }
+        }
+
+        // Convertir la liste filtrée en Page en utilisant Pageable
+        Page<ClotheDTO> clothesPage = new PageImpl<>(filteredClothes, pageable, stocks.getTotalElements());
+        return ResponseEntity.ok(clothesPage);
     }
 
     /**

@@ -4,12 +4,13 @@ import { Gender } from 'app/entities/enumerations/gender.model';
 
 export interface IClothe {
   id: number;
-  type?: keyof typeof Type | null;
-  theme?: string | null;
-  gender?: keyof typeof Gender | null;
-  price?: number | null;
-  description?: string | null;
-  subscribedClients?: ISubscribedClients[] | null;
+  type?: keyof typeof Type;
+  theme?: string;
+  gender?: keyof typeof Gender;
+  price?: number;
+  description?: string;
+  subscribedClients?: ISubscribedClients[];
+  imageP?: string;
 }
 
 export type NewClothe = Omit<IClothe, 'id'> & { id: null };
