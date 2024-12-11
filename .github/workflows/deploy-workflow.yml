@@ -75,6 +75,7 @@ jobs:
                 sudo systemctl restart weebSportAppService.service
                 exit 1
               else
+                sudo systemctl stop weebSportAppService.service
                 echo 'No backup JAR available. Exiting.'
                 exit 1
               fi
