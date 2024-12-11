@@ -6,6 +6,7 @@ import { ColorEnum } from '../../enums/color-enum';
 import { ItemComponent } from '../item/item.component';
 import { SizeEnum } from '../../enums/size-enum';
 import { GenderEnum } from '../../enums/gender-enum';
+import { FilterDataService } from '../filter-menu/service/FilterDataService';
 
 type FilterType = 'color' | 'size' | 'price' | 'gender';
 
@@ -26,11 +27,13 @@ export class FiltersBarComponent implements OnInit {
     gender: [],
     sort: '',
   };
+  selectedOption = '';
   protected readonly Object = Object;
   protected readonly ColorEnum = ColorEnum;
   protected readonly SizeEnum = SizeEnum;
   protected readonly GenderEnum = GenderEnum;
 
+  constructor(private filterService: FilterDataService) {}
   ngOnInit(): void {
     this.loadSelectionsFromSessionStorage();
   }
@@ -47,10 +50,21 @@ export class FiltersBarComponent implements OnInit {
     window.sessionStorage['sort'] = option;
     this.selections['sort'] = option;
     this.filtersChanged.emit(this.selections);
+    this.filterService.setSort(option);
+    this.selectedOption = option;
   }
 
   updateSelection(filterType: FilterType, selection: any): void {
     this.selections[filterType] = selection;
+    if (filterType === 'color') {
+      this.filterService.setColor(this.selections[filterType]);
+    }
+    if (filterType === 'size') {
+      this.filterService.setSize(this.selections[filterType]);
+    }
+    if (filterType === 'gender') {
+      this.filterService.setGender(this.selections[filterType]);
+    }
     this.saveSelectionToSessionStorage(filterType, selection);
     this.filtersChanged.emit(this.selections);
   }

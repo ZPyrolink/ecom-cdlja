@@ -8,6 +8,7 @@ import { FilterDataService } from './service/FilterDataService';
 import { VideoGameService } from '../../entities/category/service/videogame.service';
 import { AnimeService } from '../../entities/category/service/anime.service';
 import { CategoryService } from '../../entities/category/service/category.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-filter-menu',
@@ -31,6 +32,7 @@ export default class FilterMenuComponent implements OnInit {
     private videoGameService: VideoGameService,
     private animeService: AnimeService,
     private categoryService: CategoryService,
+    private router: Router,
   ) {}
   ngOnInit(): void {
     this.filterDataService.getThemes().subscribe(themes => {
@@ -74,6 +76,9 @@ export default class FilterMenuComponent implements OnInit {
       this.filterDataService.setThemes(this.selectedItemsThemes);
       window.sessionStorage['filters.videogame'] = this.selectedItemsThemes;
       window.sessionStorage['filters.anime'] = this.selectedItemsThemes;
+    }
+    if (window.location.pathname !== '') {
+      this.router.navigate(['']);
     }
   }
 

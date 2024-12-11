@@ -13,8 +13,7 @@ export class FilterDataService {
   private colorSubject = new BehaviorSubject<string[]>([]);
   private genderSubject = new BehaviorSubject<string[]>([]);
   private priceSubject = new BehaviorSubject<{ min: number; max: number }>({ min: 0, max: 100 });
-  private videogameSubject = new BehaviorSubject<string[]>([]);
-  private animeSubject = new BehaviorSubject<string[]>([]);
+  private sortSubject = new BehaviorSubject<string>('asc');
 
   setClothes(clothes: string[]): void {
     this.clothesSubject.next(clothes);
@@ -73,36 +72,26 @@ export class FilterDataService {
     return this.priceSubject.asObservable();
   }
 
-  setVideogame(videogame: string[]): void {
-    this.videogameSubject.next(videogame);
+  setSort(sort: string): void {
+    this.sortSubject.next(sort);
   }
 
-  getVideogame(): Observable<string[]> {
-    return this.videogameSubject.asObservable();
-  }
-
-  setAnime(anime: string[]): void {
-    this.animeSubject.next(anime);
-  }
-
-  getAnime(): Observable<string[]> {
-    return this.animeSubject.asObservable();
+  getSort(): Observable<string> {
+    return this.sortSubject.asObservable();
   }
 
   getFiltered(): { filters: Record<string, any>; search: string; sort: string } {
     const filters = {
       size: this.sizeSubject.getValue(),
-      couleur: this.colorSubject.getValue(),
+      couleur: this.convertToEnumKeysColor(this.colorSubject.getValue()),
       price: this.priceSubject.getValue(),
-      gender: this.genderSubject.getValue(),
-      videogame: this.videogameSubject.getValue(),
-      anime: this.animeSubject.getValue(),
+      gender: this.convertToEnumKeysGender(this.genderSubject.getValue()),
+      theme: this.themesSubject.getValue(),
       type: this.convertToEnumKeys(this.clothesSubject.getValue()),
     };
 
     const search = this.searchQuerySubject.getValue();
-    // TODO
-    const sort = 'asc';
+    const sort = this.sortSubject.getValue();
 
     return { filters, search, sort };
   }
@@ -122,6 +111,56 @@ export class FilterDataService {
           return 'SHORT';
         case 'Pull':
           return 'SWEAT';
+        default:
+          return '';
+      }
+    });
+  }
+
+  convertToEnumKeysColor(colors: string[]): string[] {
+    return colors.map(color => {
+      switch (color) {
+        case 'Vert':
+          return 'GREEN';
+        case 'Noir':
+          return 'BLACK';
+        case 'Bleu':
+          return 'BLUE';
+        case 'Rouge':
+          return 'RED';
+        case 'Rose':
+          return 'PINK';
+        case 'Beige':
+          return 'BEIGE';
+        case 'Blanc':
+          return 'WHITE';
+        case 'Orange':
+          return 'ORANGE';
+        case 'Marron':
+          return 'BROWN';
+        case 'Gris':
+          return 'GRAY';
+        case 'Jaune':
+          return 'YELLOW';
+        case 'Violet':
+          return 'PURPLE';
+        default:
+          return '';
+      }
+    });
+  }
+
+  convertToEnumKeysGender(genders: string[]): string[] {
+    return genders.map(gender => {
+      switch (gender) {
+        case 'Homme':
+          return 'MAN';
+        case 'Femme':
+          return 'WOMAN';
+        case 'Unisex':
+          return 'UNISEX';
+        case 'Enfant':
+          return 'CHILD';
         default:
           return '';
       }
