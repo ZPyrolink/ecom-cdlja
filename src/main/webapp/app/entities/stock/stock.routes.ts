@@ -21,22 +21,6 @@ const stockRoute: Routes = [
     },
     canActivate: [UserRouteAccessService],
   },
-  {
-    path: 'new',
-    loadComponent: () => import('./update/stock-update.component').then(m => m.StockUpdateComponent),
-    resolve: {
-      stock: StockResolve,
-    },
-    canActivate: [UserRouteAccessService],
-  },
-  {
-    path: ':id/edit',
-    loadComponent: () => import('./update/stock-update.component').then(m => m.StockUpdateComponent),
-    resolve: {
-      stock: StockResolve,
-    },
-    canActivate: [UserRouteAccessService],
-  },
 ];
 
 export default stockRoute;

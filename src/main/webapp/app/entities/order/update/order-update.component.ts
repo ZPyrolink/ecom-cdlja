@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -90,7 +90,6 @@ export class OrderUpdateComponent implements OnInit {
 
     this.subscribedClientsSharedCollection = this.subscribedClientsService.addSubscribedClientsToCollectionIfMissing<ISubscribedClients>(
       this.subscribedClientsSharedCollection,
-      order.client,
     );
   }
 
@@ -100,10 +99,7 @@ export class OrderUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<ISubscribedClients[]>) => res.body ?? []))
       .pipe(
         map((subscribedClients: ISubscribedClients[]) =>
-          this.subscribedClientsService.addSubscribedClientsToCollectionIfMissing<ISubscribedClients>(
-            subscribedClients,
-            this.order?.client,
-          ),
+          this.subscribedClientsService.addSubscribedClientsToCollectionIfMissing<ISubscribedClients>(subscribedClients),
         ),
       )
       .subscribe((subscribedClients: ISubscribedClients[]) => (this.subscribedClientsSharedCollection = subscribedClients));

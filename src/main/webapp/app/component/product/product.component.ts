@@ -103,9 +103,9 @@ export default class ProductComponent implements OnInit {
         next: stockResponse => {
           this.stock = stockResponse.body;
           window.console.log('Stock mis à jour:', stockResponse.body);
-          window.console.log('Stock mis à jour:', stockResponse.body?.clothe);
+          window.console.log('Stock mis à jour:', stockResponse.body?.clotheDTO);
           window.console.log('Stock mis à jour:', this.stock);
-          this.productName = (this.stock?.clothe?.theme ?? '') + ' ' + (this.stock?.clothe?.type ?? '');
+          this.productName = (this.stock?.clotheDTO?.theme ?? '') + ' ' + (this.stock?.clotheDTO?.type ?? '');
         },
         error(error) {
           console.error('Erreur lors de la récupération du stock:', error);

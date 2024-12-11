@@ -80,16 +80,16 @@
               <td>{{ orderLine.quantity }}</td>
               <td>{{ orderLine.amountline }}</td>
               <td>
-                @if (orderLine.order) {
+                @if (orderLine) {
                   <div>
-                    <a [routerLink]="['/order', orderLine.order.id, 'view']">{{ orderLine.order.id }}</a>
+                    <a [routerLink]="['/order', orderLine.id, 'view']">{{ orderLine.id }}</a>
                   </div>
                 }
               </td>
               <td>
-                @if (orderLine.stock) {
+                @if (orderLine.stockDTO) {
                   <div>
-                    <a [routerLink]="['/stock', orderLine.stock.id, 'view']">{{ orderLine.stock.id }}</a>
+                    <a [routerLink]="['/stock', orderLine.stockDTO.id, 'view']">{{ orderLine.id }}</a>
                   </div>
                 }
               </td>
