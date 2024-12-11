@@ -9,6 +9,8 @@ import { FilterDataService } from '../filter-menu/service/FilterDataService';
 import { Subscription } from 'rxjs';
 import getClotheTypeLabel from '../../entities/enumerations/type.model';
 import { NgOptimizedImage } from '@angular/common';
+import { OrderService } from '../../entities/order/service/order.service';
+import { IStock } from '../../entities/stock/stock.model';
 
 @Component({
   selector: 'jhi-listing-product',
@@ -23,6 +25,14 @@ export default class ListingProductComponent implements OnInit, OnDestroy {
   clothes: IClothe[] = [];
   selectedItemsClothes: string[] = [];
   selectedItemsThemes: string[] = [];
+  stockData: IStock = {
+    id: 1,
+    color: 'PURPLE',
+    size: 'EIGHT',
+    quantity: 1,
+    version: 1,
+  };
+
   protected readonly getClotheTypeLabel = getClotheTypeLabel;
 
   private subscriptions: Subscription = new Subscription();
@@ -31,9 +41,11 @@ export default class ListingProductComponent implements OnInit, OnDestroy {
     private service: ClotheService,
     private router: Router,
     private serviceFilter: FilterDataService,
+    private serviceOrder: OrderService,
   ) {}
 
   ngOnInit(): void {
+    this.serviceOrder.addClotheToOrder(this.stockData);
     this.loadPage(this.currentPage);
     this.serviceFilter.getThemes().subscribe(themes => {
       this.selectedItemsThemes = themes;

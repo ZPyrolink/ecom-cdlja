@@ -7,6 +7,7 @@ export interface IStock {
   color?: keyof typeof Color;
   size?: keyof typeof Size;
   quantity?: number;
+  version?: number;
   clotheDTO?: IClothe;
 }
 

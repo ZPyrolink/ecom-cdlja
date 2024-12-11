@@ -60,7 +60,7 @@ export default class BasketComponent implements OnInit {
   increaseQuantity(clothe: IOrderLine): void {
     window.console.log(this.order);
     if (clothe.stockDTO?.id) {
-      this.service.add(clothe.stockDTO.id)?.subscribe({
+      this.service.add(clothe.stockDTO)?.subscribe({
         next: () => {
           this.loadOrders(this.currentPage);
         },
@@ -69,11 +69,12 @@ export default class BasketComponent implements OnInit {
         },
       });
     }
+    this.loadOrders(this.currentPage);
   }
 
   decreaseQuantity(clothe: IOrderLine): void {
     if (clothe.stockDTO?.id) {
-      this.service.delete(clothe.stockDTO.id, 1)?.subscribe({
+      this.service.delete(clothe.stockDTO, 1)?.subscribe({
         next: () => {
           this.loadOrders(this.currentPage);
         },
@@ -82,20 +83,18 @@ export default class BasketComponent implements OnInit {
         },
       });
     }
+    this.loadOrders(this.currentPage);
   }
 
   delete(clothe: IOrderLine): void {
     if (clothe.stockDTO?.id && clothe.quantity) {
-      this.service.delete(clothe.stockDTO.id, clothe.quantity)?.subscribe({
+      this.service.delete(clothe.stockDTO, clothe.quantity)?.subscribe({
         next: () => {
           this.loadOrders(this.currentPage);
         },
-        error(error) {
-          // TODO
-          alert("Plus de stcok pour l'article");
-        },
       });
     }
+    this.loadOrders(this.currentPage);
   }
 
   onPageChange(page: number): void {
@@ -108,7 +107,7 @@ export default class BasketComponent implements OnInit {
     if (this.order?.id) {
       this.service.validateBasket(this.order.id).subscribe({
         next: () => {
-          this.router.navigate(['/pay']);
+          this.router.navigate(['pay']);
         },
         error(error) {
           // TODO afficher article plus en stock
