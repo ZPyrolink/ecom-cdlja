@@ -13,9 +13,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -101,7 +99,7 @@ public class SubscribedClientsService {
                 sDTO = new StockDTO(s);
                 c = stockRepository.getClothe(s.getId());
                 cDTO = new ClotheDTO(c);
-                sDTO.setClotheDTO(cDTO);
+                sDTO.setClothe(cDTO);
                 orderLineDTO = new OrderlineDTO(ol);
                 orderLineDTO.setStockDTO(sDTO);
                 orderDTO.addArticle(orderLineDTO);
@@ -144,7 +142,7 @@ public class SubscribedClientsService {
                     sDTO = new StockDTO(s);
                     c = stockRepository.getClothe(s.getId());
                     cDTO = new ClotheDTO(c);
-                    sDTO.setClotheDTO(cDTO);
+                    sDTO.setClothe(cDTO);
                     orderLineDTO = new OrderlineDTO(ol);
                     orderLineDTO.setStockDTO(sDTO);
                     orderDTO.addArticle(orderLineDTO);

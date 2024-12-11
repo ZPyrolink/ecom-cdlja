@@ -1,25 +1,56 @@
 export enum Color {
-  GREEN = 'GREEN',
+  GREEN = 'Vert',
 
-  BLACK = 'BLACK',
+  BLACK = 'Noir',
 
-  BLUE = 'BLUE',
+  BLUE = 'Bleu',
 
-  RED = 'RED',
+  RED = 'Rouge',
 
-  PINK = 'PINK',
+  PINK = 'Rose',
 
-  BEIGE = 'BEIGE',
+  BEIGE = 'Beige',
 
-  WHITE = 'WHITE',
+  WHITE = 'Blanc',
 
-  ORANGE = 'ORANGE',
+  ORANGE = 'Orange',
 
-  BROWN = 'BROWN',
+  BROWN = 'Marron',
 
-  GRAY = 'GRAY',
+  GRAY = 'Gris',
 
-  YELLOW = 'YELLOW',
+  YELLOW = 'Jaune',
 
-  PURPLE = 'PURPLE',
+  PURPLE = 'Violet',
+}
+
+export default function getColorLabel(
+  color?: 'GREEN' | 'BLACK' | 'BLUE' | 'RED' | 'PINK' | 'BEIGE' | 'WHITE' | 'ORANGE' | 'BROWN' | 'GRAY' | 'YELLOW' | 'PURPLE',
+): string {
+  if (color === 'GREEN') {
+    return Color.GREEN;
+  } else if (color === 'BLACK') {
+    return Color.BLACK;
+  } else if (color === 'BLUE') {
+    return Color.BLUE;
+  } else if (color === 'RED') {
+    return Color.RED;
+  } else if (color === 'PINK') {
+    return Color.PINK;
+  } else if (color === 'BEIGE') {
+    return Color.BEIGE;
+  } else if (color === 'WHITE') {
+    return Color.WHITE;
+  } else if (color === 'ORANGE') {
+    return Color.ORANGE;
+  } else if (color === 'BROWN') {
+    return Color.BROWN;
+  } else if (color === 'GRAY') {
+    return Color.GRAY;
+  } else if (color === 'YELLOW') {
+    return Color.YELLOW;
+  } else if (color === 'PURPLE') {
+    return Color.PURPLE;
+  }
+  return 'Couleur inconnue';
 }
