@@ -115,13 +115,13 @@ public class SubscibedClientsServiceTest {
         OrderlineDTO line1 = basketDTO.getOrderLines().get(0);
         assertEquals(101L, line1.getId());
         assertEquals(201L, line1.getStockDTO().getId());
-        assertEquals(301L, line1.getStockDTO().getClothe().getId());
+        assertEquals(301L, line1.getStockDTO().getClotheDTO().getId());
 
         // Vérifier la deuxième ligne de commande
         OrderlineDTO line2 = basketDTO.getOrderLines().get(1);
         assertEquals(102L, line2.getId());
         assertEquals(202L, line2.getStockDTO().getId());
-        assertEquals(302L, line2.getStockDTO().getClothe().getId());
+        assertEquals(302L, line2.getStockDTO().getClotheDTO().getId());
     }
 
     @Test

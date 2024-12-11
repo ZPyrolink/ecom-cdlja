@@ -129,7 +129,7 @@ export class OrderService {
         status: 'BASKET',
         date: dayjs(),
         orderLines: [],
-        amount: stock.clotheDTO?.price,
+        amount: 0,
       } as IOrder;
     }
 
@@ -147,6 +147,7 @@ export class OrderService {
         amountline: stock.clotheDTO?.price ?? 0,
         stockDTO: stock,
       };
+      window.console.log('laaaaaaaaaaaaaaa', stock);
       order.orderLines?.push(orderLine);
     }
 

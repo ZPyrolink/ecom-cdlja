@@ -7,6 +7,7 @@ import { ClotheService } from '../../entities/clothe/service/clothe.service';
 import { Color } from '../../entities/enumerations/color.model';
 import { getSizeLabelFromSize, Size } from '../../entities/enumerations/size.model';
 import { IClothe } from '../../entities/clothe/clothe.model';
+import { OrderService } from '../../entities/order/service/order.service';
 
 @Component({
   selector: 'jhi-product',
@@ -18,7 +19,7 @@ import { IClothe } from '../../entities/clothe/clothe.model';
 export default class ProductComponent implements OnInit {
   stock: IStock | null | undefined;
   productId = 0;
-  product: IClothe | null | undefined;
+  product: IClothe | undefined | null;
 
   selectedImage = 'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/ecom1.jpeg';
   imageUrls: string[] = [];
@@ -40,6 +41,7 @@ export default class ProductComponent implements OnInit {
     private route: ActivatedRoute,
     private stockService: StockService,
     private clotheService: ClotheService,
+    private orderService: OrderService,
   ) {}
 
   ngOnInit(): void {
@@ -49,8 +51,6 @@ export default class ProductComponent implements OnInit {
       this.clotheService.find(this.productId).subscribe({
         next: productResponse => {
           this.product = productResponse.body;
-          window.console.log('Product image:', this.product?.imageP);
-          window.console.log('Product image split:', this.product?.imageP?.split('/'));
           this.selectColor(this.product?.imageP?.split('/')[4] as string);
           this.productName = (this.product?.theme ?? '') + ' ' + (this.product?.type ?? '');
         },
@@ -102,9 +102,6 @@ export default class ProductComponent implements OnInit {
       .subscribe({
         next: stockResponse => {
           this.stock = stockResponse.body;
-          window.console.log('Stock mis à jour:', stockResponse.body);
-          window.console.log('Stock mis à jour:', stockResponse.body?.clotheDTO);
-          window.console.log('Stock mis à jour:', this.stock);
           this.productName = (this.stock?.clotheDTO?.theme ?? '') + ' ' + (this.stock?.clotheDTO?.type ?? '');
         },
         error(error) {
@@ -189,6 +186,9 @@ export default class ProductComponent implements OnInit {
 
   addToBasket(): void {
     this.updateStock();
-    // TODO Jorane
+    if (this.stock) {
+      window.console.log('stockkkkkkkkkkk', this.stock);
+      this.orderService.addClotheToOrder(this.stock);
+    }
   }
 }
