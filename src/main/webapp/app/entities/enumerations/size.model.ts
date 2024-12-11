@@ -60,3 +60,23 @@ export default function getSizeLabel(
       return 'Taille inconnue';
   }
 }
+export function getSizeLabelFromSize(size: Size): string {
+  // Utilisation directe de l'énumération comme clés et valeurs
+  const sizeMap: Record<string, string> = {
+    [Size.XXS]: Size.XXS,
+    [Size.XS]: Size.XS,
+    [Size.S]: Size.S,
+    [Size.M]: Size.M,
+    [Size.L]: Size.L,
+    [Size.XL]: Size.XL,
+    [Size.XXL]: Size.XXL,
+    [Size.FOUR]: Size.FOUR,
+    [Size.SIX]: Size.SIX,
+    [Size.EIGHT]: Size.EIGHT,
+    [Size.TEN]: Size.TEN,
+    [Size.TWELVE]: Size.TWELVE,
+    [Size.FOURTEEN]: Size.FOURTEEN,
+  };
+
+  return sizeMap[size];
+}

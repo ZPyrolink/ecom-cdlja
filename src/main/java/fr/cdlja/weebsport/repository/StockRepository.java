@@ -30,7 +30,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     @Query("SELECT s.size FROM Stock s WHERE s.clothe.id = :clotheId AND s.color = :color AND s.quantity > 0")
     List<Size> findAvailableSizesByClotheIdAndColorId(@Param("clotheId") Long clotheId, @Param("color") Color color);
 
-    @Query("SELECT s.color FROM Stock s WHERE s.clothe.id= :clotheId AND s.quantity > 0 ")
+    @Query("SELECT DISTINCT s.color FROM Stock s WHERE s.clothe.id= :clotheId AND s.quantity > 0 ")
     List<Color> findAvailableColorsByClotheId(@Param("clotheId") Long clotheId);
 
     @Query("SELECT s.quantity, s.version FROM Stock s WHERE s.id= :stockID")
