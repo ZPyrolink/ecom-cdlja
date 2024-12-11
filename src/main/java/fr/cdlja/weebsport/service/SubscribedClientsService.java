@@ -47,12 +47,17 @@ public class SubscribedClientsService {
         subscribedClients.setBirthday(clientAbonned.getBirthday());
         subscribedClients.setPhone(clientAbonned.getPhoneNumber());
         subscribedClients.setBankCard(clientAbonned.getBankCard());
+
+        createBasket(subscribedClients);
+        subscribedClientsRepository.save(subscribedClients);
+    }
+
+    public void createBasket(SubscribedClients subscribedClients) {
         Order basket = new Order();
-        basket.setDeliveryAddress(clientAbonned.getAddress());
+        basket.setDeliveryAddress(subscribedClients.getAddress());
         basket.setStatus(Status.BASKET);
         subscribedClients.setBasket(basket);
-        basket.setClient(subscribedClients);
-        subscribedClientsRepository.save(subscribedClients);
+        orderRepository.save(basket);
     }
 
     public SubscribedClientDTO getClientByEmail(String email) {

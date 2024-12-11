@@ -36,6 +36,11 @@ const routes: Routes = [
     title: 'WeebSport',
   },
   {
+    path: 'pay',
+    loadComponent: () => import('./component/payement/payement.component'),
+    title: 'WeebSport',
+  },
+  {
     path: 'admin',
     data: {
       authorities: [Authority.ADMIN],

@@ -1,0 +1,121 @@
+<div id="container">
+  <h1>Paiement</h1>
+  <form (ngSubmit)="pay(false)" [formGroup]="payementForm">
+    <div class="form-container">
+      <div class="column-1">
+        <h2>Livraison</h2>
+        <div class="delivery-inline">
+          <div class="cb">
+            <input id="residence" value="residence" type="radio" name="type" formControlName="type" />
+            <label for="residence">Livraison à domicile</label>
+          </div>
+          <div class="cb">
+            <input id="relay" value="relay" type="radio" name="type" formControlName="type" />
+            <label for="relay">Livraison en point relai</label>
+          </div>
+        </div>
+        <div class="delivery-inline">
+          <div class="form-group">
+            <label for="lastName">Nom</label>
+            <input id="lastName" type="text" placeholder="Nom" formControlName="lastName" title="Requis" />
+          </div>
+          <div class="form-group">
+            <label for="firstName">Prénom</label>
+            <input id="firstName" type="text" placeholder="Prénom" formControlName="firstName" title="Requis" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            placeholder="fc-im2ag@univ-grenoble-alpes.fr"
+            formControlName="email"
+            title="Email valide requis"
+          />
+        </div>
+        <div class="address-inline">
+          <div class="form-group">
+            <label for="country">Pays</label>
+            <input id="country" type="text" placeholder="France" formControlName="country" title="Requis" />
+          </div>
+          <div class="form-group">
+            <label for="city">Ville</label>
+            <input id="city" type="text" placeholder="Saint-Martin-d'Hères" formControlName="city" title="Requis" />
+          </div>
+          <div class="form-group">
+            <label for="postalCode">Code Postal</label>
+            <input id="postalCode" type="text" placeholder="38400" formControlName="postalCode" title="Code postal valide requis" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="address">Addresse</label>
+          <input id="address" type="text" placeholder="60 Rue de la Chimie" formControlName="address" title="Requis" />
+        </div>
+        <div class="form-group">
+          <label for="phone-number">Numéro de téléphone</label>
+          <input
+            id="phone-number"
+            type="text"
+            placeholder="04 57 42 25 70"
+            formControlName="phoneNumber"
+            title="Numéro de téléphone valide requis"
+          />
+        </div>
+      </div>
+
+      <div class="separator"></div>
+
+      <div class="column-2">
+        <h3>Paiement express</h3>
+        <fa-icon [icon]="faCcApplePay" class="fa-3x" id="applePay" />
+
+        <div class="hDivider"></div>
+
+        <h3>Carte de crédit</h3>
+
+        <div class="form-group">
+          <label for="cardName">Nom sur la carte</label>
+          <input
+            id="cardName"
+            type="text"
+            placeholder="Prénom Nom"
+            formControlName="cardName"
+            title="Prénom et nom séparé par un espace requis"
+          />
+        </div>
+        <div class="form-group">
+          <label for="cardNum">N° de carte</label>
+          <input
+            id="cardNum"
+            type="text"
+            placeholder="1234 5678 9012 3456"
+            formControlName="cardNum"
+            title="Numéro de carte valide requis"
+          />
+        </div>
+        <div class="delivery-inline">
+          <div class="form-group">
+            <label for="exp">Date d'expiration</label>
+            <input
+              id="exp"
+              type="text"
+              placeholder="01/19"
+              formControlName="expirationDate"
+              title="Date d'expiration valide valide requise. La carte doit être non expirée"
+            />
+          </div>
+          <div class="form-group">
+            <label for="crypt">Cryptogramme</label>
+            <input id="crypt" type="text" placeholder="123" formControlName="crypto" title="Cryptogramme valide requis" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="delivery-sb">
+      <p>Total de la commande : {{ price | number: '1.2-2' }}€</p>
+      <button class="btn-primary" [disabled]="!isValid" [title]="buttonTitle">Payer</button>
+    </div>
+  </form>
+</div>
