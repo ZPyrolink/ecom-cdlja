@@ -155,6 +155,7 @@ export class OrderService {
     window.sessionStorage.setItem('basket', JSON.stringify(order));
     window.console.log('Panier mis à jour :', order);
   }
+
   deleteClotheToOrder(stock: IStock, quantity: number): void {
     const existingOrder = window.sessionStorage.getItem('basket');
     let order: IOrder;

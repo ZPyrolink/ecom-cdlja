@@ -8,6 +8,7 @@ import getClotheTypeLabel from '../../entities/enumerations/type.model';
 import getSizeLabel from '../../entities/enumerations/size.model';
 import getColorLabel from '../../entities/enumerations/color.model';
 import { Router } from '@angular/router';
+import { IStock } from '../../entities/stock/stock.model';
 import { OrderStateService } from '../../service/OrderStateService';
 
 @Component({
@@ -47,7 +48,6 @@ export default class BasketComponent implements OnInit {
   loadOrders(page: number): void {
     this.service.query({ page })?.subscribe({
       next: response => {
-        window.console.log('testtttttttttt', this.order?.orderLines);
         this.order = response;
         this.clothes = response.orderLines ?? [];
         this.totalPages = response.totalPages ?? 1;
@@ -120,5 +120,15 @@ export default class BasketComponent implements OnInit {
         },
       });
     }
+  }
+
+  getImageForClothe(clothe: IStock | undefined): string {
+    clothe = clothe as IStock;
+    const baseUrl = 'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com';
+    const baseFileName = 'Image_';
+    const imageIndex = 1;
+    const color = getColorLabel(clothe.color);
+
+    return `${baseUrl}/${clothe.clotheDTO?.id}/${color}/${baseFileName}${imageIndex}.png`;
   }
 }

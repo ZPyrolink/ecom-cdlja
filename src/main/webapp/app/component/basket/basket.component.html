@@ -7,7 +7,7 @@
           <div class="product">
             <div class="product-item">
               <div class="product-details">
-                <img src="content/images/exemple.png" alt="" />
+                <img alt="content/images/exemple.png" src="{{ getImageForClothe(clothe.stockDTO) }}" />
                 <div>
                   <div class="name">
                     <div>{{ getClotheTypeLabel(clothe.stockDTO?.clotheDTO?.type) }}</div>

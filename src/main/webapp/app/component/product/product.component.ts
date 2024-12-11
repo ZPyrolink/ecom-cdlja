@@ -143,6 +143,9 @@ export default class ProductComponent implements OnInit {
       this.imageUrls.push(tempImageUrl);
       this.imageIndex++;
       this.loadImages();
+      if (this.imageIndex === 2) {
+        this.changeImage(this.imageUrls[0]);
+      }
     };
 
     img.onerror = () => {
