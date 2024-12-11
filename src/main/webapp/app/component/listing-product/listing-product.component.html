@@ -12,13 +12,12 @@
     <div *ngIf="clothes.length > 0; else noClothes">
       <div class="products">
         <div class="product-item" *ngFor="let clothe of clothes" (click)="goToProductDetails(clothe.id)">
-          <img src="{{ clothe.imageP }}" alt="{{ getClotheTypeLabel(clothe.type) }} {{ clothe.theme }}" />
+          <img src="/content/images/imageExemple.png" alt="{{ clothe.type }} {{ clothe.theme }}" />
           <div class="product-info">
             <div class="product-name">{{ getClotheTypeLabel(clothe.type) }}</div>
             <div class="product-price">{{ clothe.price }}€</div>
           </div>
           <div class="product-them">{{ clothe.theme }}</div>
-          <button (click)="addArticle(clothe)">Test</button>
         </div>
       </div>
     </div>

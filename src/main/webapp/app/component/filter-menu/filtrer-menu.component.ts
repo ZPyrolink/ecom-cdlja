@@ -37,10 +37,11 @@ export default class FilterMenuComponent implements OnInit {
       this.selectedItemsThemes = themes;
       this.cdr.detectChanges();
     });
-    this.filterDataService.getClothes().subscribe(clothes => {
+    this.filterDataService.getClothes().subscribe((clothes: string[]) => {
       this.selectedItemsClothes = clothes;
       this.cdr.detectChanges();
     });
+
     this.videoGameService.query().subscribe(response => {
       this.typesOfGames = response.body ?? [];
     });
@@ -68,7 +69,7 @@ export default class FilterMenuComponent implements OnInit {
   updateService(selectedItems: string[]): void {
     if (selectedItems === this.selectedItemsClothes) {
       this.filterDataService.setClothes(this.selectedItemsClothes);
-      window.sessionStorage['item_clothes'] = this.selectedItemsClothes;
+      window.sessionStorage['filters.type'] = this.selectedItemsClothes;
     } else if (selectedItems === this.selectedItemsThemes) {
       this.filterDataService.setThemes(this.selectedItemsThemes);
       window.sessionStorage['filters.videogame'] = this.selectedItemsThemes;

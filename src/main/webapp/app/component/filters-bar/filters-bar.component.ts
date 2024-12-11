@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NgClass, NgIf } from '@angular/common';
 import { ColorItemComponent } from '../color-item/color-item.component';
 import { PriceFilterComponent } from './price-filter/price-filter.component';
@@ -16,18 +16,24 @@ type FilterType = 'color' | 'size' | 'price' | 'gender';
   templateUrl: './filters-bar.component.html',
   styleUrl: './filters-bar.component.scss',
 })
-export class FiltersBarComponent {
+export class FiltersBarComponent implements OnInit {
+  @Output() filtersChanged = new EventEmitter<Record<string, any>>();
   showColorFilter: string | undefined;
-  selections: Record<FilterType, any> = {
+  selections = {
     color: [],
     size: [],
     price: { min: 0, max: 100 },
     gender: [],
+    sort: '',
   };
   protected readonly Object = Object;
   protected readonly ColorEnum = ColorEnum;
   protected readonly SizeEnum = SizeEnum;
   protected readonly GenderEnum = GenderEnum;
+
+  ngOnInit(): void {
+    this.loadSelectionsFromSessionStorage();
+  }
 
   onFilter(filterType: FilterType): void {
     if (this.showColorFilter === filterType) {
@@ -38,11 +44,27 @@ export class FiltersBarComponent {
   }
 
   onOptionClick(option: string): void {
-    // eslint-disable-next-line no-console
-    console.log('Option sélectionnée:', option);
+    window.sessionStorage['sort'] = option;
+    this.selections['sort'] = option;
+    this.filtersChanged.emit(this.selections);
   }
 
   updateSelection(filterType: FilterType, selection: any): void {
     this.selections[filterType] = selection;
+    this.saveSelectionToSessionStorage(filterType, selection);
+    this.filtersChanged.emit(this.selections);
+  }
+
+  private saveSelectionToSessionStorage(filterType: FilterType, selection: any): void {
+    window.sessionStorage[`filters.${filterType}`] = JSON.stringify(selection);
+  }
+
+  private loadSelectionsFromSessionStorage(): void {
+    (Object.keys(this.selections) as FilterType[]).forEach(filterType => {
+      const storedSelection = window.sessionStorage[`filters.${filterType}`];
+      if (storedSelection) {
+        this.selections[filterType] = JSON.parse(storedSelection);
+      }
+    });
   }
 }

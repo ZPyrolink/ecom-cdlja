@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
@@ -37,42 +37,21 @@ export class ClotheService {
     return this.http.get<IClothe>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  query(req?: any): Observable<PaginatedResponse<IClothe>> {
-    const searchQuery = window.sessionStorage.getItem('search') ?? '';
-    const videogameFilters = JSON.parse(window.sessionStorage.getItem('filters.videogame') ?? '[]');
-    const animeFilters = JSON.parse(window.sessionStorage.getItem('filters.anime') ?? '[]');
-    const clothesFilters = JSON.parse(window.sessionStorage.getItem('item_clothes') ?? '[]');
-    const filters = {
-      // TODO changer ca
-    };
-
+  query(req?: any): Observable<HttpResponse<PaginatedResponse<IClothe>>> | undefined {
+    const filteredData = this.filterDataService.getFiltered();
+    window.console.log('filtre', filteredData);
     const body = {
-      filters,
-      search: searchQuery,
-      sort: 'asc',
+      params: req,
+      ...filteredData,
     };
-    window.console.log('Paramètres de la requête:', body);
-
     return this.http.post<PaginatedResponse<IClothe>>(`${this.resourceUrl}/filters`, body, { params: req, observe: 'response' }).pipe(
       map(response => {
-        window.console.log('Réponse de la requête:', response.body);
-        if (response.body) {
-          return response.body;
-        } else {
-          return {
-            content: [],
-            totalElements: 0,
-            totalPages: 0,
-            size: 0,
-            number: 0,
-            numberOfElements: 0,
-            first: true,
-            last: true,
-          } as PaginatedResponse<IClothe>;
-        }
+        window.console.log('Réponse de la requête:', response);
+        return response;
       }),
     );
   }
+
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
@@ -103,45 +82,5 @@ export class ClotheService {
       return [...clothesToAdd, ...clotheCollection];
     }
     return clotheCollection;
-  }
-
-  private createRequestParams(req: any, filters: any): HttpParams {
-    let params = new HttpParams();
-
-    // Ajoutez les filtres à la requête
-    if (filters.search) {
-      params = params.set('search', filters.search);
-    }
-    if (filters.size && filters.size.length > 0) {
-      params = params.set('size', filters.size.join(','));
-    }
-    if (filters.color && filters.color.length > 0) {
-      params = params.set('color', filters.color.join(','));
-    }
-    if (filters.price) {
-      params = params.set('priceMin', filters.price.min.toString()).set('priceMax', filters.price.max.toString());
-    }
-    if (filters.gender && filters.gender.length > 0) {
-      params = params.set('gender', filters.gender.join(','));
-    }
-    if (filters.videogame && filters.videogame.length > 0) {
-      params = params.set('videogame', filters.videogame.join(','));
-    }
-    if (filters.anime && filters.anime.length > 0) {
-      params = params.set('anime', filters.anime.join(','));
-    }
-
-    // Ajoutez d'autres paramètres (par exemple, tri, pagination) à la requête
-    if (req?.sort) {
-      params = params.set('sort', req.sort);
-    }
-    if (req?.page) {
-      params = params.set('page', req.page.toString());
-    }
-    if (req?.size) {
-      params = params.set('size', req.size.toString());
-    }
-
-    return params;
   }
 }

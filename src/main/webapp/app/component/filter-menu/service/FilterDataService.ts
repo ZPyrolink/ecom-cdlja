@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Color } from '../../../entities/enumerations/color.model';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ export class FilterDataService {
 
   setClothes(clothes: string[]): void {
     this.clothesSubject.next(clothes);
+    window.console.log('clothe type', clothes);
   }
 
   getClothes(): Observable<string[]> {
@@ -47,7 +49,7 @@ export class FilterDataService {
     return this.sizeSubject.asObservable();
   }
 
-  setColor(color: string[]): void {
+  setColor(color: Color[]): void {
     this.colorSubject.next(color);
   }
 
@@ -85,5 +87,44 @@ export class FilterDataService {
 
   getAnime(): Observable<string[]> {
     return this.animeSubject.asObservable();
+  }
+
+  getFiltered(): { filters: Record<string, any>; search: string; sort: string } {
+    const filters = {
+      size: this.sizeSubject.getValue(),
+      couleur: this.colorSubject.getValue(),
+      price: this.priceSubject.getValue(),
+      gender: this.genderSubject.getValue(),
+      videogame: this.videogameSubject.getValue(),
+      anime: this.animeSubject.getValue(),
+      type: this.convertToEnumKeys(this.clothesSubject.getValue()),
+    };
+
+    const search = this.searchQuerySubject.getValue();
+    // TODO
+    const sort = 'asc';
+
+    return { filters, search, sort };
+  }
+
+  convertToEnumKeys(clothes: string[]): string[] {
+    return clothes.map(clothe => {
+      switch (clothe) {
+        case 'Jogging':
+          return 'JOGGER';
+        case 'Tee-shirt':
+          return 'TEESHIRT';
+        case 'Brassière':
+          return 'BRA';
+        case 'Legging':
+          return 'LEGGING';
+        case 'Short':
+          return 'SHORT';
+        case 'Pull':
+          return 'SWEAT';
+        default:
+          return '';
+      }
+    });
   }
 }

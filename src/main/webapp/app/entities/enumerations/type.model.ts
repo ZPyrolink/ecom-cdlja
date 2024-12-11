@@ -4,7 +4,7 @@ export enum Type {
   BRA = 'Brassière',
   LEGGING = 'Legging',
   SHORT = 'Short',
-  SWEAT = 'Sweat',
+  SWEAT = 'Pull',
 }
 export default function getClotheTypeLabel(type?: 'JOGGER' | 'TEESHIRT' | 'BRA' | 'LEGGING' | 'SHORT' | 'SWEAT'): string {
   switch (type) {
