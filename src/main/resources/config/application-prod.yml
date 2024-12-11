@@ -33,7 +33,7 @@ spring:
       enabled: false
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/weebSport
+    url: jdbc:postgresql://weebsport.c5q2e8ykague.eu-north-1.rds.amazonaws.com:5432/weebSport
     username: weebSport
     password: password
     hikari:
