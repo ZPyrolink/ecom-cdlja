@@ -12,8 +12,7 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadComponent: () => import('./component/home/home.component'),
-    title: 'WeebSport',
+    redirectTo: '',
   },
   {
     path: 'login',
