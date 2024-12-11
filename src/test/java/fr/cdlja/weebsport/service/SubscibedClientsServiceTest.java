@@ -135,7 +135,6 @@ public class SubscibedClientsServiceTest {
         Order basket = new Order();
         basket.setId(1L);
         basket.setStatus(Status.BASKET);
-        basket.setAmount(100.0f);
 
         client.setBasket(basket);
 
