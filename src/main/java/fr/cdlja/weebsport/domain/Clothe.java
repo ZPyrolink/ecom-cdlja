@@ -43,9 +43,6 @@ public class Clothe implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "imagep")
-    private String imageP;
-
     @ElementCollection
     @CollectionTable(name = "clothe_categories", joinColumns = @JoinColumn(name = "clothe_id"))
     @Column(name = "category")
