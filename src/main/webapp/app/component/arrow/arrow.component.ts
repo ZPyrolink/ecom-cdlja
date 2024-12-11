@@ -17,18 +17,14 @@ export default class ArrowComponent {
   ) {
     // TODO changer la route de listing product
     this.router.events.subscribe(() => {
-      // eslint-disable-next-line no-console
-      console.log('lalalla', this.router.url === '/');
-      this.isHomePage = this.router.url === '/';
+      this.isHomePage = this.router.url === '';
     });
   }
   goBack(): void {
     if (window.history.length > 1) {
       this.location.back();
-      // eslint-disable-next-line no-console
-      console.log('lalalla', this.router.url === '/');
     } else {
-      this.router.navigate(['/']);
+      this.router.navigate(['']);
     }
   }
 }
