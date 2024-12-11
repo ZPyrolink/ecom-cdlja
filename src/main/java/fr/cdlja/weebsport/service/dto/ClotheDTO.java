@@ -12,6 +12,7 @@ public class ClotheDTO {
     private Gender gender;
     private Float price;
     private String description;
+    private String imageP;
 
     public ClotheDTO() {}
 
@@ -22,6 +23,7 @@ public class ClotheDTO {
         this.gender = clothe.getGender();
         this.price = clothe.getPrice();
         this.description = clothe.getDescription();
+        this.imageP = clothe.getImageP();
     }
 
     public Long getId() {
@@ -70,5 +72,13 @@ public class ClotheDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImageP() {
+        return this.imageP;
+    }
+
+    public void setImageP(String imageP) {
+        this.imageP = imageP;
     }
 }

@@ -60,8 +60,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
         "AND (:maxPrice is NULL OR s.clothe.price <= :maxPrice) " +
         "AND (:genders is NULL OR s.clothe.gender IN :genders) " +
         "AND (:types is NULL OR s.clothe.type IN :types) " +
-        "AND (:videoGameThemes is NULL OR UPPER(s.clothe.theme) IN :videoGameThemes) " +
-        "AND (:animeThemes is NULL OR UPPER(s.clothe.theme) IN :animeThemes) "
+        "AND (:theme is NULL OR UPPER(s.clothe.theme) IN :theme) "
     )
     Page<Stock> getStocksByFiltersAndSearch(
         @Param("sizes") List<Size> sizes,
@@ -70,8 +69,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
         @Param("maxPrice") Float maxPrice,
         @Param("genders") List<Gender> genders,
         @Param("types") List<Type> types,
-        @Param("videoGameThemes") List<String> videoGameThemes,
-        @Param("animeThemes") List<String> animeThemes,
+        @Param("theme") List<String> theme,
         String keyword,
         Pageable pageable
     );

@@ -24,11 +24,8 @@ public class FilterDTO {
     @JsonProperty("type")
     private List<Type> types;
 
-    @JsonProperty("videogame")
-    private List<String> videogameThemes;
-
-    @JsonProperty("anime")
-    private List<String> animeThemes;
+    @JsonProperty("theme")
+    private List<String> theme;
 
     public List<Size> getSizes() {
         return sizes;
@@ -70,19 +67,11 @@ public class FilterDTO {
         this.types = types;
     }
 
-    public List<String> getVideogameThemes() {
-        return videogameThemes;
+    public List<String> getThemes() {
+        return this.theme;
     }
 
-    public void setVideogameThemes(List<String> videogameThemes) {
-        this.videogameThemes = videogameThemes;
-    }
-
-    public List<String> getAnimeThemes() {
-        return animeThemes;
-    }
-
-    public void setAnimeThemes(List<String> animeThemes) {
-        this.animeThemes = animeThemes;
+    public void setThemes(List<String> Themes) {
+        this.theme = Themes;
     }
 }

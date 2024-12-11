@@ -280,12 +280,10 @@ public class ClotheResource {
             ? null
             : filters.getGenders();
         List<Type> types = (filters == null || (filters.getTypes() != null && filters.getTypes().isEmpty())) ? null : filters.getTypes();
-        List<String> videoGameThemes = (filters == null || (filters.getVideogameThemes() != null && filters.getVideogameThemes().isEmpty()))
+        List<String> themeMin = (filters == null || (filters.getThemes() != null && filters.getThemes().isEmpty()))
             ? null
-            : filters.getVideogameThemes();
-        List<String> animeThemes = (filters == null || (filters.getAnimeThemes() != null && filters.getAnimeThemes().isEmpty()))
-            ? null
-            : filters.getAnimeThemes();
+            : filters.getThemes();
+        List<String> theme = themeMin.stream().map(String::toUpperCase).collect(Collectors.toList());
 
         Page<Stock> stocks = stockRepository.getStocksByFiltersAndSearch(
             sizes,
@@ -294,8 +292,7 @@ public class ClotheResource {
             maxPrice,
             genders,
             types,
-            videoGameThemes,
-            animeThemes,
+            theme,
             keyWord,
             pageable
         );
