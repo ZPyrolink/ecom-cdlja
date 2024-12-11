@@ -7,7 +7,6 @@ import { IClothe } from '../../entities/clothe/clothe.model';
 import { ClotheService } from '../../entities/clothe/service/clothe.service';
 import { FilterDataService } from '../filter-menu/service/FilterDataService';
 import { Subscription } from 'rxjs';
-import { OrderService } from '../../entities/order/service/order.service';
 import getClotheTypeLabel from '../../entities/enumerations/type.model';
 import { NgOptimizedImage } from '@angular/common';
 
@@ -32,7 +31,6 @@ export default class ListingProductComponent implements OnInit, OnDestroy {
     private service: ClotheService,
     private router: Router,
     private serviceFilter: FilterDataService,
-    private serviceOrder: OrderService,
   ) {}
 
   ngOnInit(): void {
@@ -43,6 +41,24 @@ export default class ListingProductComponent implements OnInit, OnDestroy {
     });
     this.serviceFilter.getClothes().subscribe(clothes => {
       this.selectedItemsClothes = clothes;
+      this.loadPage(this.currentPage);
+    });
+    this.serviceFilter.getPrice().subscribe(() => {
+      this.loadPage(this.currentPage);
+    });
+    this.serviceFilter.getColor().subscribe(() => {
+      this.loadPage(this.currentPage);
+    });
+    this.serviceFilter.getSize().subscribe(() => {
+      this.loadPage(this.currentPage);
+    });
+    this.serviceFilter.getGender().subscribe(() => {
+      this.loadPage(this.currentPage);
+    });
+    this.serviceFilter.getSearchQuery().subscribe(() => {
+      this.loadPage(this.currentPage);
+    });
+    this.serviceFilter.getSort().subscribe(() => {
       this.loadPage(this.currentPage);
     });
   }

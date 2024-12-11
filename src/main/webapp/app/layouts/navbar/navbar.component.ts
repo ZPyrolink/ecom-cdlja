@@ -49,6 +49,8 @@ export default class NavbarComponent implements OnInit {
   onSearch(): void {
     window.sessionStorage['search'] = this.searchQuery;
     this.filterDataService.setSearchQuery(this.searchQuery);
-    window.location.reload();
+    if (window.location.pathname !== '') {
+      this.router.navigate(['']);
+    }
   }
 }
