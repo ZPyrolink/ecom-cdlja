@@ -45,12 +45,38 @@ jobs:
       - name: Build the app
         run: |
           ./mvnw -Pprod clean verify
+          
+      - name: Backup existing JAR on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no -i github-ec2.pem $EC2_USER@${{ secrets.EC2_HOST }} "
+            if [ -f ${{ env.APP_DIR }}/${{ env.JAR_NAME }} ]; then
+              echo 'Backing up existing JAR file.'
+              mv ${{ env.APP_DIR }}/${{ env.JAR_NAME }} ${{ env.APP_DIR }}/${{ env.JAR_NAME }}.backup
+            else
+              echo 'No existing JAR file to back up.'
+            fi
+          "
+          
       - name: Transfer JAR to EC2
         run: |
           scp -o StrictHostKeyChecking=no -i github-ec2.pem target/${{ env.JAR_NAME }} $EC2_USER@${{ secrets.EC2_HOST }}:${{ env.APP_DIR }}/${{ env.JAR_NAME }}
       - name: Restart application on EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i github-ec2.pem $EC2_USER@${{ secrets.EC2_HOST }} "
-            sudo systemctl stop weebSportAppService.service &&
-            sudo systemctl restart weebSportAppService.service  # Redémarrer le service de l'application
+            sudo systemctl restart weebSportAppService.service &&
+            sleep 5 &&
+            if systemctl is-active --quiet weebSportAppService.service; then
+              echo 'weebSportAppService service started successfully.'
+            else
+              echo 'weebSportAppService service failed to start.'
+              if [ -f ${{ env.APP_DIR }}/${{ env.JAR_NAME }}.backup ]; then
+                echo 'Restoring backup JAR.'
+                mv ${{ env.APP_DIR }}/${{ env.JAR_NAME }}.backup ${{ env.APP_DIR }}/${{ env.JAR_NAME }}
+                sudo systemctl restart weebSportAppService.service
+                exit 1
+              else
+                echo 'No backup JAR available. Exiting.'
+                exit 1
+              fi
+            fi
           "
