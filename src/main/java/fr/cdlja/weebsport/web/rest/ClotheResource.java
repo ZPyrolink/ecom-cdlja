@@ -11,10 +11,7 @@ import fr.cdlja.weebsport.service.dto.*;
 import fr.cdlja.weebsport.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -296,7 +293,20 @@ public class ClotheResource {
             keyWord,
             pageable
         );
-        Page<ClotheDTO> clothesPage = stocks.map(stock -> new ClotheDTO(stock.getClothe()));
+        Set<Long> addedClotheIds = new HashSet<>();
+
+        // Filtrer et mapper les stocks en ClotheDTO uniquement si l'identifiant n'est pas encore dans la liste
+        List<ClotheDTO> filteredClothes = new ArrayList<>();
+        for (Stock stock : stocks) {
+            Long clotheId = stock.getClothe().getId(); // Assurez-vous que l'ID est de type Long
+            if (!addedClotheIds.contains(clotheId)) {
+                filteredClothes.add(new ClotheDTO(stock.getClothe()));
+                addedClotheIds.add(clotheId);
+            }
+        }
+
+        // Convertir la liste filtrée en Page en utilisant Pageable
+        Page<ClotheDTO> clothesPage = new PageImpl<>(filteredClothes, pageable, stocks.getTotalElements());
         return ResponseEntity.ok(clothesPage);
     }
 
