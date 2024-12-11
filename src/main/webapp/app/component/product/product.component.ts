@@ -7,6 +7,7 @@ import { StockService } from '../../entities/stock/service/stock.service';
 import { ClotheService } from '../../entities/clothe/service/clothe.service';
 import { Color } from '../../entities/enumerations/color.model';
 import { getSizeLabelFromSize, Size } from '../../entities/enumerations/size.model';
+import { IClothe } from '../../entities/clothe/clothe.model';
 
 @Component({
   selector: 'jhi-product',
@@ -18,13 +19,10 @@ import { getSizeLabelFromSize, Size } from '../../entities/enumerations/size.mod
 export default class ProductComponent implements OnInit {
   stock: IStock | null | undefined;
   productId = 0;
+  product: IClothe | null | undefined;
+
   selectedImage = 'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/ecom1.jpeg';
-  imageUrls = [
-    'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/ecom1.jpeg',
-    'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/ecom2.jpeg',
-    'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/ecom3.jpeg',
-    'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/ecom4.jpeg',
-  ];
+  imageUrls: string[] = [];
 
   productName = '';
   productSelectedColor: Color = Color.BLACK;
@@ -35,6 +33,10 @@ export default class ProductComponent implements OnInit {
 
   protected readonly getSizeLabelFromSize = getSizeLabelFromSize;
 
+  private baseUrl = 'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com';
+  private baseFileName = 'ecom';
+  private imageIndex = 1;
+
   constructor(
     private route: ActivatedRoute,
     private stockService: StockService,
@@ -42,26 +44,29 @@ export default class ProductComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Initialiser le productId à partir de la route
     this.route.paramMap.subscribe(params => {
       this.productId = Number(params.get('id'));
 
-      // Étape 1 : Récupérer les couleurs disponibles
+      this.clotheService.find(this.productId).subscribe({
+        next: productResponse => {
+          this.product = productResponse.body;
+          window.console.log('Product image:', this.product?.imageP);
+          window.console.log('Product image split:', this.product?.imageP?.split('/'));
+          this.selectColor(this.product?.imageP?.split('/')[5] as string);
+          this.productName = (this.product?.theme ?? '') + ' ' + (this.product?.type ?? '');
+        },
+        error: error => console.error('Erreur lors de la récupération du produit:', error),
+      });
+
       this.clotheService.getColorsOf(this.productId).subscribe({
         next: colorsResponse => {
           this.productColors = colorsResponse.body ?? [];
           this.productColors = this.mapToColorEnumValues(this.productColors);
-          if (this.productColors.length > 0) {
-            // Initialiser `productSelectedColor` avec la première couleur
-            this.productSelectedColor = this.productColors[0];
-          }
+          window.console.log('All colors : ', this.productColors);
           this.updateColorEnum();
-          // Étape 2 : Récupérer les tailles disponibles pour la couleur sélectionnée
           this.updateSizes();
         },
-        error(error) {
-          console.error('Erreur lors de la récupération des couleurs:', error);
-        },
+        error: error => console.error('Erreur lors de la récupération des couleurs:', error),
       });
     });
   }
@@ -124,7 +129,30 @@ export default class ProductComponent implements OnInit {
 
   selectColor(selectedColor: string): void {
     this.productSelectedColor = selectedColor as Color;
+    this.imageUrls = [];
+    this.imageIndex = 1;
+    this.loadImages();
     this.updateSizes();
+  }
+
+  loadImages(): void {
+    const tempImageUrl = this.getImageUrl(this.imageIndex);
+    const img = new Image();
+    img.src = tempImageUrl;
+
+    img.onload = () => {
+      this.imageUrls.push(tempImageUrl);
+      this.imageIndex++;
+      this.loadImages();
+    };
+
+    img.onerror = () => {
+      window.console.log(`No more images found after index ${this.imageIndex - 1}`);
+    };
+  }
+
+  getImageUrl(index: number): string {
+    return `${this.baseUrl}/${this.baseFileName}_${index}.png`;
   }
 
   selectSize(selectedSize: Size): void {
