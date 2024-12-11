@@ -283,7 +283,7 @@ public class ClotheResource {
         List<String> themeMin = (filters == null || (filters.getThemes() != null && filters.getThemes().isEmpty()))
             ? null
             : filters.getThemes();
-        List<String> theme = themeMin.stream().map(String::toUpperCase).collect(Collectors.toList());
+        List<String> theme = (themeMin == null) ? null : themeMin.stream().map(String::toUpperCase).collect(Collectors.toList());
 
         Page<Stock> stocks = stockRepository.getStocksByFiltersAndSearch(
             sizes,
