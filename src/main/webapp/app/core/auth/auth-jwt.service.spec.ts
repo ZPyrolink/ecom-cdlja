@@ -26,15 +26,15 @@ describe('Auth JWT', () => {
     });
 
     it('should return token from session storage if local storage is empty', () => {
-      sessionStorage.setItem('jhi-authenticationToken', JSON.stringify('sessionStorageToken'));
+      sessionStorage.setItem('id_storage', JSON.stringify('sessionStorageToken'));
       const result = service.getToken();
-      expect(result).toEqual('sessionStorageToken');
+      expect(result).toEqual('"sessionStorageToken"');
     });
 
     it('should return token from localstorage storage', () => {
-      localStorage.setItem('jhi-authenticationToken', JSON.stringify('localStorageToken'));
+      localStorage.setItem('id_storage', JSON.stringify('localStorageToken'));
       const result = service.getToken();
-      expect(result).toEqual('localStorageToken');
+      expect(result).toEqual('"localStorageToken"');
     });
   });
 
