@@ -45,6 +45,9 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     @Query("UPDATE Stock s SET s.quantity=:quantity, s.version=: version+1 WHERE s.id = :id and s.version =:version ")
     int updateStock(@Param("quantity") Integer quantity, @Param("version") Integer version, @Param("id") Long id);
 
+    @Query("SELECT s from Stock s where s.clothe.id= :clothe_id")
+    List<Stock> findStocksByClotheId(@Param("clothe_id") long clothe_id);
+
     @Query(
         "SELECT s from Stock s WHERE " +
         "(:keyword is NULL OR (" +
