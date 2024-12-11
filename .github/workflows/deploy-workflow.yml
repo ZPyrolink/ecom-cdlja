@@ -69,9 +69,14 @@ jobs:
               echo 'weebSportAppService service started successfully.'
             else
               echo 'weebSportAppService service failed to start.'
-              echo 'Restoring backup JAR.'
-              mv ${{ env.APP_DIR }}/${{ env.JAR_NAME }}.backup ${{ env.APP_DIR }}/${{ env.JAR_NAME }}
-              sudo systemctl restart weebSportAppService.service &&
-              exit 1
+              if [ -f ${{ env.APP_DIR }}/${{ env.JAR_NAME }}.backup ]; then
+                echo 'Restoring backup JAR.'
+                mv ${{ env.APP_DIR }}/${{ env.JAR_NAME }}.backup ${{ env.APP_DIR }}/${{ env.JAR_NAME }}
+                sudo systemctl restart weebSportAppService.service
+                exit 1
+              else
+                echo 'No backup JAR available. Exiting.'
+                exit 1
+              fi
             fi
           "
