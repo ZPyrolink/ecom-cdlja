@@ -193,7 +193,7 @@ export default class ProductComponent implements OnInit {
     this.updateStock();
     if (this.stock) {
       window.console.log('stockkkkkkkkkkk', this.stock);
-      this.orderService.addClotheToOrder(this.stock);
+      this.orderService.add(this.stock)?.subscribe();
       this.orderState.incrementOrderQuantity(1);
     }
   }

@@ -83,7 +83,7 @@ export class OrderService {
     } else {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       const body = { quantite: quantity };
-      return this.http.delete(`api/basket/${stock.id}`, {
+      return this.http.delete(this.applicationConfigService.getEndpointFor(`api/basket/${stock.id}`), {
         headers,
         body,
         observe: 'response',
@@ -100,13 +100,14 @@ export class OrderService {
       return;
     } else {
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-      const options = createRequestOption();
-      return this.http.post(`api/basket/${stock.id}`, {
-        params: options,
-        headers,
-        observe: 'response',
-        responseType: 'text',
-      });
+      return this.http.post(
+        this.applicationConfigService.getEndpointFor(`api/basket/${stock.id}`),
+        {},
+        {
+          headers,
+          observe: 'response',
+        },
+      );
     }
   }
 
