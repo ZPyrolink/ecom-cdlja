@@ -192,7 +192,14 @@ export class OrderService {
     }
   }
   validateBasket(id: number): Observable<object> {
-    return this.http.post(`${this.resourceUrl}/validate/${id}`, { observe: 'response' });
+    const existingOrder = window.sessionStorage.getItem('basket') ?? '';
+    if (existingOrder) {
+      const order = JSON.parse(existingOrder) as IOrder;
+      window.console.log('iciiiiiiiiiiiiiiiiiiiiiiiiiii', order);
+      return this.http.post(`${this.resourceUrl}/validate/0`, order, { observe: 'response' });
+    } else {
+      return this.http.post(`${this.resourceUrl}/validate/${id}`, {}, { observe: 'response' });
+    }
   }
 
   getOrderIdentifier(order: Pick<IOrder, 'id'>): number {
