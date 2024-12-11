@@ -173,13 +173,20 @@ export class OrderService {
       );
 
       if (existingOrderLine) {
-        existingOrderLine.quantity = (existingOrderLine.quantity ?? 0) - quantity;
-        existingOrderLine.amountline = (existingOrderLine.quantity ?? 0) * quantity * (stock.clotheDTO?.price ?? 0);
+        const newQuantity = (existingOrderLine.quantity ?? 0) - quantity;
+
+        if (newQuantity <= 0) {
+          order.orderLines = order.orderLines?.filter(
+            line => line.stockDTO?.id !== stock.id || line.stockDTO.color !== stock.color || line.stockDTO.size !== stock.size,
+          );
+        } else {
+          existingOrderLine.quantity = (existingOrderLine.quantity ?? 0) - quantity;
+          existingOrderLine.amountline = (existingOrderLine.amountline ?? 0) - quantity * (stock.clotheDTO?.price ?? 0);
+        }
       }
 
-      order.amount = order.orderLines?.reduce((total, line) => total - (line.amountline ?? 0) * quantity, 0);
+      order.amount = (order.amount ?? 0) - (stock.clotheDTO?.price ?? 0) * quantity;
       window.sessionStorage.setItem('basket', JSON.stringify(order));
-      window.console.log('Panier mis à jour :', order);
     }
   }
   validateBasket(id: number): Observable<object> {

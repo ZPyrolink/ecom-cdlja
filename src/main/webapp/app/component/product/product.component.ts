@@ -8,6 +8,7 @@ import { Color } from '../../entities/enumerations/color.model';
 import { getSizeLabelFromSize, Size } from '../../entities/enumerations/size.model';
 import { IClothe } from '../../entities/clothe/clothe.model';
 import { OrderService } from '../../entities/order/service/order.service';
+import { OrderStateService } from '../../service/OrderStateService';
 
 @Component({
   selector: 'jhi-product',
@@ -42,6 +43,7 @@ export default class ProductComponent implements OnInit {
     private stockService: StockService,
     private clotheService: ClotheService,
     private orderService: OrderService,
+    private orderState: OrderStateService,
   ) {}
 
   ngOnInit(): void {
@@ -189,6 +191,7 @@ export default class ProductComponent implements OnInit {
     if (this.stock) {
       window.console.log('stockkkkkkkkkkk', this.stock);
       this.orderService.addClotheToOrder(this.stock);
+      this.orderState.incrementOrderQuantity(1);
     }
   }
 }

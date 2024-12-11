@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { OrderService } from '../../entities/order/service/order.service';
 import { FilterDataService } from '../../component/filter-menu/service/FilterDataService';
 import { Router, RouterModule } from '@angular/router';
+import { OrderStateService } from '../../service/OrderStateService';
 
 @Component({
   standalone: true,
@@ -24,10 +25,14 @@ export default class NavbarComponent implements OnInit {
     private serviceOrder: OrderService,
     private filterDataService: FilterDataService,
     private router: Router,
+    private orderStateService: OrderStateService,
   ) {}
 
   ngOnInit(): void {
     this.searchQuery = window.sessionStorage.getItem('search') ?? '';
+    this.orderStateService.orderQuantity$.subscribe(quantity => {
+      this.orderQuantity = quantity;
+    });
     this.serviceOrder.query()?.subscribe({
       next: response => {
         if (response.orderLines) {
@@ -36,6 +41,7 @@ export default class NavbarComponent implements OnInit {
               this.orderQuantity += line.quantity;
             }
           }
+          this.orderStateService.setOrderQuantity(this.orderQuantity);
         }
       },
     });

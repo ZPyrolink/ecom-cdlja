@@ -8,6 +8,7 @@ import getClotheTypeLabel from '../../entities/enumerations/type.model';
 import getSizeLabel from '../../entities/enumerations/size.model';
 import getColorLabel from '../../entities/enumerations/color.model';
 import { Router } from '@angular/router';
+import { OrderStateService } from '../../service/OrderStateService';
 
 @Component({
   selector: 'jhi-basket',
@@ -31,6 +32,7 @@ export default class BasketComponent implements OnInit {
   constructor(
     private service: OrderService,
     private router: Router,
+    private orderState: OrderStateService,
   ) {}
 
   ngOnInit(): void {
@@ -70,6 +72,7 @@ export default class BasketComponent implements OnInit {
       });
     }
     this.loadOrders(this.currentPage);
+    this.orderState.incrementOrderQuantity(1);
   }
 
   decreaseQuantity(clothe: IOrderLine): void {
@@ -84,6 +87,7 @@ export default class BasketComponent implements OnInit {
       });
     }
     this.loadOrders(this.currentPage);
+    this.orderState.decrementOrderQuantity(1);
   }
 
   delete(clothe: IOrderLine): void {
@@ -95,6 +99,7 @@ export default class BasketComponent implements OnInit {
       });
     }
     this.loadOrders(this.currentPage);
+    this.orderState.decrementOrderQuantity(clothe.quantity ?? 0);
   }
 
   onPageChange(page: number): void {
