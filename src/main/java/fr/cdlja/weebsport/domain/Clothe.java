@@ -43,7 +43,7 @@ public class Clothe implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "imageP")
+    @Column(name = "imagep")
     private String imageP;
 
     @ElementCollection
