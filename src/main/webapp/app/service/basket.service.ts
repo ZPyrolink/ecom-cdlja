@@ -13,6 +13,6 @@ export class BasketService {
   }
 
   newBasket(): void {
-    sessionStorage['basket'] = JSON.stringify(BasketService.EMPTY_BASKET);
+    sessionStorage.removeItem('basket');
   }
 }
