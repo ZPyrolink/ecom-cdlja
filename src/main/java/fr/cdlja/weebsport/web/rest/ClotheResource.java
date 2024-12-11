@@ -1,14 +1,16 @@
 package fr.cdlja.weebsport.web.rest;
 
 import fr.cdlja.weebsport.domain.Clothe;
+import fr.cdlja.weebsport.domain.Stock;
 import fr.cdlja.weebsport.domain.enumeration.Category;
 import fr.cdlja.weebsport.domain.enumeration.Color;
+import fr.cdlja.weebsport.domain.enumeration.Gender;
 import fr.cdlja.weebsport.domain.enumeration.Size;
 import fr.cdlja.weebsport.repository.ClotheRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
 import fr.cdlja.weebsport.service.ClotheService;
-import fr.cdlja.weebsport.service.dto.SearchDTO;
-import fr.cdlja.weebsport.service.dto.ThemeDTO;
+import fr.cdlja.weebsport.service.StockService;
+import fr.cdlja.weebsport.service.dto.*;
 import fr.cdlja.weebsport.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,7 +29,7 @@ import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link fr.cdlja.weebsport.domain.Clothe}.
+ * REST controller for managing {@link Clothe}.
  */
 @RestController
 @RequestMapping("/api/clothes")
@@ -44,11 +46,18 @@ public class ClotheResource {
     private final ClotheRepository clotheRepository;
     private final StockRepository stockRepository;
     private final ClotheService clotheService;
+    private final StockService stockService;
 
-    public ClotheResource(ClotheRepository clotheRepository, StockRepository stockRepository, ClotheService clotheService) {
+    public ClotheResource(
+        ClotheRepository clotheRepository,
+        StockRepository stockRepository,
+        ClotheService clotheService,
+        StockService stockService
+    ) {
         this.clotheRepository = clotheRepository;
         this.stockRepository = stockRepository;
         this.clotheService = clotheService;
+        this.stockService = stockService;
     }
 
     /**
@@ -216,6 +225,66 @@ public class ClotheResource {
         themeDTO.setAnimeThemes(animethemes);
         themeDTO.setVideogameThemes(videogamethemes);
         return ResponseEntity.ok(themeDTO);
+    }
+
+    @GetMapping("/filters")
+    public ResponseEntity<Page<ClotheDTO>> getClothesFiltered(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "15") int size,
+        @RequestParam(defaultValue = "clothe.price") String sortBy,
+        @RequestBody FilterSortDTO filtersSort
+    ) {
+        if (filtersSort == null) {
+            throw new RuntimeException("Problems with the body. Maybe it is empty");
+        }
+        FilterDTO filters = filtersSort.getFilters();
+        String keyWord = filtersSort.getSearch();
+        keyWord = (keyWord != null) ? keyWord.toUpperCase() : null;
+        String sort = filtersSort.getSort();
+
+        Pageable pageable = null;
+
+        Sort sortCriteria = null;
+        if (sort != null) {
+            sort = sort.toLowerCase();
+            if (!"clothe.price".equals(sortBy)) {
+                throw new RuntimeException("The sort has to be by clothe.price");
+            } else {
+                if (Objects.equals(sort, "asc")) {
+                    sortCriteria = Sort.by(Sort.Order.asc(sortBy), Sort.Order.asc("id"));
+                } else if (Objects.equals(sort, "desc")) {
+                    sortCriteria = Sort.by(Sort.Order.desc(sortBy), Sort.Order.desc("id"));
+                } else {
+                    throw new RuntimeException("The value of sort has to be ASC or DESC");
+                }
+            }
+            pageable = PageRequest.of(page, size, sortCriteria);
+        } else {
+            pageable = PageRequest.of(page, size, Sort.by("id"));
+        }
+
+        List<Size> sizes = (filters != null) ? filters.getSizes() : null;
+        List<Color> colors = (filters != null) ? filters.getColors() : null;
+        Float minPrice = (filters != null && filters.getPrices() != null) ? filters.getPrices().getMin() : null;
+        Float maxPrice = (filters != null && filters.getPrices() != null) ? filters.getPrices().getMax() : null;
+        List<Gender> genders = (filters != null) ? filters.getGenders() : null;
+        List<String> videoGameThemes = (filters != null) ? filters.getVideogameThemes() : null;
+        List<String> animeThemes = (filters != null) ? filters.getAnimeThemes() : null;
+
+        Page<Stock> stocks = stockRepository.getStocksByFiltersAndSearch(
+            sizes,
+            colors,
+            minPrice,
+            maxPrice,
+            genders,
+            videoGameThemes,
+            animeThemes,
+            keyWord,
+            pageable
+        );
+
+        Page<ClotheDTO> clothesPage = stocks.map(stock -> new ClotheDTO(stock.getClothe()));
+        return ResponseEntity.ok(clothesPage);
     }
 
     /**

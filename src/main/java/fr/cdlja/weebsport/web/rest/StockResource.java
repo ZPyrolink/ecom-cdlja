@@ -169,51 +169,6 @@ public class StockResource {
         return ResponseEntity.ok(stocksPage); // Retour de la page dans la réponse
     }
 
-    @GetMapping("/filters")
-    public ResponseEntity<List<ClotheDTO>> getStocksFiltered(@RequestBody FilterSortDTO filtersSort) {
-        if (filtersSort == null) {
-            throw new RuntimeException("Problems with the body. Maybe it is empty");
-        }
-        FilterDTO filters = filtersSort.getFilters();
-        String keyWord = filtersSort.getSearch();
-        String sort = filtersSort.getSort();
-
-        List<ClotheDTO> clothesDTO = new ArrayList<>();
-        Set<Clothe> clothesSet;
-        ArrayList<Clothe> clothesList;
-
-        if (keyWord != null) {
-            Set<Clothe> clothesSearch = stockService.search(keyWord.toUpperCase());
-            if (filters != null) {
-                clothesSet = stockService.applyFilters(filters);
-                clothesSearch.retainAll(clothesSet);
-            }
-            clothesList = new ArrayList<>(clothesSearch);
-        } else {
-            if (filters != null) {
-                clothesSet = stockService.applyFilters(filters);
-                clothesList = new ArrayList<>(clothesSet);
-            } else {
-                clothesList = new ArrayList<>(clotheRepository.findAll());
-            }
-        }
-
-        if (sort != null) {
-            sort = sort.toLowerCase();
-            if (Objects.equals(sort, "asc")) {
-                clothesList.sort(Comparator.comparing(Clothe::getPrice));
-            } else if (Objects.equals(sort, "desc")) {
-                clothesList.sort(Comparator.comparing(Clothe::getPrice).reversed());
-            }
-        }
-
-        for (Clothe c : clothesList) {
-            clothesDTO.add(new ClotheDTO(c));
-        }
-
-        return ResponseEntity.ok(clothesDTO);
-    }
-
     /**
      * {@code GET  /stocks/:id} : get the "id" stock.
      *

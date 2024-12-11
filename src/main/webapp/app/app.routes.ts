@@ -27,6 +27,11 @@ const routes: Routes = [
     loadComponent: () => import('./component/setting/setting.component'),
     title: 'WeebSport',
   },
+  {
+    path: 'pay',
+    loadComponent: () => import('./component/payement/payement.component'),
+    title: 'WeebSport',
+  },
   /*  {
     path: '',
     loadComponent: () => import('./home/home.component'),
