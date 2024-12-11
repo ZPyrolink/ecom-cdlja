@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { ColorItemComponent } from '../color-item/color-item.component';
 import { IStock } from '../../entities/stock/stock.model';
 import { StockService } from '../../entities/stock/service/stock.service';
 import { ClotheService } from '../../entities/clothe/service/clothe.service';
@@ -12,7 +11,7 @@ import { IClothe } from '../../entities/clothe/clothe.model';
 @Component({
   selector: 'jhi-product',
   standalone: true,
-  imports: [CommonModule, ColorItemComponent, NgOptimizedImage],
+  imports: [CommonModule, NgOptimizedImage],
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss',
 })
@@ -34,7 +33,7 @@ export default class ProductComponent implements OnInit {
   protected readonly getSizeLabelFromSize = getSizeLabelFromSize;
 
   private baseUrl = 'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com';
-  private baseFileName = 'ecom';
+  private baseFileName = 'Image_';
   private imageIndex = 1;
 
   constructor(
@@ -52,7 +51,7 @@ export default class ProductComponent implements OnInit {
           this.product = productResponse.body;
           window.console.log('Product image:', this.product?.imageP);
           window.console.log('Product image split:', this.product?.imageP?.split('/'));
-          this.selectColor(this.product?.imageP?.split('/')[5] as string);
+          this.selectColor(this.product?.imageP?.split('/')[4] as string);
           this.productName = (this.product?.theme ?? '') + ' ' + (this.product?.type ?? '');
         },
         error: error => console.error('Erreur lors de la récupération du produit:', error),
@@ -137,6 +136,7 @@ export default class ProductComponent implements OnInit {
 
   loadImages(): void {
     const tempImageUrl = this.getImageUrl(this.imageIndex);
+    window.console.log('Image Url:', tempImageUrl);
     const img = new Image();
     img.src = tempImageUrl;
 
@@ -152,7 +152,7 @@ export default class ProductComponent implements OnInit {
   }
 
   getImageUrl(index: number): string {
-    return `${this.baseUrl}/${this.baseFileName}_${index}.png`;
+    return `${this.baseUrl}/${this.product!.id}/${this.productSelectedColor}/${this.baseFileName}${index}.png`;
   }
 
   selectSize(selectedSize: Size): void {
