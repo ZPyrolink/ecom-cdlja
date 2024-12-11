@@ -109,10 +109,17 @@ img {
     color: white;
     border: none;
     padding: 0 70px;
-    cursor: pointer;
     border-radius: 8px;
     font-size: 18px;
     font-weight: bold;
     text-align: center;
+
+    &:active {
+      cursor: pointer;
+    }
+    &:disabled {
+      background-color: #5a5760;
+      cursor: not-allowed;
+    }
   }
 }

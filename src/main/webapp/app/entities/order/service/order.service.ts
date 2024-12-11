@@ -9,7 +9,6 @@ import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IOrder, NewOrder } from '../order.model';
-import { IClothe } from '../../clothe/clothe.model';
 import { IOrderLine } from '../../order-line/order-line.model';
 import { IStock } from '../../stock/stock.model';
 
@@ -112,7 +111,7 @@ export class OrderService {
     }
   }
 
-  addClotheToOrder(clothe: IClothe): void {
+  addClotheToOrder(stock: IStock): void {
     const existingOrder = window.sessionStorage.getItem('basket'); // Utilise getItem pour lire sessionStorage
     let order: IOrder;
 
@@ -134,14 +133,24 @@ export class OrderService {
         amount: 0,
       } as IOrder;
     }
-    const orderLine: IOrderLine = {
-      id: Date.now(),
-      quantity: 1,
-      amountline: clothe.price ?? 0,
-      // TODO ca a faire
-      stockDTO: { id: clothe.id } as IStock,
-    };
-    order.orderLines?.push(orderLine);
+
+    const existingOrderLine = order.orderLines?.find(
+      line => line.stockDTO?.id === stock.id && line.stockDTO.color === stock.color && line.stockDTO.size === stock.size,
+    );
+
+    if (existingOrderLine) {
+      existingOrderLine.quantity = (existingOrderLine.quantity ?? 0) + 1;
+      existingOrderLine.amountline = (existingOrderLine.quantity ?? 0) * (stock.clotheDTO?.price ?? 0);
+    } else {
+      const orderLine: IOrderLine = {
+        id: Date.now(),
+        quantity: 1,
+        amountline: stock.clotheDTO?.price ?? 0,
+        stockDTO: stock,
+      };
+      order.orderLines?.push(orderLine);
+    }
+
     order.amount = order.orderLines?.reduce((total, line) => total + (line.amountline ?? 0), 0);
     window.sessionStorage.setItem('basket', JSON.stringify(order));
     window.console.log('Panier mis à jour :', order);

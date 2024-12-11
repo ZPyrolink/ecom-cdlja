@@ -43,7 +43,7 @@
       Total de la commande :
       <span *ngIf="order?.orderLines?.length != 0">{{ order?.amount }} €</span>
     </div>
-    <button class="submit-btn" (click)="submitOrder()">Passer au paiement</button>
+    <button class="submit-btn" [disabled]="!clothes || clothes.length === 0" (click)="submitOrder()">Passer au paiment</button>
   </div>
 </div>
 <ng-template #noProducts>

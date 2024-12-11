@@ -61,11 +61,11 @@ export default class BasketComponent implements OnInit {
     window.console.log(this.order);
     if (clothe.stockDTO?.id) {
       this.service.add(clothe.stockDTO.id)?.subscribe({
-        next() {
-          window.location.reload();
+        next: () => {
+          this.loadOrders(this.currentPage);
         },
         error(error) {
-          window.console.error('Erreur lors de la requête:', error);
+          console.error('Erreur lors de la requête:', error);
         },
       });
     }
@@ -74,8 +74,8 @@ export default class BasketComponent implements OnInit {
   decreaseQuantity(clothe: IOrderLine): void {
     if (clothe.stockDTO?.id) {
       this.service.delete(clothe.stockDTO.id, 1)?.subscribe({
-        next() {
-          window.location.reload();
+        next: () => {
+          this.loadOrders(this.currentPage);
         },
         error(error) {
           window.console.error('Erreur lors de la requête:', error);
@@ -87,12 +87,12 @@ export default class BasketComponent implements OnInit {
   delete(clothe: IOrderLine): void {
     if (clothe.stockDTO?.id && clothe.quantity) {
       this.service.delete(clothe.stockDTO.id, clothe.quantity)?.subscribe({
-        next() {
-          window.location.reload();
+        next: () => {
+          this.loadOrders(this.currentPage);
         },
         error(error) {
-          // TODO ajouter erreur si stock manquant
-          window.console.error('Erreur lors de la requête:', error);
+          // TODO
+          alert("Plus de stcok pour l'article");
         },
       });
     }
