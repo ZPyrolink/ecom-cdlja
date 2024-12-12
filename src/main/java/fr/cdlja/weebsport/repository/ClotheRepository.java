@@ -16,8 +16,8 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface ClotheRepository extends JpaRepository<Clothe, Long> {
-    @Query("SELECT DISTINCT c, s.id FROM Stock s JOIN s.clothe c WHERE s.quantity > 0 order by s.id")
-    Page<Object[]> findClotheWithQuantityGreaterThanZero(Pageable pageable);
+    @Query("SELECT c FROM Clothe c JOIN Stock s ON c.id = s.clothe.id GROUP BY c HAVING SUM(s.quantity) > 0")
+    Page<Clothe> findClotheWithQuantityGreaterThanZero(Pageable pageable);
 
     @Query("SELECT DISTINCT c.theme FROM Clothe c JOIN c.Categories cat WHERE cat = :category")
     List<String> findAllThemes(@Param("category") Category category);
