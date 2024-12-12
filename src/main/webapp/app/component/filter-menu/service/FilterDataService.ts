@@ -13,7 +13,7 @@ export class FilterDataService {
   private colorSubject = new BehaviorSubject<string[]>([]);
   private genderSubject = new BehaviorSubject<string[]>([]);
   private priceSubject = new BehaviorSubject<{ min: number; max: number }>({ min: 0, max: 100 });
-  private sortSubject = new BehaviorSubject<string>('asc');
+  private sortSubject = new BehaviorSubject<string>('');
 
   setClothes(clothes: string[]): void {
     this.clothesSubject.next(clothes);
@@ -101,7 +101,7 @@ export class FilterDataService {
       switch (clothe) {
         case 'Jogging':
           return 'JOGGER';
-        case 'Tee-shirt':
+        case 'Tee-Shirt':
           return 'TEESHIRT';
         case 'Brassière':
           return 'BRA';
