@@ -63,7 +63,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i github-ec2.pem $EC2_USER@${{ secrets.EC2_HOST }} "
             sudo systemctl restart weebSportAppService.service &&
-            sleep 5 &&
+            sleep 20 &&
             if systemctl is-active --quiet weebSportAppService.service; then
               echo 'weebSportAppService service started successfully.'
             else

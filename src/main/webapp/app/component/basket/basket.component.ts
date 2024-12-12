@@ -129,6 +129,6 @@ export default class BasketComponent implements OnInit {
     const imageIndex = 1;
     const color = getColorLabel(clothe.color);
 
-    return `${baseUrl}/${clothe.clotheDTO?.id}/${color}/${baseFileName}${imageIndex}.png`;
+    return `${baseUrl}/${clothe.clotheDTO?.id}/${color}/${baseFileName}${imageIndex}.webp`;
   }
 }

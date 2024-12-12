@@ -5,16 +5,6 @@
       <div class="column-1">
         <h2>Livraison</h2>
         <div class="delivery-inline">
-          <div class="cb">
-            <input id="residence" value="residence" type="radio" name="type" formControlName="type" />
-            <label for="residence">Livraison à domicile</label>
-          </div>
-          <div class="cb">
-            <input id="relay" value="relay" type="radio" name="type" formControlName="type" />
-            <label for="relay">Livraison en point relai</label>
-          </div>
-        </div>
-        <div class="delivery-inline">
           <div class="form-group">
             <label for="lastName">Nom</label>
             <input id="lastName" type="text" placeholder="Nom" formControlName="lastName" title="Requis" />
@@ -67,9 +57,6 @@
       <div class="separator"></div>
 
       <div class="column-2">
-        <h3>Paiement express</h3>
-        <fa-icon [icon]="faCcApplePay" class="fa-3x" id="applePay" />
-
         <div class="hDivider"></div>
 
         <h3>Carte de crédit</h3>
@@ -114,7 +101,7 @@
     </div>
 
     <div class="delivery-sb">
-      <p>Total de la commande : {{ price | number: '1.2-2' }}€</p>
+      <p></p>
       <button class="btn-primary" [disabled]="!isValid" [title]="buttonTitle">Payer</button>
     </div>
   </form>

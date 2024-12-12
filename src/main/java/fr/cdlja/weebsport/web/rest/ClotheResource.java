@@ -270,6 +270,7 @@ public class ClotheResource {
             }
             pageable = PageRequest.of(page, size, sortCriteria);
         } else {
+            sortCriteria = Sort.by(Sort.Order.asc("id"));
             pageable = PageRequest.of(page, size, Sort.by("id"));
         }
 
