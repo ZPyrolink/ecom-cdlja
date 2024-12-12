@@ -1,5 +1,6 @@
 package fr.cdlja.weebsport.web.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.cdlja.weebsport.domain.Clothe;
 import fr.cdlja.weebsport.domain.Stock;
 import fr.cdlja.weebsport.domain.enumeration.*;
@@ -12,11 +13,18 @@ import fr.cdlja.weebsport.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -169,26 +177,27 @@ public class ClotheResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of clothes in body.
      */
     @GetMapping("")
-    public ResponseEntity<Page<ClotheDTO>> getAllClothes(
+    public ResponseEntity<Page<Clothe>> getAllClothes(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "15") int size,
         @RequestParam(defaultValue = "id") String sortBy
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
-        LOG.debug("REST request to get all Clothes");
-        Page<Object[]> rawResults = clotheRepository.findClotheWithQuantityGreaterThanZero(pageable);
-        List<Clothe> clothes = rawResults
-            .getContent()
-            .stream()
-            .map(result -> (Clothe) result[0]) // Récupère l'entité Clothe du tableau Object[]
-            .distinct() // Remove duplicates
-            .collect(Collectors.toList());
-        List<ClotheDTO> clothesD = new ArrayList<>();
-        for (Clothe clothe : clothes) {
-            clothesD.add(new ClotheDTO(clothe));
-        }
-        Page<ClotheDTO> clothePage = new PageImpl<>(clothesD, pageable, rawResults.getTotalElements());
-        return ResponseEntity.ok(clothePage);
+        Page<Clothe> rawResults = clotheRepository.findClotheWithQuantityGreaterThanZero(pageable);
+        //        List<Clothe> clothes = rawResults
+        //            .getContent()
+        //            .stream()
+        //            .map(result -> (Clothe) result[0]) // Récupère l'entité Clothe du tableau Object[]
+        //            .distinct() // Remove duplicates
+        //            .collect(Collectors.toList());
+        //        try {
+        //            LOG.debug(jacksonObjectMapper.writeValueAsString(rawResults));
+        //            LOG.debug(jacksonObjectMapper.writeValueAsString(clothes));
+        //        } catch (JsonProcessingException e) {
+        //            throw new RuntimeException(e);
+        //        }
+        //        Page<Clothe> clothePage = new PageImpl<>(clothes, pageable, rawResults.getTotalElements());
+        return ResponseEntity.ok(rawResults);
     }
 
     @GetMapping("/size/{id}/{color}")
