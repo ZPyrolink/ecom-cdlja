@@ -38,7 +38,16 @@ VALUES (1, 'SHORT', 'Spiderman', 'MAN', 50.0,
         'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/14/Noir/Image_1.webp'),
        (15, 'SWEAT', 'Call of Duty', 'MAN', 41.99,
         U&'Call of Duty: Modern Warfare 2 Official Video Game Logo Sweat \00e0 Capuche',
-        'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/15/Noir/Image_1.webp');;
+        'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/15/Noir/Image_1.webp'),
+       (16, 'SWEAT', 'Attaque des Titans', 'UNISEX', 34.9, 'Sweat avec capuche mixte de Livai',
+        'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/16/Noir/Image_1.webp'),
+       (17, 'TEESHIRT', 'Attaque des Titans', 'UNISEX', 24.9, 'T-shirt mixte de Livai',
+        'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/17/Bleu/Image_1.webp'),
+       (18, 'JOGGER', 'Minecraft', 'CHILD', 9.99, 'Minecraft Jogging enfant',
+        'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/18/Noir/Image_1.webp'),
+       (19, 'SWEAT', 'Minecraft', 'CHILD', 17.49,
+        U&'Sweat \00e0 capuche avec motifs et inscription gar\00e7on - Minecraft noir',
+        'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/19/Noir/Image_1.webp');
 
 
 truncate clothe_categories cascade;
@@ -61,7 +70,11 @@ VALUES (1, 'VIDEOGAME', 1),
        (16, 'VIDEOGAME', 12),
        (17, 'VIDEOGAME', 13),
        (18, 'VIDEOGAME', 14),
-       (19, 'VIDEOGAME', 15);
+       (19, 'VIDEOGAME', 15),
+       (20, 'ANIME', 16),
+       (21, 'ANIME', 17),
+       (22, 'VIDEOGAME', 18),
+       (23, 'VIDEOGAME', 19);
 
 
 truncate stock cascade;
@@ -180,11 +193,24 @@ VALUES (1, 'WHITE', 'M', 5, 1, 1),
        (112, 'BLUE', 'L', 37, 1, 15),
        (113, 'GRAY', 'S', 20, 1, 15),
        (114, 'BLACK', 'XXS', 6, 1, 15),
-       (115, 'BLACK', 'XS', 19, 1, 15);
-
-
-truncate article_images cascade;
-INSERT INTO ARTICLE_IMAGES
-VALUES (1, 10, 'balalal'),
-       (2, 10, 'balaaaaa'),
-       (3, 1, 'ppppp');
+       (115, 'BLACK', 'XS', 19, 1, 15),
+       (116, 'WHITE', 'L', 20, 1, 16),
+       (117, 'WHITE', 'XXS', 39, 1, 16),
+       (118, 'BLACK', 'XL', 14, 1, 16),
+       (119, 'PINK', 'XL', 14, 1, 16),
+       (120, 'PINK', 'XXS', 3, 1, 16),
+       (121, 'PINK', 'XS', 7, 1, 16),
+       (122, 'WHITE', 'S', 13, 1, 17),
+       (123, 'WHITE', 'M', 30, 1, 17),
+       (124, 'WHITE', 'XS', 0, 1, 17),
+       (125, 'BLUE', 'XL', 38, 1, 17),
+       (126, 'PINK', 'XL', 38, 1, 17),
+       (127, 'PINK', 'L', 46, 1, 17),
+       (128, 'BLACK', 'L', 5, 1, 18),
+       (129, 'BLACK', 'M', 15, 1, 18),
+       (130, 'GREEN', 'XS', 2, 1, 18),
+       (131, 'GREEN', 'M', 2, 1, 18),
+       (132, 'GREEN', 'S', 45, 1, 18),
+       (133, 'BLACK', 'XS', 2, 1, 19),
+       (134, 'BLACK', 'S', 22, 1, 19),
+       (135, 'BLACK', 'XXS', 45, 1, 19);
