@@ -323,7 +323,17 @@ public class ClotheResource {
         }
 
         // Convertir la liste filtrÃ©e en Page en utilisant Pageable
-        Page<ClotheDTO> clothesPage = new PageImpl<>(filteredClothes, pageable, filteredClothes.size());
+        // Page<ClotheDTO> clothesPage = new PageImpl<>(filteredClothes, pageable, filteredClothes.size());
+        // Déterminer les indices de début et de fin pour la pagination
+        int start = Math.min(page * size, filteredClothes.size());
+        int end = Math.min(start + size, filteredClothes.size());
+
+        // Découper la liste filtrée pour la pagination
+        List<ClotheDTO> paginatedClothes = filteredClothes.subList(start, end);
+
+        // Créer une Page à partir de la sous-liste
+        Page<ClotheDTO> clothesPage = new PageImpl<>(paginatedClothes, PageRequest.of(page, size), filteredClothes.size());
+
         return ResponseEntity.ok(clothesPage);
     }
 
