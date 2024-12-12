@@ -9,6 +9,7 @@ import fr.cdlja.weebsport.domain.enumeration.Type;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -73,6 +74,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
         @Param("genders") List<Gender> genders,
         @Param("types") List<Type> types,
         @Param("theme") List<String> theme,
-        String keyword
+        String keyword,
+        Sort sort
     );
 }

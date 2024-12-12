@@ -247,9 +247,10 @@ public class ClotheResource {
             throw new RuntimeException("Problems with the body. Maybe it is empty");
         }
         FilterDTO filters = filtersSort.getFilters();
-        String keyWord = filtersSort.getSearch();
-        keyWord = (keyWord != null) ? keyWord.toUpperCase() : null;
-        String sort = filtersSort.getSort();
+        String keyword = filtersSort.getSearch();
+        String keyWord = (keyword != null && (!keyword.isEmpty())) ? keyword.toUpperCase() : null;
+        String sortR = filtersSort.getSort();
+        String sort = (sortR != null && (!sortR.isEmpty())) ? sortR : null;
 
         Pageable pageable = null;
 
@@ -276,10 +277,16 @@ public class ClotheResource {
         List<Color> colors = (filters == null || (filters.getColors() != null && filters.getColors().isEmpty()))
             ? null
             : filters.getColors();
-        Float minPrice = (filters == null || (filters.getPrices() != null && filters.getPrices().getMin() == -1))
+        Float minPrice = (filters == null ||
+                filters.getPrices() == null ||
+                (filters.getPrices() != null && filters.getPrices().getMin() == null) ||
+                (filters.getPrices() != null && filters.getPrices().getMin() != null && filters.getPrices().getMin() == -1))
             ? null
             : filters.getPrices().getMin();
-        Float maxPrice = (filters == null || (filters.getPrices() != null && filters.getPrices().getMax() == -1))
+        Float maxPrice = (filters == null ||
+                filters.getPrices() == null ||
+                (filters.getPrices() != null && filters.getPrices().getMax() == null) ||
+                (filters.getPrices() != null && filters.getPrices().getMax() != null && filters.getPrices().getMax() == -1))
             ? null
             : filters.getPrices().getMax();
         List<Gender> genders = (filters == null || (filters.getGenders() != null && filters.getGenders().isEmpty()))
@@ -291,7 +298,17 @@ public class ClotheResource {
             : filters.getThemes();
         List<String> theme = (themeMin == null) ? null : themeMin.stream().map(String::toUpperCase).collect(Collectors.toList());
 
-        List<Stock> stocks = stockRepository.getStocksByFiltersAndSearch(sizes, colors, minPrice, maxPrice, genders, types, theme, keyWord);
+        List<Stock> stocks = stockRepository.getStocksByFiltersAndSearch(
+            sizes,
+            colors,
+            minPrice,
+            maxPrice,
+            genders,
+            types,
+            theme,
+            keyWord,
+            sortCriteria
+        );
         Set<Long> addedClotheIds = new HashSet<>();
 
         // Filtrer et mapper les stocks en ClotheDTO uniquement si l'identifiant n'est pas encore dans la liste
@@ -304,7 +321,7 @@ public class ClotheResource {
             }
         }
 
-        // Convertir la liste filtrée en Page en utilisant Pageable
+        // Convertir la liste filtrÃ©e en Page en utilisant Pageable
         Page<ClotheDTO> clothesPage = new PageImpl<>(filteredClothes, pageable, filteredClothes.size());
         return ResponseEntity.ok(clothesPage);
     }
