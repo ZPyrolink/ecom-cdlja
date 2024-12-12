@@ -128,7 +128,7 @@ export default class PayementComponent implements OnInit {
         if (basket) {
           this.basketService.newBasket();
         }
-
+        window.sessionStorage.removeItem('basket');
         this.router.navigate(['/']);
       },
       error: (err: HttpErrorResponse) => {
