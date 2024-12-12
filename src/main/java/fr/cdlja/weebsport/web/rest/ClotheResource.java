@@ -1,5 +1,6 @@
 package fr.cdlja.weebsport.web.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.cdlja.weebsport.domain.Clothe;
 import fr.cdlja.weebsport.domain.Stock;
 import fr.cdlja.weebsport.domain.enumeration.Category;
@@ -17,11 +18,13 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +42,7 @@ public class ClotheResource {
     private static final Logger LOG = LoggerFactory.getLogger(ClotheResource.class);
 
     private static final String ENTITY_NAME = "clothe";
+    private final ObjectMapper jacksonObjectMapper;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -52,12 +56,14 @@ public class ClotheResource {
         ClotheRepository clotheRepository,
         StockRepository stockRepository,
         ClotheService clotheService,
-        StockService stockService
+        StockService stockService,
+        ObjectMapper jacksonObjectMapper
     ) {
         this.clotheRepository = clotheRepository;
         this.stockRepository = stockRepository;
         this.clotheService = clotheService;
         this.stockService = stockService;
+        this.jacksonObjectMapper = jacksonObjectMapper;
     }
 
     /**
@@ -82,7 +88,7 @@ public class ClotheResource {
     /**
      * {@code PUT  /clothes/:id} : Updates an existing clothe.
      *
-     * @param id the id of the clothe to save.
+     * @param id     the id of the clothe to save.
      * @param clothe the clothe to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated clothe,
      * or with status {@code 400 (Bad Request)} if the clothe is not valid,
@@ -113,7 +119,7 @@ public class ClotheResource {
     /**
      * {@code PATCH  /clothes/:id} : Partial updates given fields of an existing clothe, field will ignore if it is null
      *
-     * @param id the id of the clothe to save.
+     * @param id     the id of the clothe to save.
      * @param clothe the clothe to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated clothe,
      * or with status {@code 400 (Bad Request)} if the clothe is not valid,
@@ -179,16 +185,21 @@ public class ClotheResource {
         @RequestParam(defaultValue = "id") String sortBy
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
-        LOG.debug("REST request to get all Clothes");
-        Page<Object[]> rawResults = clotheRepository.findClotheWithQuantityGreaterThanZero(pageable);
-        List<Clothe> clothes = rawResults
-            .getContent()
-            .stream()
-            .map(result -> (Clothe) result[0]) // Récupère l'entité Clothe du tableau Object[]
-            .distinct() // Remove duplicates
-            .collect(Collectors.toList());
-        Page<Clothe> clothePage = new PageImpl<>(clothes, pageable, rawResults.getTotalElements());
-        return ResponseEntity.ok(clothePage);
+        Page<Clothe> rawResults = clotheRepository.findClotheWithQuantityGreaterThanZero(pageable);
+        //        List<Clothe> clothes = rawResults
+        //            .getContent()
+        //            .stream()
+        //            .map(result -> (Clothe) result[0]) // Récupère l'entité Clothe du tableau Object[]
+        //            .distinct() // Remove duplicates
+        //            .collect(Collectors.toList());
+        //        try {
+        //            LOG.debug(jacksonObjectMapper.writeValueAsString(rawResults));
+        //            LOG.debug(jacksonObjectMapper.writeValueAsString(clothes));
+        //        } catch (JsonProcessingException e) {
+        //            throw new RuntimeException(e);
+        //        }
+        //        Page<Clothe> clothePage = new PageImpl<>(clothes, pageable, rawResults.getTotalElements());
+        return ResponseEntity.ok(rawResults);
     }
 
     @GetMapping("/size/{id}/{color}")

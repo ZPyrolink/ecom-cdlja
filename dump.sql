@@ -1,192 +1,141 @@
--- H2 2.2.224; 
-SET DB_CLOSE_DELAY -1;         
-;              
-CREATE USER IF NOT EXISTS "WEEBSPORT" SALT '748a190e04f38efb' HASH '8aa9afea4fc64db5b041cdd0c6ec429979f954f3b6d4bd2fdb44fef5b093b487' ADMIN;   
-CREATE SEQUENCE "PUBLIC"."SEQUENCE_GENERATOR" START WITH 1050 INCREMENT BY 50; 
-CREATE MEMORY TABLE "PUBLIC"."DATABASECHANGELOG"(
-    "ID" CHARACTER VARYING(255) NOT NULL,
-    "AUTHOR" CHARACTER VARYING(255) NOT NULL,
-    "FILENAME" CHARACTER VARYING(255) NOT NULL,
-    "DATEEXECUTED" TIMESTAMP NOT NULL,
-    "ORDEREXECUTED" INTEGER NOT NULL,
-    "EXECTYPE" CHARACTER VARYING(10) NOT NULL,
-    "MD5SUM" CHARACTER VARYING(35),
-    "DESCRIPTION" CHARACTER VARYING(255),
-    "COMMENTS" CHARACTER VARYING(255),
-    "TAG" CHARACTER VARYING(255),
-    "LIQUIBASE" CHARACTER VARYING(20),
-    "CONTEXTS" CHARACTER VARYING(255),
-    "LABELS" CHARACTER VARYING(255),
-    "DEPLOYMENT_ID" CHARACTER VARYING(10)
-);   
--- 12 +/- SELECT COUNT(*) FROM PUBLIC.DATABASECHANGELOG;       
-INSERT INTO "PUBLIC"."DATABASECHANGELOG" VALUES
-('00000000000000', 'jhipster', 'config/liquibase/changelog/00000000000000_initial_schema.xml', TIMESTAMP '2024-11-15 17:25:31.855906', 1, 'EXECUTED', '9:b6b4a3e0d2a6d7f1e5139675af65d7b0', 'createSequence sequenceName=sequence_generator', '', NULL, '4.27.0', NULL, NULL, '1687931828'),
-('00000000000001', 'jhipster', 'config/liquibase/changelog/00000000000000_initial_schema.xml', TIMESTAMP '2024-11-15 17:25:31.901074', 2, 'EXECUTED', '9:2621c9df8246a596c6ca55ac3fdf70d8', 'createTable tableName=jhi_user; createTable tableName=jhi_authority; createTable tableName=jhi_user_authority; addPrimaryKey tableName=jhi_user_authority; addForeignKeyConstraint baseTableName=jhi_user_authority, constraintName=fk_authority_name, ...', '', NULL, '4.27.0', NULL, NULL, '1687931828'),
-('20241107152828-1', 'jhipster', 'config/liquibase/changelog/20241107152828_added_entity_Clothe.xml', TIMESTAMP '2024-11-15 17:25:31.90344', 3, 'EXECUTED', '9:4725f99da12996981505413b98541039', 'createTable tableName=clothe', '', NULL, '4.27.0', NULL, NULL, '1687931828'),
-('20241107152828-1-data', 'jhipster', 'config/liquibase/changelog/20241107152828_added_entity_Clothe.xml', TIMESTAMP '2024-11-15 17:25:31.907172', 4, 'EXECUTED', '9:70d3dca364e27a88d9c9ac78890d43f3', 'loadData tableName=clothe', '', NULL, '4.27.0', 'faker', NULL, '1687931828'),
-('20241107152829-1', 'jhipster', 'config/liquibase/changelog/20241107152829_added_entity_Stock.xml', TIMESTAMP '2024-11-15 17:25:31.909492', 5, 'EXECUTED', '9:b52a643a30e10ea2ea8d00eff0d1d91e', 'createTable tableName=stock', '', NULL, '4.27.0', NULL, NULL, '1687931828'),
-('20241107152829-1-data', 'jhipster', 'config/liquibase/changelog/20241107152829_added_entity_Stock.xml', TIMESTAMP '2024-11-15 17:25:31.913788', 6, 'EXECUTED', '9:5314a2b538b5e0ab229dca6dd12b0882', 'loadData tableName=stock', '', NULL, '4.27.0', 'faker', NULL, '1687931828'),
-('20241107152830-1', 'jhipster', 'config/liquibase/changelog/20241107152830_added_entity_OrderLine.xml', TIMESTAMP '2024-11-15 17:25:31.915905', 7, 'EXECUTED', '9:5cbf6bbc7389d9e1515eea698bf72999', 'createTable tableName=order_line', '', NULL, '4.27.0', NULL, NULL, '1687931828'),
-('20241107152830-1-data', 'jhipster', 'config/liquibase/changelog/20241107152830_added_entity_OrderLine.xml', TIMESTAMP '2024-11-15 17:25:31.920114', 8, 'EXECUTED', '9:31bae552f5faa711c2733363fc077994', 'loadData tableName=order_line', '', NULL, '4.27.0', 'faker', NULL, '1687931828'),
-('20241107152831-1', 'jhipster', 'config/liquibase/changelog/20241107152831_added_entity_Order.xml', TIMESTAMP '2024-11-15 17:25:31.922556', 9, 'EXECUTED', '9:6df172ef9c07d0ba9383df101f048d96', 'createTable tableName=jhi_order', '', NULL, '4.27.0', NULL, NULL, '1687931828'),
-('20241107152831-1-data', 'jhipster', 'config/liquibase/changelog/20241107152831_added_entity_Order.xml', TIMESTAMP '2024-11-15 17:25:31.927763', 10, 'EXECUTED', '9:0179ab325cd085ca9f7cb269a733ddc4', 'loadData tableName=jhi_order', '', NULL, '4.27.0', 'faker', NULL, '1687931828'),
-('20241107152832-1', 'jhipster', 'config/liquibase/changelog/20241107152832_added_entity_SubscribedClients.xml', TIMESTAMP '2024-11-15 17:25:31.932232', 11, 'EXECUTED', '9:f6970c49dfd1043ce35880ac94cd7eeb', 'createTable tableName=subscribed_clients', '', NULL, '4.27.0', NULL, NULL, '1687931828'),
-('20241107152832-1-relations', 'jhipster', 'config/liquibase/changelog/20241107152832_added_entity_SubscribedClients.xml', TIMESTAMP '2024-11-15 17:25:31.934685', 12, 'EXECUTED', '9:2729c4973e19ad4280a6fe7dcaa79e5f', 'createTable tableName=rel_subscribed_clients__favoris; addPrimaryKey tableName=rel_subscribed_clients__favoris', '', NULL, '4.27.0', NULL, NULL, '1687931828');    
-CREATE MEMORY TABLE "PUBLIC"."DATABASECHANGELOGLOCK"(
-    "ID" INTEGER NOT NULL,
-    "LOCKED" BOOLEAN NOT NULL,
-    "LOCKGRANTED" TIMESTAMP,
-    "LOCKEDBY" CHARACTER VARYING(255)
-);          
-ALTER TABLE "PUBLIC"."DATABASECHANGELOGLOCK" ADD CONSTRAINT "PUBLIC"."PK_DATABASECHANGELOGLOCK" PRIMARY KEY("ID");             
--- 1 +/- SELECT COUNT(*) FROM PUBLIC.DATABASECHANGELOGLOCK;    
-INSERT INTO "PUBLIC"."DATABASECHANGELOGLOCK" VALUES
-(1, FALSE, NULL, NULL);    
-CREATE MEMORY TABLE "PUBLIC"."JHI_USER"(
-    "ID" BIGINT NOT NULL,
-    "LOGIN" CHARACTER VARYING(50) NOT NULL,
-    "PASSWORD_HASH" CHARACTER VARYING(60) NOT NULL,
-    "FIRST_NAME" CHARACTER VARYING(50),
-    "LAST_NAME" CHARACTER VARYING(50),
-    "EMAIL" CHARACTER VARYING(191) NOT NULL,
-    "IMAGE_URL" CHARACTER VARYING(256),
-    "ACTIVATED" BOOLEAN NOT NULL,
-    "LANG_KEY" CHARACTER VARYING(10),
-    "ACTIVATION_KEY" CHARACTER VARYING(20),
-    "RESET_KEY" CHARACTER VARYING(20),
-    "CREATED_BY" CHARACTER VARYING(50) NOT NULL,
-    "CREATED_DATE" TIMESTAMP DEFAULT NULL,
-    "RESET_DATE" TIMESTAMP,
-    "LAST_MODIFIED_BY" CHARACTER VARYING(50),
-    "LAST_MODIFIED_DATE" TIMESTAMP
-);  
-ALTER TABLE "PUBLIC"."JHI_USER" ADD CONSTRAINT "PUBLIC"."PK_JHI_USER" PRIMARY KEY("ID");       
--- 2 +/- SELECT COUNT(*) FROM PUBLIC.JHI_USER; 
-INSERT INTO "PUBLIC"."JHI_USER" VALUES
-(1, 'admin', '$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC', 'Administrator', 'Administrator', 'admin@localhost', '', TRUE, 'en', NULL, NULL, 'system', NULL, NULL, 'system', NULL),
-(2, 'user', '$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K', 'User', 'User', 'user@localhost', '', TRUE, 'en', NULL, NULL, 'system', NULL, NULL, 'system', NULL);   
-CREATE MEMORY TABLE "PUBLIC"."JHI_AUTHORITY"(
-    "NAME" CHARACTER VARYING(50) NOT NULL
-);     
-ALTER TABLE "PUBLIC"."JHI_AUTHORITY" ADD CONSTRAINT "PUBLIC"."PK_JHI_AUTHORITY" PRIMARY KEY("NAME");           
--- 2 +/- SELECT COUNT(*) FROM PUBLIC.JHI_AUTHORITY;            
-INSERT INTO "PUBLIC"."JHI_AUTHORITY" VALUES
-('ROLE_ADMIN'),
-('ROLE_USER');     
-CREATE MEMORY TABLE "PUBLIC"."JHI_USER_AUTHORITY"(
-    "USER_ID" BIGINT NOT NULL,
-    "AUTHORITY_NAME" CHARACTER VARYING(50) NOT NULL
-);       
-ALTER TABLE "PUBLIC"."JHI_USER_AUTHORITY" ADD CONSTRAINT "PUBLIC"."CONSTRAINT_E" PRIMARY KEY("USER_ID", "AUTHORITY_NAME");     
--- 3 +/- SELECT COUNT(*) FROM PUBLIC.JHI_USER_AUTHORITY;       
-INSERT INTO "PUBLIC"."JHI_USER_AUTHORITY" VALUES
-(1, 'ROLE_ADMIN'),
-(1, 'ROLE_USER'),
-(2, 'ROLE_USER');        
-CREATE MEMORY TABLE "PUBLIC"."CLOTHE"(
-    "ID" BIGINT NOT NULL,
-    "TYPE" CHARACTER VARYING(255),
-    "THEME" CHARACTER VARYING(255),
-    "GENDER" CHARACTER VARYING(255),
-    "PRICE" REAL,
-    "DESCRIPTION" CHARACTER VARYING(255)
-);     
-ALTER TABLE "PUBLIC"."CLOTHE" ADD CONSTRAINT "PUBLIC"."PK_CLOTHE" PRIMARY KEY("ID");           
--- 10 +/- SELECT COUNT(*) FROM PUBLIC.CLOTHE;  
-INSERT INTO "PUBLIC"."CLOTHE" VALUES
-(1, 'SWEAT', 'decision by', 'WOMAN', 30493.98, 'square mathematics'),
-(2, 'BRA', 'hence', 'WOMAN', 24920.1, 'forenenst'),
-(3, 'BRA', 'above', 'CHILD', 10789.91, 'which splay'),
-(4, 'SHORT', 'excepting down', 'UNISEX', 15501.22, 'phew'),
-(5, 'JOGGER', 'essence atop', 'UNISEX', 21434.79, 'decryption'),
-(6, 'SWEAT', 'well-worn shameless', 'WOMAN', 16959.43, 'unibody versus knowingly'),
-(7, 'LEGGING', 'appropriate till', 'UNISEX', 32173.43, 'even livid'),
-(8, 'TEESHIRT', 'though', 'UNISEX', 17048.16, 'chatter'),
-(9, 'BRA', 'vol though', 'CHILD', 26602.08, 'shyly'),
-(10, 'SWEAT', 'pfft how', 'MAN', 8695.82, 'service when whenever');               
-CREATE MEMORY TABLE "PUBLIC"."STOCK"(
-    "ID" BIGINT NOT NULL,
-    "COLOR" CHARACTER VARYING(255),
-    "SIZE" CHARACTER VARYING(255),
-    "QUANTITY" INTEGER,
-    "CLOTHE_ID" BIGINT
-);       
-ALTER TABLE "PUBLIC"."STOCK" ADD CONSTRAINT "PUBLIC"."PK_STOCK" PRIMARY KEY("ID");             
--- 10 +/- SELECT COUNT(*) FROM PUBLIC.STOCK;   
-INSERT INTO "PUBLIC"."STOCK" VALUES
-(1, 'PURPLE', 'EIGHT', 5611, 6),
-(2, 'PINK', 'FOURTEEN', 1653, 6),
-(3, 'BROWN', 'TWELVE', 22717, 3),
-(4, 'BLACK', 'L', 888900, 4),
-(5, 'BROWN', 'L', 8092, 5),
-(6, 'PURPLE', 'XS', 4714, 3),
-(7, 'PURPLE', 'L', 22786, 7),
-(8, 'GRAY', 'TWELVE', 30078, 3),
-(9, 'ORANGE', 'XS', 4986, 5),
-(10, 'ORANGE', 'TWELVE', 2750800, 1);            
-CREATE MEMORY TABLE "PUBLIC"."ORDER_LINE"(
-    "ID" BIGINT NOT NULL,
-    "QUANTITY" INTEGER,
-    "AMOUNTLINE" REAL,
-    "ORDER_ID" BIGINT,
-    "STOCK_ID" BIGINT
-);            
-ALTER TABLE "PUBLIC"."ORDER_LINE" ADD CONSTRAINT "PUBLIC"."PK_ORDER_LINE" PRIMARY KEY("ID");   
--- 10 +/- SELECT COUNT(*) FROM PUBLIC.ORDER_LINE;              
-INSERT INTO "PUBLIC"."ORDER_LINE" VALUES
-(1, 11669, 29352.81, 4, 2),
-(2, 4869, 23839.29, 6, 4),
-(3, 30697, 14060.43, 6, 1),
-(4, 3890, 2623.2, 6, 10),
-(5, 22006, 30977.91, 2, 10),
-(6, 23649, 12601.62, 3, 3),
-(7, 9441, 31783.67, 3, 2),
-(8, 32654, 2404.44, 4, 6),
-(9, 18460, 26049.49, 7, 7),
-(10, 5992, 3447.1, 10, 4);    
-CREATE MEMORY TABLE "PUBLIC"."JHI_ORDER"(
-    "ID" BIGINT NOT NULL,
-    "STATUS" CHARACTER VARYING(255),
-    "DATE" DATE,
-    "AMOUNT" REAL,
-    "MEAN_OF_PAYMENT" CHARACTER VARYING(255),
-    "CLIENT_ID" BIGINT
-);           
-ALTER TABLE "PUBLIC"."JHI_ORDER" ADD CONSTRAINT "PUBLIC"."PK_JHI_ORDER" PRIMARY KEY("ID");     
--- 10 +/- SELECT COUNT(*) FROM PUBLIC.JHI_ORDER;               
-INSERT INTO "PUBLIC"."JHI_ORDER" VALUES
-(1, 'PAID', DATE '2024-11-06', 19061.68, 'CB', NULL),
-(2, 'BASKET', DATE '2024-11-07', 14230.99, 'ONLINEPAYMENT', NULL),
-(3, 'BASKET', DATE '2024-11-07', 10574.58, 'CB', NULL),
-(4, 'PAID', DATE '2024-11-07', 10967.98, 'ONLINEPAYMENT', NULL),
-(5, 'PAID', DATE '2024-11-06', 30537.01, 'CB', NULL),
-(6, 'BASKET', DATE '2024-11-07', 12740.49, 'ONLINEPAYMENT', NULL),
-(7, 'BASKET', DATE '2024-11-07', 22895.21, 'ONLINEPAYMENT', NULL),
-(8, 'PAID', DATE '2024-11-07', 12122.66, 'ONLINEPAYMENT', NULL),
-(9, 'PAID', DATE '2024-11-06', 29582.2, 'ONLINEPAYMENT', NULL),
-(10, 'PAID', DATE '2024-11-07', 3291.66, 'CB', NULL);   
-CREATE MEMORY TABLE "PUBLIC"."SUBSCRIBED_CLIENTS"(
-    "ID" BIGINT NOT NULL,
-    "BIRTHDAY" DATE,
-    "EMAIL" CHARACTER VARYING(255),
-    "PASSWORLD" CHARACTER VARYING(255),
-    "ADDRESS" CHARACTER VARYING(255),
-    "BANCK_CARD" CHARACTER VARYING(255),
-    "PHONE" CHARACTER VARYING(255),
-    "POINTS" INTEGER,
-    "BASKET_ID" BIGINT
-);               
-ALTER TABLE "PUBLIC"."SUBSCRIBED_CLIENTS" ADD CONSTRAINT "PUBLIC"."PK_SUBSCRIBED_CLIENTS" PRIMARY KEY("ID");   
--- 0 +/- SELECT COUNT(*) FROM PUBLIC.SUBSCRIBED_CLIENTS;       
-CREATE MEMORY TABLE "PUBLIC"."REL_SUBSCRIBED_CLIENTS__FAVORIS"(
-    "FAVORIS_ID" BIGINT NOT NULL,
-    "SUBSCRIBED_CLIENTS_ID" BIGINT NOT NULL
-);               
-ALTER TABLE "PUBLIC"."REL_SUBSCRIBED_CLIENTS__FAVORIS" ADD CONSTRAINT "PUBLIC"."CONSTRAINT_2" PRIMARY KEY("SUBSCRIBED_CLIENTS_ID", "FAVORIS_ID");              
--- 0 +/- SELECT COUNT(*) FROM PUBLIC.REL_SUBSCRIBED_CLIENTS__FAVORIS;          
-ALTER TABLE "PUBLIC"."JHI_USER" ADD CONSTRAINT "PUBLIC"."UX_USER_LOGIN" UNIQUE("LOGIN");       
-ALTER TABLE "PUBLIC"."SUBSCRIBED_CLIENTS" ADD CONSTRAINT "PUBLIC"."UX_SUBSCRIBED_CLIENTS__BASKET_ID" UNIQUE("BASKET_ID");      
-ALTER TABLE "PUBLIC"."JHI_USER" ADD CONSTRAINT "PUBLIC"."UX_USER_EMAIL" UNIQUE("EMAIL");       
-ALTER TABLE "PUBLIC"."JHI_USER_AUTHORITY" ADD CONSTRAINT "PUBLIC"."FK_USER_ID" FOREIGN KEY("USER_ID") REFERENCES "PUBLIC"."JHI_USER"("ID") NOCHECK;            
-ALTER TABLE "PUBLIC"."JHI_USER_AUTHORITY" ADD CONSTRAINT "PUBLIC"."FK_AUTHORITY_NAME" FOREIGN KEY("AUTHORITY_NAME") REFERENCES "PUBLIC"."JHI_AUTHORITY"("NAME") NOCHECK;       
+truncate clothe cascade;
+INSERT INTO CLOTHE
+VALUES (1, 'SHORT', 'Spiderman', 'MAN', 50.0,
+        U&'Short de compression Anime Gym Short d''entra\00eenement respirant 2 couches',
+        'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/1/Blanc/Image_1.webp'),
+       (2, 'TEESHIRT', 'AnimeGirl', 'WOMAN', 32.15,
+        U&'Chemise de gym Anime Girl surdimensionn\00e9e, t-shirt Muscle Mommy, chemise vintage Comfort Colors, chemise Kanji japonaise',
+        'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/2/Gris/Image_1.webp'),
+       (3, 'TEESHIRT', 'Berserk', 'MAN', 51.55, U&'Haut serr\00e9 Berserk !',
+        'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/3/Blanc/Image_1.webp'),
+       (4, 'JOGGER', 'Haikyuu', 'MAN', 34.9,
+        U&'Enfiles ce superbe surv\00eatement de Haikyuu et porte les couleurs de tes \00e9quipes pr\00e9f\00e9r\00e9es !',
+        'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/4/Noir/Image_1.webp'),
+       (5, 'TEESHIRT', 'Haikyuu', 'MAN', 18.0,
+        U&'Tee-Shirt en maille de sport con\00e7u sur les maillots de l''anim\00e9 Haikyuu !',
+        'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/5/Rouge/Image_1.webp'),
+       (6, 'SHORT', 'Jujutsu Kaisen', 'MAN', 16.0, 'Short de sport Toji',
+        'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/6/Vert/Image_1.webp'),
+       (7, 'TEESHIRT', 'Jujutsu Kaisen', 'MAN', 18.0, U&'Haut de corps moul\00e9 Toji, Jujutsu Kaisen',
+        'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/7/Bleu/Image_1.webp'),
+       (8, 'TEESHIRT', 'One Piece', 'MAN', 12.37,
+        U&'Rash Guard-Chemises de Compression pour Hommes, Imprim\00e9 Anime Manga, Fitness, vaccage Rapide, dehors, Y-Tees, Ext\00e9rieur, \00c9t\00e9, \00e9ventuelles F 60',
+        'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/8/Gris/Image_1.webp'),
+       (9, 'SHORT', 'One Piece', 'UNISEX', 36.99, 'Short de Fitness de Compression - One Piece Portgas D. Ace',
+        'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/9/Orange/Image_1.webp');
+
+
+truncate clothe_categories cascade;
+INSERT INTO CLOTHE_CATEGORIES
+VALUES (1, 'VIDEOGAME', 1),
+       (2, 'ANIME', 2),
+       (3, 'ANIME', 3),
+       (4, 'ANIME', 4),
+       (5, 'ANIME', 5),
+       (6, 'ANIME', 6),
+       (7, 'VIDEOGAME', 6),
+       (8, 'ANIME', 7),
+       (9, 'VIDEOGAME', 7),
+       (10, 'ANIME', 8),
+       (11, 'ANIME', 9);
+
+
+truncate stock cascade;
+INSERT INTO STOCK
+VALUES (1, 'WHITE', 'M', 5, 1, 1),
+       (2, 'WHITE', 'L', 15, 1, 1),
+       (3, 'WHITE', 'XL', 10, 1, 1),
+       (4, 'BLACK', 'M', 5, 1, 1),
+       (5, 'BLACK', 'L', 15, 1, 1),
+       (6, 'BLACK', 'S', 10, 1, 1),
+       (7, 'GRAY', 'XS', 20, 1, 2),
+       (8, 'GRAY', 'S', 22, 1, 2),
+       (9, 'GRAY', 'M', 28, 1, 2),
+       (10, 'GRAY', 'L', 8, 1, 2),
+       (11, 'GRAY', 'FOURTEEN', 18, 1, 2),
+       (12, 'YELLOW', 'XS', 20, 1, 2),
+       (13, 'YELLOW', 'S', 22, 1, 2),
+       (14, 'YELLOW', 'M', 28, 1, 2),
+       (15, 'YELLOW', 'L', 8, 1, 2),
+       (16, 'YELLOW', 'FOURTEEN', 18, 1, 2),
+       (17, 'BLACK', 'S', 22, 1, 2),
+       (18, 'BLACK', 'M', 28, 1, 2),
+       (19, 'BLACK', 'L', 8, 1, 2),
+       (20, 'WHITE', 'XL', 48, 1, 3),
+       (21, 'GRAY', 'S', 28, 1, 3),
+       (22, 'GRAY', 'XL', 17, 1, 3),
+       (23, 'BLACK', 'XL', 25, 1, 3),
+       (24, 'BLACK', 'XXS', 2, 1, 3),
+       (25, 'BLACK', 'L', 10, 1, 3),
+       (26, 'WHITE', 'S', 13, 1, 4),
+       (27, 'WHITE', 'XL', 13, 1, 4),
+       (28, 'WHITE', 'L', 19, 1, 4),
+       (29, 'BLACK', 'XL', 7, 1, 4),
+       (30, 'ORANGE', 'XXL', 30, 1, 4),
+       (31, 'ORANGE', 'L', 30, 1, 4),
+       (32, 'ORANGE', 'XS', 0, 1, 4),
+       (33, 'RED', 'M', 4, 1, 4),
+       (34, 'RED', 'XXL', 30, 1, 4),
+       (35, 'RED', 'XS', 17, 1, 4),
+       (36, 'GREEN', 'XS', 3, 1, 4),
+       (37, 'BLACK', 'XXL', 27, 1, 5),
+       (38, 'BLACK', 'M', 35, 1, 5),
+       (39, 'BLACK', 'XXS', 44, 1, 5),
+       (40, 'ORANGE', 'XL', 37, 1, 5),
+       (41, 'RED', 'S', 26, 1, 5),
+       (42, 'RED', 'XXS', 48, 1, 5),
+       (43, 'RED', 'M', 31, 1, 5),
+       (44, 'WHITE', 'XS', 40, 1, 6),
+       (45, 'BLUE', 'L', 5, 1, 6),
+       (46, 'BLUE', 'XS', 13, 1, 6),
+       (47, 'BLUE', 'M', 8, 1, 6),
+       (48, 'GRAY', 'L', 23, 1, 6),
+       (49, 'GRAY', 'XL', 24, 1, 6),
+       (50, 'GRAY', 'M', 47, 1, 6),
+       (51, 'YELLOW', 'M', 37, 1, 6),
+       (52, 'YELLOW', 'L', 4, 1, 6),
+       (53, 'YELLOW', 'XL', 48, 1, 6),
+       (54, 'BLACK', 'L', 28, 1, 6),
+       (55, 'BLACK', 'XXS', 33, 1, 6),
+       (56, 'BLACK', 'XXL', 17, 1, 6),
+       (57, 'RED', 'XXL', 42, 1, 6),
+       (58, 'RED', 'M', 16, 1, 6),
+       (59, 'RED', 'XL', 34, 1, 6),
+       (60, 'GREEN', 'XXS', 33, 1, 6),
+       (61, 'GREEN', 'XS', 18, 1, 6),
+       (62, 'GREEN', 'L', 10, 1, 6),
+       (63, 'WHITE', 'L', 14, 1, 7),
+       (64, 'WHITE', 'XXS', 42, 1, 7),
+       (65, 'BLUE', 'XS', 18, 1, 7),
+       (66, 'GRAY', 'XL', 24, 1, 7),
+       (67, 'BLACK', 'XL', 18, 1, 7),
+       (68, 'BLACK', 'XXL', 25, 1, 7),
+       (69, 'BLACK', 'XXS', 0, 1, 7),
+       (70, 'WHITE', 'XXS', 17, 1, 8),
+       (71, 'WHITE', 'XXL', 34, 1, 8),
+       (72, 'WHITE', 'XS', 8, 1, 8),
+       (73, 'BLUE', 'M', 43, 1, 8),
+       (74, 'BLUE', 'XXL', 26, 1, 8),
+       (75, 'BLUE', 'XL', 43, 1, 8),
+       (76, 'GRAY', 'XL', 0, 1, 8),
+       (77, 'GRAY', 'XXS', 16, 1, 8),
+       (78, 'GRAY', 'L', 5, 1, 8),
+       (79, 'BLACK', 'XXS', 7, 1, 8),
+       (80, 'RED', 'XXL', 25, 1, 8),
+       (81, 'GREEN', 'M', 48, 1, 8),
+       (82, 'GREEN', 'XXL', 23, 1, 8),
+       (83, 'BLUE', 'XL', 46, 1, 9),
+       (84, 'BLACK', 'XXS', 43, 1, 9),
+       (85, 'ORANGE', 'XS', 42, 1, 9),
+       (86, 'ORANGE', 'XXL', 20, 1, 9),
+       (87, 'PINK', 'XXS', 40, 1, 9),
+       (88, 'PINK', 'XXL', 24, 1, 9),
+       (89, 'RED', 'XL', 15, 1, 9),
+       (90, 'RED', 'XXS', 24, 1, 9);
+
+
+truncate article_images cascade;
+INSERT INTO ARTICLE_IMAGES
+VALUES (1, 10, 'balalal'),
+       (2, 10, 'balaaaaa'),
+       (3, 1, 'ppppp');
