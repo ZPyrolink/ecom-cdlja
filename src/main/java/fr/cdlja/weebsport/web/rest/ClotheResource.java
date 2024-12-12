@@ -306,7 +306,7 @@ public class ClotheResource {
         }
 
         // Convertir la liste filtrée en Page en utilisant Pageable
-        Page<ClotheDTO> clothesPage = new PageImpl<>(filteredClothes, pageable, stocks.getTotalElements());
+        Page<ClotheDTO> clothesPage = new PageImpl<>(filteredClothes, pageable, filteredClothes.size());
         return ResponseEntity.ok(clothesPage);
     }
 
