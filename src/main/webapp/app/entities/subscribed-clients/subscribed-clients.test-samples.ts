@@ -23,9 +23,6 @@ export const sampleWithFullData: ISubscribedClients = {
     date: dayjs(),
     amount: 0,
     meanOfPayment: 'CB',
-    client: {
-      id: 27410,
-    },
   },
   favorises: [
     {
