@@ -99,7 +99,7 @@ public class SubscribedClientsService {
                 sDTO = new StockDTO(s);
                 c = stockRepository.getClothe(s.getId());
                 cDTO = new ClotheDTO(c);
-                sDTO.setClothe(cDTO);
+                sDTO.setClotheDTO(cDTO);
                 orderLineDTO = new OrderlineDTO(ol);
                 orderLineDTO.setStockDTO(sDTO);
                 orderDTO.addArticle(orderLineDTO);
@@ -142,7 +142,7 @@ public class SubscribedClientsService {
                     sDTO = new StockDTO(s);
                     c = stockRepository.getClothe(s.getId());
                     cDTO = new ClotheDTO(c);
-                    sDTO.setClothe(cDTO);
+                    sDTO.setClotheDTO(cDTO);
                     orderLineDTO = new OrderlineDTO(ol);
                     orderLineDTO.setStockDTO(sDTO);
                     orderDTO.addArticle(orderLineDTO);

@@ -12,8 +12,8 @@
       <li class="sort">
         <span class="text">Trier par <span class="arrow">&#9660;</span></span>
         <ul class="sous">
-          <li (click)="onOptionClick('Prix : Ordre croissant')">Prix : Ordre croissant</li>
-          <li (click)="onOptionClick('Prix : Ordre décroissant')">Prix : Ordre décroissant</li>
+          <li (click)="onOptionClick('asc')" [class.selected]="selectedOption === 'asc'">Prix : Ordre croissant</li>
+          <li (click)="onOptionClick('desc')" [class.selected]="selectedOption === 'desc'">Prix : Ordre décroissant</li>
         </ul>
       </li>
     </div>

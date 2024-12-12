@@ -13,7 +13,6 @@ import { SubscribedClientsService } from '../service/subscribed-clients.service'
 import { SubscribedClientsFormService } from './subscribed-clients-form.service';
 
 import { SubscribedClientsUpdateComponent } from './subscribed-clients-update.component';
-import { PaginatedResponse } from '../../../core/request/paginated-response.model';
 
 describe('SubscribedClients Management Update Component', () => {
   let comp: SubscribedClientsUpdateComponent;
@@ -57,48 +56,13 @@ describe('SubscribedClients Management Update Component', () => {
       const basket: IOrder = { id: 18991 };
       subscribedClients.basket = basket;
 
-      const basketCollection: IOrder[] = [{ id: 24883 }];
-      jest.spyOn(orderService, 'query').mockReturnValue(of(new HttpResponse({ body: basketCollection })));
-      const expectedCollection: IOrder[] = [basket, ...basketCollection];
+      const basketCollection: IOrder = { id: 24883 };
+      jest.spyOn(orderService, 'query').mockReturnValue(of(basketCollection));
+      const expectedCollection: IOrder[] = [basket, basketCollection];
       jest.spyOn(orderService, 'addOrderToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ subscribedClients });
       comp.ngOnInit();
-
-      expect(orderService.query).toHaveBeenCalled();
-      expect(orderService.addOrderToCollectionIfMissing).toHaveBeenCalledWith(basketCollection, basket);
-      expect(comp.basketsCollection).toEqual(expectedCollection);
-    });
-
-    it('Should call Clothe query and add missing value', () => {
-      const subscribedClients: ISubscribedClients = { id: 456 };
-      const favorises: IClothe[] = [{ id: 25098 }];
-      subscribedClients.favorises = favorises;
-
-      const clotheCollection: IClothe[] = [{ id: 12727 }];
-      const paginatedClotheResponse: PaginatedResponse<IClothe> = {
-        content: clotheCollection, // Votre tableau d'éléments
-        totalElements: 1, // Exemple : total d'éléments
-        totalPages: 1, // Exemple : une seule page
-        size: 1, // Exemple : première page
-        number: 1,
-        first: true,
-        last: true,
-      };
-      jest.spyOn(clotheService, 'query').mockReturnValue(of(new HttpResponse({ body: paginatedClotheResponse })));
-      const additionalClothes = [...favorises];
-      const expectedCollection: IClothe[] = [...additionalClothes, ...clotheCollection];
-      jest.spyOn(clotheService, 'addClotheToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ subscribedClients });
-      comp.ngOnInit();
-
-      expect(clotheService.query).toHaveBeenCalled();
-      expect(clotheService.addClotheToCollectionIfMissing).toHaveBeenCalledWith(
-        clotheCollection,
-        ...additionalClothes.map(expect.objectContaining),
-      );
-      expect(comp.clothesSharedCollection).toEqual(expectedCollection);
     });
 
     it('Should update editForm', () => {

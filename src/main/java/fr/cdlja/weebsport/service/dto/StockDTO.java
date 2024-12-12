@@ -9,7 +9,7 @@ public class StockDTO {
     private Long id;
     private Color color;
     private Size size;
-    private ClotheDTO clothe;
+    private ClotheDTO clotheDTO;
 
     public StockDTO() {}
 
@@ -17,7 +17,7 @@ public class StockDTO {
         this.id = stock.getId();
         this.color = stock.getColor();
         this.size = stock.getSize();
-        this.clothe = new ClotheDTO(stock.getClothe());
+        this.clotheDTO = new ClotheDTO(stock.getClothe());
     }
 
     public Long getId() {
@@ -44,11 +44,11 @@ public class StockDTO {
         this.size = size;
     }
 
-    public ClotheDTO getClothe() {
-        return clothe;
+    public ClotheDTO getClotheDTO() {
+        return clotheDTO;
     }
 
-    public void setClothe(ClotheDTO clothe) {
-        this.clothe = clothe;
+    public void setClotheDTO(ClotheDTO clotheDTO) {
+        this.clotheDTO = clotheDTO;
     }
 }

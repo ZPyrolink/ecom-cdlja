@@ -27,30 +27,32 @@ export enum Color {
 export default function getColorLabel(
   color?: 'GREEN' | 'BLACK' | 'BLUE' | 'RED' | 'PINK' | 'BEIGE' | 'WHITE' | 'ORANGE' | 'BROWN' | 'GRAY' | 'YELLOW' | 'PURPLE',
 ): string {
-  if (color === 'GREEN') {
-    return Color.GREEN;
-  } else if (color === 'BLACK') {
-    return Color.BLACK;
-  } else if (color === 'BLUE') {
-    return Color.BLUE;
-  } else if (color === 'RED') {
-    return Color.RED;
-  } else if (color === 'PINK') {
-    return Color.PINK;
-  } else if (color === 'BEIGE') {
-    return Color.BEIGE;
-  } else if (color === 'WHITE') {
-    return Color.WHITE;
-  } else if (color === 'ORANGE') {
-    return Color.ORANGE;
-  } else if (color === 'BROWN') {
-    return Color.BROWN;
-  } else if (color === 'GRAY') {
-    return Color.GRAY;
-  } else if (color === 'YELLOW') {
-    return Color.YELLOW;
-  } else if (color === 'PURPLE') {
-    return Color.PURPLE;
+  switch (color) {
+    case 'GREEN':
+      return Color.GREEN;
+    case 'BLACK':
+      return Color.BLACK;
+    case 'BLUE':
+      return Color.BLUE;
+    case 'RED':
+      return Color.RED;
+    case 'PINK':
+      return Color.PINK;
+    case 'BEIGE':
+      return Color.BEIGE;
+    case 'WHITE':
+      return Color.WHITE;
+    case 'ORANGE':
+      return Color.ORANGE;
+    case 'BROWN':
+      return Color.BROWN;
+    case 'GRAY':
+      return Color.GRAY;
+    case 'YELLOW':
+      return Color.YELLOW;
+    case 'PURPLE':
+      return Color.PURPLE;
+    default:
+      return 'Couleur inconnue';
   }
-  return 'Couleur inconnue';
 }

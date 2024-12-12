@@ -4,9 +4,10 @@ import { Observable } from 'rxjs';
 
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
-import { createRequestOption } from 'app/core/request/request-util';
 import { IClothe, NewClothe } from '../clothe.model';
 import { PaginatedResponse } from '../../../core/request/paginated-response.model';
+import { FilterDataService } from '../../../component/filter-menu/service/FilterDataService';
+import { map } from 'rxjs/operators';
 import { Color } from '../../enumerations/color.model';
 import { Size } from '../../enumerations/size.model';
 
@@ -21,7 +22,7 @@ export class ClotheService {
   protected applicationConfigService = inject(ApplicationConfigService);
 
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/clothes');
-
+  constructor(private filterDataService: FilterDataService) {}
   create(clothe: NewClothe): Observable<EntityResponseType> {
     return this.http.post<IClothe>(this.resourceUrl, clothe, { observe: 'response' });
   }
@@ -38,9 +39,19 @@ export class ClotheService {
     return this.http.get<IClothe>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  query(req?: any): Observable<HttpResponse<PaginatedResponse<IClothe>>> {
-    const options = createRequestOption(req);
-    return this.http.get<PaginatedResponse<IClothe>>(this.resourceUrl, { params: options, observe: 'response' });
+  query(req?: any): Observable<HttpResponse<PaginatedResponse<IClothe>>> | undefined {
+    const filteredData = this.filterDataService.getFiltered();
+    window.console.log('filtre', filteredData);
+    const body = {
+      params: req,
+      ...filteredData,
+    };
+    return this.http.post<PaginatedResponse<IClothe>>(`${this.resourceUrl}/filters`, body, { params: req, observe: 'response' }).pipe(
+      map(response => {
+        window.console.log('Réponse de la requête:', response);
+        return response;
+      }),
+    );
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {

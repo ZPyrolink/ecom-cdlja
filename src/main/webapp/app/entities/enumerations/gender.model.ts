@@ -1,9 +1,24 @@
 export enum Gender {
-  MAN = 'MAN',
+  MAN = 'Homme',
 
-  WOMAN = 'WOMAN',
+  WOMAN = 'Femme',
 
-  UNISEX = 'UNISEX',
+  UNISEX = 'Unisex',
 
-  CHILD = 'CHILD',
+  CHILD = 'Enfant',
+}
+
+export default function getGenderLabel(gender?: 'MAN' | 'WOMAN' | 'UNISEX' | 'CHILD'): string {
+  switch (gender) {
+    case 'MAN':
+      return Gender.MAN;
+    case 'WOMAN':
+      return Gender.WOMAN;
+    case 'UNISEX':
+      return Gender.UNISEX;
+    case 'CHILD':
+      return Gender.CHILD;
+    default:
+      return 'Genre inconnue';
+  }
 }

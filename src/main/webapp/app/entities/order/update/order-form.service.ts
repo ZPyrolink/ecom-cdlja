@@ -22,7 +22,6 @@ type OrderFormGroupContent = {
   date: FormControl<IOrder['date']>;
   amount: FormControl<IOrder['amount']>;
   meanOfPayment: FormControl<IOrder['meanOfPayment']>;
-  client: FormControl<IOrder['client']>;
 };
 
 export type OrderFormGroup = FormGroup<OrderFormGroupContent>;
@@ -46,7 +45,6 @@ export class OrderFormService {
       date: new FormControl(orderRawValue.date),
       amount: new FormControl(orderRawValue.amount),
       meanOfPayment: new FormControl(orderRawValue.meanOfPayment),
-      client: new FormControl(orderRawValue.client),
     });
   }
 
