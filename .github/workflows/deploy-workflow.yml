@@ -44,7 +44,7 @@ jobs:
       - name: Build the app
         run: |
           ./mvnw -Pprod clean verify
-          
+
       - name: Backup existing JAR on EC2 if it exists
         run: |
           ssh -o StrictHostKeyChecking=no -i github-ec2.pem $EC2_USER@${{ secrets.EC2_HOST }} "
@@ -55,7 +55,7 @@ jobs:
               echo 'No existing JAR file to back up.'
             fi
           "
-          
+
       - name: Transfer JAR to EC2
         run: |
           scp -o StrictHostKeyChecking=no -i github-ec2.pem target/${{ env.JAR_NAME }} $EC2_USER@${{ secrets.EC2_HOST }}:${{ env.APP_DIR }}/${{ env.JAR_NAME }}
@@ -63,7 +63,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i github-ec2.pem $EC2_USER@${{ secrets.EC2_HOST }} "
             sudo systemctl restart weebSportAppService.service &&
-            sleep 5 &&
+            sleep 20 &&
             if systemctl is-active --quiet weebSportAppService.service; then
               echo 'weebSportAppService service started successfully.'
             else
