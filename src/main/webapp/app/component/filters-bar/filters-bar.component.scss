@@ -89,3 +89,8 @@
   border-bottom: 1px solid #ececec;
   padding: 5px;
 }
+
+.sous li.selected {
+  background-color: var(--gray5);
+  color: white;
+}

@@ -3,10 +3,7 @@ package fr.cdlja.weebsport.web.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.cdlja.weebsport.domain.Clothe;
 import fr.cdlja.weebsport.domain.Stock;
-import fr.cdlja.weebsport.domain.enumeration.Category;
-import fr.cdlja.weebsport.domain.enumeration.Color;
-import fr.cdlja.weebsport.domain.enumeration.Gender;
-import fr.cdlja.weebsport.domain.enumeration.Size;
+import fr.cdlja.weebsport.domain.enumeration.*;
 import fr.cdlja.weebsport.repository.ClotheRepository;
 import fr.cdlja.weebsport.repository.StockRepository;
 import fr.cdlja.weebsport.service.ClotheService;
@@ -15,15 +12,19 @@ import fr.cdlja.weebsport.service.dto.*;
 import fr.cdlja.weebsport.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +43,6 @@ public class ClotheResource {
     private static final Logger LOG = LoggerFactory.getLogger(ClotheResource.class);
 
     private static final String ENTITY_NAME = "clothe";
-    private final ObjectMapper jacksonObjectMapper;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -56,14 +56,12 @@ public class ClotheResource {
         ClotheRepository clotheRepository,
         StockRepository stockRepository,
         ClotheService clotheService,
-        StockService stockService,
-        ObjectMapper jacksonObjectMapper
+        StockService stockService
     ) {
         this.clotheRepository = clotheRepository;
         this.stockRepository = stockRepository;
         this.clotheService = clotheService;
         this.stockService = stockService;
-        this.jacksonObjectMapper = jacksonObjectMapper;
     }
 
     /**
@@ -88,7 +86,7 @@ public class ClotheResource {
     /**
      * {@code PUT  /clothes/:id} : Updates an existing clothe.
      *
-     * @param id     the id of the clothe to save.
+     * @param id the id of the clothe to save.
      * @param clothe the clothe to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated clothe,
      * or with status {@code 400 (Bad Request)} if the clothe is not valid,
@@ -119,7 +117,7 @@ public class ClotheResource {
     /**
      * {@code PATCH  /clothes/:id} : Partial updates given fields of an existing clothe, field will ignore if it is null
      *
-     * @param id     the id of the clothe to save.
+     * @param id the id of the clothe to save.
      * @param clothe the clothe to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated clothe,
      * or with status {@code 400 (Bad Request)} if the clothe is not valid,
@@ -238,7 +236,7 @@ public class ClotheResource {
         return ResponseEntity.ok(themeDTO);
     }
 
-    @GetMapping("/filters")
+    @PostMapping("/filters")
     public ResponseEntity<Page<ClotheDTO>> getClothesFiltered(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "15") int size,
@@ -249,9 +247,10 @@ public class ClotheResource {
             throw new RuntimeException("Problems with the body. Maybe it is empty");
         }
         FilterDTO filters = filtersSort.getFilters();
-        String keyWord = filtersSort.getSearch();
-        keyWord = (keyWord != null) ? keyWord.toUpperCase() : null;
-        String sort = filtersSort.getSort();
+        String keyword = filtersSort.getSearch();
+        String keyWord = (keyword != null && (!keyword.isEmpty())) ? keyword.toUpperCase() : null;
+        String sortR = filtersSort.getSort();
+        String sort = (sortR != null && (!sortR.isEmpty())) ? sortR : null;
 
         Pageable pageable = null;
 
@@ -274,27 +273,56 @@ public class ClotheResource {
             pageable = PageRequest.of(page, size, Sort.by("id"));
         }
 
-        List<Size> sizes = (filters != null) ? filters.getSizes() : null;
-        List<Color> colors = (filters != null) ? filters.getColors() : null;
-        Float minPrice = (filters != null && filters.getPrices() != null) ? filters.getPrices().getMin() : null;
-        Float maxPrice = (filters != null && filters.getPrices() != null) ? filters.getPrices().getMax() : null;
-        List<Gender> genders = (filters != null) ? filters.getGenders() : null;
-        List<String> videoGameThemes = (filters != null) ? filters.getVideogameThemes() : null;
-        List<String> animeThemes = (filters != null) ? filters.getAnimeThemes() : null;
+        List<Size> sizes = (filters == null || (filters.getSizes() != null && filters.getSizes().isEmpty())) ? null : filters.getSizes();
+        List<Color> colors = (filters == null || (filters.getColors() != null && filters.getColors().isEmpty()))
+            ? null
+            : filters.getColors();
+        Float minPrice = (filters == null ||
+                filters.getPrices() == null ||
+                (filters.getPrices() != null && filters.getPrices().getMin() == null) ||
+                (filters.getPrices() != null && filters.getPrices().getMin() != null && filters.getPrices().getMin() == -1))
+            ? null
+            : filters.getPrices().getMin();
+        Float maxPrice = (filters == null ||
+                filters.getPrices() == null ||
+                (filters.getPrices() != null && filters.getPrices().getMax() == null) ||
+                (filters.getPrices() != null && filters.getPrices().getMax() != null && filters.getPrices().getMax() == -1))
+            ? null
+            : filters.getPrices().getMax();
+        List<Gender> genders = (filters == null || (filters.getGenders() != null && filters.getGenders().isEmpty()))
+            ? null
+            : filters.getGenders();
+        List<Type> types = (filters == null || (filters.getTypes() != null && filters.getTypes().isEmpty())) ? null : filters.getTypes();
+        List<String> themeMin = (filters == null || (filters.getThemes() != null && filters.getThemes().isEmpty()))
+            ? null
+            : filters.getThemes();
+        List<String> theme = (themeMin == null) ? null : themeMin.stream().map(String::toUpperCase).collect(Collectors.toList());
 
-        Page<Stock> stocks = stockRepository.getStocksByFiltersAndSearch(
+        List<Stock> stocks = stockRepository.getStocksByFiltersAndSearch(
             sizes,
             colors,
             minPrice,
             maxPrice,
             genders,
-            videoGameThemes,
-            animeThemes,
+            types,
+            theme,
             keyWord,
-            pageable
+            sortCriteria
         );
+        Set<Long> addedClotheIds = new HashSet<>();
 
-        Page<ClotheDTO> clothesPage = stocks.map(stock -> new ClotheDTO(stock.getClothe()));
+        // Filtrer et mapper les stocks en ClotheDTO uniquement si l'identifiant n'est pas encore dans la liste
+        List<ClotheDTO> filteredClothes = new ArrayList<>();
+        for (Stock stock : stocks) {
+            Long clotheId = stock.getClothe().getId(); // Assurez-vous que l'ID est de type Long
+            if (!addedClotheIds.contains(clotheId)) {
+                filteredClothes.add(new ClotheDTO(stock.getClothe()));
+                addedClotheIds.add(clotheId);
+            }
+        }
+
+        // Convertir la liste filtrÃ©e en Page en utilisant Pageable
+        Page<ClotheDTO> clothesPage = new PageImpl<>(filteredClothes, pageable, filteredClothes.size());
         return ResponseEntity.ok(clothesPage);
     }
 

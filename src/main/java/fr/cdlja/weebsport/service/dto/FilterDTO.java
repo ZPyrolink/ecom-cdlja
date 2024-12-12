@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.cdlja.weebsport.domain.enumeration.Color;
 import fr.cdlja.weebsport.domain.enumeration.Gender;
 import fr.cdlja.weebsport.domain.enumeration.Size;
+import fr.cdlja.weebsport.domain.enumeration.Type;
 import java.util.List;
 
 public class FilterDTO {
@@ -20,11 +21,11 @@ public class FilterDTO {
     @JsonProperty("gender")
     private List<Gender> genders;
 
-    @JsonProperty("videogame")
-    private List<String> videogameThemes;
+    @JsonProperty("type")
+    private List<Type> types;
 
-    @JsonProperty("anime")
-    private List<String> animeThemes;
+    @JsonProperty("theme")
+    private List<String> theme;
 
     public List<Size> getSizes() {
         return sizes;
@@ -58,19 +59,19 @@ public class FilterDTO {
         return this.genders;
     }
 
-    public List<String> getVideogameThemes() {
-        return videogameThemes;
+    public List<Type> getTypes() {
+        return this.types;
     }
 
-    public void setVideogameThemes(List<String> videogameThemes) {
-        this.videogameThemes = videogameThemes;
+    public void setTypes(List<Type> types) {
+        this.types = types;
     }
 
-    public List<String> getAnimeThemes() {
-        return animeThemes;
+    public List<String> getThemes() {
+        return this.theme;
     }
 
-    public void setAnimeThemes(List<String> animeThemes) {
-        this.animeThemes = animeThemes;
+    public void setThemes(List<String> Themes) {
+        this.theme = Themes;
     }
 }

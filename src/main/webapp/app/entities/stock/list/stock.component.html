@@ -119,9 +119,9 @@
               </td>
               <td>{{ stock.quantity }}</td>
               <td>
-                @if (stock.clothe) {
+                @if (stock.clotheDTO) {
                   <div>
-                    <a [routerLink]="['/clothe', stock.clothe.id, 'view']">{{ stock.clothe.id }}</a>
+                    <a [routerLink]="['/clothe', stock.clotheDTO.id, 'view']">{{ stock.clotheDTO.id }}</a>
                   </div>
                 }
               </td>

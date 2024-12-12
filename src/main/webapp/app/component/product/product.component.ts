@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { IStock } from '../../entities/stock/stock.model';
 import { StockService } from '../../entities/stock/service/stock.service';
@@ -7,6 +7,8 @@ import { ClotheService } from '../../entities/clothe/service/clothe.service';
 import { Color } from '../../entities/enumerations/color.model';
 import { getSizeLabelFromSize, Size } from '../../entities/enumerations/size.model';
 import { IClothe } from '../../entities/clothe/clothe.model';
+import { OrderService } from '../../entities/order/service/order.service';
+import { OrderStateService } from '../../service/OrderStateService';
 
 @Component({
   selector: 'jhi-product',
@@ -18,7 +20,7 @@ import { IClothe } from '../../entities/clothe/clothe.model';
 export default class ProductComponent implements OnInit {
   stock: IStock | null | undefined;
   productId = 0;
-  product: IClothe | null | undefined;
+  product: IClothe | undefined | null;
 
   selectedImage = 'https://ecom-cdlja-pictures.s3.eu-north-1.amazonaws.com/ecom1.jpeg';
   imageUrls: string[] = [];
@@ -38,8 +40,11 @@ export default class ProductComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private stockService: StockService,
     private clotheService: ClotheService,
+    private orderService: OrderService,
+    private orderState: OrderStateService,
   ) {}
 
   ngOnInit(): void {
@@ -49,8 +54,6 @@ export default class ProductComponent implements OnInit {
       this.clotheService.find(this.productId).subscribe({
         next: productResponse => {
           this.product = productResponse.body;
-          window.console.log('Product image:', this.product?.imageP);
-          window.console.log('Product image split:', this.product?.imageP?.split('/'));
           this.selectColor(this.product?.imageP?.split('/')[4] as string);
           this.productName = (this.product?.theme ?? '') + ' ' + (this.product?.type ?? '');
         },
@@ -102,10 +105,7 @@ export default class ProductComponent implements OnInit {
       .subscribe({
         next: stockResponse => {
           this.stock = stockResponse.body;
-          window.console.log('Stock mis à jour:', stockResponse.body);
-          window.console.log('Stock mis à jour:', stockResponse.body?.clothe);
-          window.console.log('Stock mis à jour:', this.stock);
-          this.productName = (this.stock?.clothe?.theme ?? '') + ' ' + (this.stock?.clothe?.type ?? '');
+          this.productName = (this.stock?.clotheDTO?.theme ?? '') + ' ' + (this.stock?.clotheDTO?.type ?? '');
         },
         error(error) {
           console.error('Erreur lors de la récupération du stock:', error);
@@ -144,6 +144,9 @@ export default class ProductComponent implements OnInit {
       this.imageUrls.push(tempImageUrl);
       this.imageIndex++;
       this.loadImages();
+      if (this.imageIndex === 2) {
+        this.changeImage(this.imageUrls[0]);
+      }
     };
 
     img.onerror = () => {
@@ -189,6 +192,11 @@ export default class ProductComponent implements OnInit {
 
   addToBasket(): void {
     this.updateStock();
-    // TODO Jorane
+    if (this.stock) {
+      window.console.log('stockkkkkkkkkkk', this.stock);
+      this.orderService.add(this.stock)?.subscribe();
+      this.orderState.incrementOrderQuantity(1);
+      this.router.navigate(['/']);
+    }
   }
 }

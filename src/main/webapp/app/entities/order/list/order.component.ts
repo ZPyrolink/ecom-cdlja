@@ -1,6 +1,6 @@
-import { Component, NgZone, OnInit, inject } from '@angular/core';
+import { Component, inject, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
-import { Observable, Subscription, combineLatest, filter, tap } from 'rxjs';
+import { combineLatest, filter, Subscription, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
@@ -47,11 +47,7 @@ export class OrderComponent implements OnInit {
     this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
       .pipe(
         tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
-        tap(() => {
-          if (!this.orders || this.orders.length === 0) {
-            this.load();
-          }
-        }),
+        tap(),
       )
       .subscribe();
   }
@@ -60,22 +56,8 @@ export class OrderComponent implements OnInit {
     const modalRef = this.modalService.open(OrderDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.order = order;
     // unsubscribe not needed because closed completes on modal close
-    modalRef.closed
-      .pipe(
-        filter(reason => reason === ITEM_DELETED_EVENT),
-        tap(() => this.load()),
-      )
-      .subscribe();
+    modalRef.closed.pipe(filter(reason => reason === ITEM_DELETED_EVENT)).subscribe();
   }
-
-  load(): void {
-    this.queryBackend().subscribe({
-      next: (res: EntityArrayResponseType) => {
-        this.onResponseSuccess(res);
-      },
-    });
-  }
-
   navigateToWithComponentValues(event: SortState): void {
     this.handleNavigation(event);
   }
@@ -97,15 +79,6 @@ export class OrderComponent implements OnInit {
   protected fillComponentAttributesFromResponseBody(data: IOrder[] | null): IOrder[] {
     return data ?? [];
   }
-
-  protected queryBackend(): Observable<EntityArrayResponseType> {
-    this.isLoading = true;
-    const queryObject: any = {
-      sort: this.sortService.buildSortParam(this.sortState()),
-    };
-    return this.orderService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
-  }
-
   protected handleNavigation(sortState: SortState): void {
     const queryParamsObj = {
       sort: this.sortService.buildSortParam(sortState),

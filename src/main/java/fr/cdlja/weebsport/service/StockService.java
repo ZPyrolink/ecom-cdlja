@@ -88,7 +88,7 @@ public class StockService {
             Integer purchasequantity = orderlineDTO.getQuantity();
             StockDTO stockDTO = orderlineDTO.getStockDTO();
             Object[][] res = stockRepository.readStock(stockDTO.getId());
-            if (res != null) {
+            if (res.length != 0) {
                 int quantity = (int) res[0][0];
                 int version = (int) res[0][1];
                 if (quantity == 0) {

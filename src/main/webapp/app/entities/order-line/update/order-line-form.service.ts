@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 import { IOrderLine, NewOrderLine } from '../order-line.model';
 
@@ -20,34 +20,13 @@ type OrderLineFormGroupContent = {
   id: FormControl<IOrderLine['id'] | NewOrderLine['id']>;
   quantity: FormControl<IOrderLine['quantity']>;
   amountline: FormControl<IOrderLine['amountline']>;
-  order: FormControl<IOrderLine['order']>;
-  stock: FormControl<IOrderLine['stock']>;
+  stock: FormControl<IOrderLine['stockDTO']>;
 };
 
 export type OrderLineFormGroup = FormGroup<OrderLineFormGroupContent>;
 
 @Injectable({ providedIn: 'root' })
 export class OrderLineFormService {
-  createOrderLineFormGroup(orderLine: OrderLineFormGroupInput = { id: null }): OrderLineFormGroup {
-    const orderLineRawValue = {
-      ...this.getFormDefaults(),
-      ...orderLine,
-    };
-    return new FormGroup<OrderLineFormGroupContent>({
-      id: new FormControl(
-        { value: orderLineRawValue.id, disabled: true },
-        {
-          nonNullable: true,
-          validators: [Validators.required],
-        },
-      ),
-      quantity: new FormControl(orderLineRawValue.quantity),
-      amountline: new FormControl(orderLineRawValue.amountline),
-      order: new FormControl(orderLineRawValue.order),
-      stock: new FormControl(orderLineRawValue.stock),
-    });
-  }
-
   getOrderLine(form: OrderLineFormGroup): IOrderLine | NewOrderLine {
     return form.getRawValue() as IOrderLine | NewOrderLine;
   }

@@ -1,6 +1,7 @@
 package fr.cdlja.weebsport.service.dto;
 
 import fr.cdlja.weebsport.domain.Clothe;
+import fr.cdlja.weebsport.domain.enumeration.Gender;
 import fr.cdlja.weebsport.domain.enumeration.Type;
 
 public class ClotheDTO {
@@ -8,8 +9,10 @@ public class ClotheDTO {
     private Long id;
     private Type type;
     private String theme;
-    private float price;
+    private Gender gender;
+    private Float price;
     private String description;
+    private String imageP;
 
     public ClotheDTO() {}
 
@@ -17,8 +20,10 @@ public class ClotheDTO {
         this.id = clothe.getId();
         this.type = clothe.getType();
         this.theme = clothe.getTheme();
+        this.gender = clothe.getGender();
         this.price = clothe.getPrice();
         this.description = clothe.getDescription();
+        this.imageP = clothe.getImageP();
     }
 
     public Long getId() {
@@ -45,11 +50,19 @@ public class ClotheDTO {
         this.theme = theme;
     }
 
-    public float getPrice() {
+    public Gender getGender() {
+        return this.gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public Float getPrice() {
         return this.price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 
@@ -59,5 +72,13 @@ public class ClotheDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImageP() {
+        return this.imageP;
+    }
+
+    public void setImageP(String imageP) {
+        this.imageP = imageP;
     }
 }

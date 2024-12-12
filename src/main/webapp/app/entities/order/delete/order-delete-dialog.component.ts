@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
-import { ITEM_DELETED_EVENT } from 'app/config/navigation.constants';
 import { IOrder } from '../order.model';
 import { OrderService } from '../service/order.service';
 
@@ -20,11 +19,5 @@ export class OrderDeleteDialogComponent {
 
   cancel(): void {
     this.activeModal.dismiss();
-  }
-
-  confirmDelete(id: number): void {
-    this.orderService.delete(id).subscribe(() => {
-      this.activeModal.close(ITEM_DELETED_EVENT);
-    });
   }
 }
