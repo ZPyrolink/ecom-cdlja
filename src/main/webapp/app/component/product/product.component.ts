@@ -193,6 +193,8 @@ export default class ProductComponent implements OnInit {
   addToBasket(): void {
     this.updateStock();
     if (this.stock) {
+      this.stock.color = this.getKeyColorFromValue(this.productSelectedColor);
+      this.stock.size = this.getKeySizeFromValue(this.productSelectedSize);
       window.console.log('stockkkkkkkkkkk', this.stock);
       this.orderService.add(this.stock)?.subscribe();
       this.orderState.incrementOrderQuantity(1);
