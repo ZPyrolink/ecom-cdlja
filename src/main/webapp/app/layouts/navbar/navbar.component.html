@@ -1,21 +1,34 @@
 <head class="header">
   <div class="logo">
-    <a href="home"><img src="../../../content/images/Logo-WStest.svg" alt="Logo" /></a>
+    <a href=""><img src="../../../content/images/Logo-WStest.svg" alt="Logo" /></a>
   </div>
   <div class="search-bar">
     <div class="search-container">
       <span class="search-icon-left">
         <img src="../../../content/images/MenuIcon.png" alt="Menu" (click)="openPanel()" />
       </span>
-      <input type="text" placeholder="Entrez votre recherche ici" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()" />
+      <input
+        type="text"
+        [placeholder]="searchQuery ? '' : 'Entrez votre recherche ici'"
+        [(ngModel)]="searchQuery"
+        (keyup.enter)="onSearch()"
+      />
       <span class="search-icon-right">
         <img src="../../../content/images/SearchIcon.png" alt="Recherche" (click)="onSearch()" />
       </span>
     </div>
   </div>
   <div class="header-buttons">
-    <a href="basket"><img src="../../../content/images/BasketIcon.png" alt="Panier" /></a>
-    <a href="login"><img src="../../../content/images/UserIcon.png" alt="Compte utilisateur" /></a>
-    <a href="setting"><img src="../../../content/images/SettingIcon.png" alt="Reglage" /></a>
+    <div class="basket-container">
+      <a href="basket">
+        <img src="../../../content/images/BasketIcon.png" alt="Panier" />
+        <span *ngIf="orderQuantity != 0" class="basket-count"> {{ orderQuantity }}</span>
+      </a>
+    </div>
+    @if (!isConnected) {
+      <a href="login"><img src="../../../content/images/UserIcon.png" alt="Compte utilisateur" /></a>
+    } @else {
+      <a><img src="../../../content/images/logout.png" alt="Logout" (click)="logout()" /></a>
+    }
   </div>
 </head>

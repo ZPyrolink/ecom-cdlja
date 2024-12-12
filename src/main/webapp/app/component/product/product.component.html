@@ -1,0 +1,45 @@
+<div class="product-page">
+  <div class="imagePart">
+    <div class="imageList">
+      <img
+        role="button"
+        class="images"
+        *ngFor="let url of imageUrls"
+        (click)="changeImage(url)"
+        [src]="url"
+        alt="Image description"
+        width="125"
+        height="125"
+      />
+    </div>
+    <img class="mainImage" [src]="selectedImage" alt="Image description" />
+  </div>
+
+  <div class="productDetails">
+    <h1>{{ product?.type }} {{ product?.theme }}</h1>
+    <h3>{{ product?.price }} €</h3>
+    <p class="productDescription">{{ product?.description }}</p>
+
+    <div class="colorSelection">
+      <h2>Couleur : {{ productSelectedColor }}</h2>
+      <button
+        class="colorButton"
+        *ngFor="let color of productColorsEnum"
+        [class.selected]="isColorSelected(color.name)"
+        (click)="selectColor(color.name)"
+      >
+        <img [src]="color.image" class="colorImage" alt="{{ color }}" />
+        {{ color.name }}
+      </button>
+    </div>
+
+    <div class="sizeSelection">
+      <h2>Taille : {{ productSelectedSize }}</h2>
+      <button *ngFor="let size of productSizes" (click)="selectSize(size)" [class.selected]="isSizeSelected(size)" class="sizeButton">
+        {{ getSizeLabelFromSize(size) }}
+      </button>
+    </div>
+
+    <button class="addToBasket" (click)="addToBasket()">Ajouter au panier</button>
+  </div>
+</div>

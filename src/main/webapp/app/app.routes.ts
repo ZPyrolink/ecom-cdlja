@@ -1,5 +1,8 @@
-import { Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { errorRoute } from './layouts/error/error.route';
+import { NgModule } from '@angular/core';
+import { Authority } from './config/authority.constants';
+import { UserRouteAccessService } from './core/auth/user-route-access.service';
 
 const routes: Routes = [
   {
@@ -9,8 +12,7 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadComponent: () => import('./component/home/home.component'),
-    title: 'WeebSport',
+    redirectTo: '',
   },
   {
     path: 'login',
@@ -28,21 +30,16 @@ const routes: Routes = [
     title: 'WeebSport',
   },
   {
+    path: 'product/:id',
+    loadComponent: () => import('./component/product/product.component'),
+    title: 'WeebSport',
+  },
+  {
     path: 'pay',
     loadComponent: () => import('./component/payement/payement.component'),
     title: 'WeebSport',
   },
-  /*  {
-    path: '',
-    loadComponent: () => import('./home/home.component'),
-    title: 'home.title',
-  },
   {
-    path: '',
-    loadComponent: () => import('./layouts/navbar/navbar.component'),
-    outlet: 'navbar',
-  },*/
-  /* {
     path: 'admin',
     data: {
       authorities: [Authority.ADMIN],
@@ -55,15 +52,16 @@ const routes: Routes = [
     loadChildren: () => import('./account/account.route'),
   },
   {
-    path: 'login',
-    loadComponent: () => import('./login/login.component'),
-    title: 'login.title',
-  },
-  {
     path: '',
     loadChildren: () => import(`./entities/entity.routes`),
-  },*/
+  },
   ...errorRoute,
 ];
 
 export default routes;
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+})
+export class AppRoutingModule {}

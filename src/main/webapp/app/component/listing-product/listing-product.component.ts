@@ -7,13 +7,16 @@ import { IClothe } from '../../entities/clothe/clothe.model';
 import { ClotheService } from '../../entities/clothe/service/clothe.service';
 import { FilterDataService } from '../filter-menu/service/FilterDataService';
 import { Subscription } from 'rxjs';
+import getClotheTypeLabel from '../../entities/enumerations/type.model';
+import { NgOptimizedImage } from '@angular/common';
+import { OrderService } from '../../entities/order/service/order.service';
 
 @Component({
   selector: 'jhi-listing-product',
   standalone: true,
   templateUrl: './listing-product.component.html',
   styleUrl: './listing-product.component.scss',
-  imports: [SharedModule, RouterModule, FiltersBarComponent, PaginationComponent],
+  imports: [SharedModule, RouterModule, FiltersBarComponent, PaginationComponent, NgOptimizedImage],
 })
 export default class ListingProductComponent implements OnInit, OnDestroy {
   totalPages = 0;
@@ -21,21 +24,45 @@ export default class ListingProductComponent implements OnInit, OnDestroy {
   clothes: IClothe[] = [];
   selectedItemsClothes: string[] = [];
   selectedItemsThemes: string[] = [];
+
+  protected readonly getClotheTypeLabel = getClotheTypeLabel;
+
   private subscriptions: Subscription = new Subscription();
 
   constructor(
     private service: ClotheService,
     private router: Router,
     private serviceFilter: FilterDataService,
+    private serviceOrder: OrderService,
   ) {}
 
   ngOnInit(): void {
     this.loadPage(this.currentPage);
     this.serviceFilter.getThemes().subscribe(themes => {
       this.selectedItemsThemes = themes;
+      this.loadPage(this.currentPage);
     });
     this.serviceFilter.getClothes().subscribe(clothes => {
       this.selectedItemsClothes = clothes;
+      this.loadPage(this.currentPage);
+    });
+    this.serviceFilter.getPrice().subscribe(() => {
+      this.loadPage(this.currentPage);
+    });
+    this.serviceFilter.getColor().subscribe(() => {
+      this.loadPage(this.currentPage);
+    });
+    this.serviceFilter.getSize().subscribe(() => {
+      this.loadPage(this.currentPage);
+    });
+    this.serviceFilter.getGender().subscribe(() => {
+      this.loadPage(this.currentPage);
+    });
+    this.serviceFilter.getSearchQuery().subscribe(() => {
+      this.loadPage(this.currentPage);
+    });
+    this.serviceFilter.getSort().subscribe(() => {
+      this.loadPage(this.currentPage);
     });
   }
   ngOnDestroy(): void {
@@ -43,12 +70,10 @@ export default class ListingProductComponent implements OnInit, OnDestroy {
   }
 
   loadPage(page: number): void {
-    this.service.query({ page }).subscribe(next => {
+    this.service.query({ page })?.subscribe(next => {
       this.clothes = next.body?.content ?? [];
       this.totalPages = next.body?.totalPages ?? 1;
-      this.currentPage = next.body?.number ?? 1;
-      // eslint-disable-next-line no-console
-      console.log('Data for page', page, next);
+      this.currentPage = next.body?.number ?? 0;
     });
   }
 

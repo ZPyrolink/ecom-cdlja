@@ -22,6 +22,7 @@ export class UserService {
     return this.http.post<TokenResult>(`${this.resourceUrl}/authenticate`, payload).pipe(
       tap((res: TokenResult) => {
         window.sessionStorage['id_storage'] = res.id_token; // Stocker le token comme effet secondaire
+        window.sessionStorage.removeItem('basket'); // Vider le panier
       }),
     );
   }

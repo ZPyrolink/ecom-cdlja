@@ -9,7 +9,8 @@ import PageRibbonComponent from '../profiles/page-ribbon.component';
 import FooterComponent from '../footer/footer.component';
 import NavbarComponent from '../navbar/navbar.component';
 import FilterMenuComponent from '../../component/filter-menu/filtrer-menu.component';
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
+import ArrowComponent from '../../component/arrow/arrow.component';
 
 @Component({
   standalone: true,
@@ -17,7 +18,7 @@ import { NgIf } from '@angular/common';
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
   providers: [AppPageTitleStrategy],
-  imports: [RouterOutlet, FooterComponent, NavbarComponent, PageRibbonComponent, FilterMenuComponent, NgIf],
+  imports: [RouterOutlet, FooterComponent, NavbarComponent, PageRibbonComponent, FilterMenuComponent, NgIf, ArrowComponent, NgClass],
 })
 export default class MainComponent implements OnInit {
   isVisible = false;
@@ -34,7 +35,6 @@ export default class MainComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // try to log in automatically
     this.accountService.identity().subscribe();
 
     this.translateService.onLangChange.subscribe((langChangeEvent: LangChangeEvent) => {
@@ -46,7 +46,5 @@ export default class MainComponent implements OnInit {
 
   onVisibilityChange(visible: boolean): void {
     this.isVisible = visible;
-    // eslint-disable-next-line no-console
-    console.log(this.isVisible);
   }
 }

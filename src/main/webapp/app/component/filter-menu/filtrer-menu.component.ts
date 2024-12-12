@@ -5,6 +5,10 @@ import SelectedItemsComponent from '../selected-items/selected-items.component';
 import CheckboxListComponent from '../checkbox-list/checkbox-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterDataService } from './service/FilterDataService';
+import { VideoGameService } from '../../entities/category/service/videogame.service';
+import { AnimeService } from '../../entities/category/service/anime.service';
+import { CategoryService } from '../../entities/category/service/category.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-filter-menu',
@@ -15,45 +19,8 @@ import { FilterDataService } from './service/FilterDataService';
 })
 export default class FilterMenuComponent implements OnInit {
   typesOfClothes = Object.values(ClothesTypeEnum);
-  typesOfGames = [
-    'Jeu 1',
-    'Jeu 2',
-    'Jeu 3',
-    'Jeu 4',
-    'Jeu 5',
-    'Jeu 6',
-    'Jeu 7',
-    'Jeu 8',
-    'Jeu 9',
-    'Jeu 10',
-    'Jeu 11',
-    'Jeu 12',
-    'Jeu 13',
-    'Jeu 14',
-    'Jeu 15',
-    'Jeu 16',
-    'Jeu 17',
-    'Jeu 18',
-  ];
-  typesOfAnime = [
-    'Anime 1',
-    'Anime 2',
-    'Anime 3',
-    'Anime 4',
-    'Anime 5',
-    'Anime 6',
-    'Anime 7',
-    'Anime 8',
-    'Anime 9',
-    'Anime 10',
-    'Anime 11',
-    'Anime 12',
-    'Anime 13',
-    'Anime 14',
-    'Anime 15',
-    'Anime 16',
-    'Anime 17',
-  ];
+  typesOfGames: string[] = [];
+  typesOfAnime: string[] = [];
 
   selectedItemsClothes: string[] = [];
   selectedItemsThemes: string[] = [];
@@ -62,15 +29,26 @@ export default class FilterMenuComponent implements OnInit {
   constructor(
     private filterDataService: FilterDataService,
     private cdr: ChangeDetectorRef,
+    private videoGameService: VideoGameService,
+    private animeService: AnimeService,
+    private categoryService: CategoryService,
+    private router: Router,
   ) {}
   ngOnInit(): void {
     this.filterDataService.getThemes().subscribe(themes => {
       this.selectedItemsThemes = themes;
       this.cdr.detectChanges();
     });
-    this.filterDataService.getClothes().subscribe(clothes => {
+    this.filterDataService.getClothes().subscribe((clothes: string[]) => {
       this.selectedItemsClothes = clothes;
       this.cdr.detectChanges();
+    });
+
+    this.videoGameService.query().subscribe(response => {
+      this.typesOfGames = response.body ?? [];
+    });
+    this.animeService.query().subscribe(response => {
+      this.typesOfAnime = response.body ?? [];
     });
   }
 
@@ -93,12 +71,27 @@ export default class FilterMenuComponent implements OnInit {
   updateService(selectedItems: string[]): void {
     if (selectedItems === this.selectedItemsClothes) {
       this.filterDataService.setClothes(this.selectedItemsClothes);
+      window.sessionStorage['filters.type'] = this.selectedItemsClothes;
     } else if (selectedItems === this.selectedItemsThemes) {
       this.filterDataService.setThemes(this.selectedItemsThemes);
+      window.sessionStorage['filters.videogame'] = this.selectedItemsThemes;
+      window.sessionStorage['filters.anime'] = this.selectedItemsThemes;
+    }
+    if (window.location.pathname !== '') {
+      this.router.navigate(['']);
     }
   }
 
   onSearch(): void {
+    this.categoryService.search(this.searchQuery).subscribe({
+      next: data => {
+        this.typesOfAnime = data.animeThemes;
+        this.typesOfGames = data.videogameThemes;
+      },
+      error(err) {
+        console.error('Erreur lors de la recherche :', err);
+      },
+    });
     // eslint-disable-next-line no-console
     console.log('Recherche :', this.searchQuery);
   }

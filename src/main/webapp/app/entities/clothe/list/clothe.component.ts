@@ -71,7 +71,7 @@ export class ClotheComponent implements OnInit {
   }
 
   load(): void {
-    this.queryBackend().subscribe({
+    this.queryBackend()?.subscribe({
       next: (res: HttpResponse<PaginatedResponse<IClothe>>) => {
         this.onResponseSuccess(res);
       },
@@ -100,12 +100,12 @@ export class ClotheComponent implements OnInit {
     return data ?? [];
   }
 
-  protected queryBackend(): Observable<HttpResponse<PaginatedResponse<IClothe>>> {
+  protected queryBackend(): Observable<HttpResponse<PaginatedResponse<IClothe>>> | undefined {
     this.isLoading = true;
     const queryObject: any = {
       sort: this.sortService.buildSortParam(this.sortState()),
     };
-    return this.clotheService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
+    return this.clotheService.query(queryObject)?.pipe(tap(() => (this.isLoading = false)));
   }
 
   protected handleNavigation(sortState: SortState): void {

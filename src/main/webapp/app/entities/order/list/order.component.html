@@ -3,7 +3,7 @@
     <span jhiTranslate="weebSportApp.order.home.title">Orders</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+      <button class="btn btn-info me-2" [disabled]="isLoading">
         <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
         <span jhiTranslate="weebSportApp.order.home.refreshListLabel">Refresh list</span>
       </button>
@@ -94,9 +94,9 @@
                 {{ { null: '', CB: 'CB', ONLINEPAYMENT: 'ONLINEPAYMENT' }[order.meanOfPayment ?? 'null'] }}
               </td>
               <td>
-                @if (order.client) {
+                @if (order) {
                   <div>
-                    <a [routerLink]="['/subscribed-clients', order.client.id, 'view']">{{ order.client.id }}</a>
+                    <a [routerLink]="['/subscribed-clients', order.id, 'view']">{{ order.id }}</a>
                   </div>
                 }
               </td>

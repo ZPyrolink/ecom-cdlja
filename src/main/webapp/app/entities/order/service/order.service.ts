@@ -1,6 +1,6 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { map, Observable, of } from 'rxjs';
 
 import dayjs from 'dayjs/esm';
 
@@ -9,6 +9,8 @@ import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IOrder, NewOrder } from '../order.model';
+import { IOrderLine } from '../../order-line/order-line.model';
+import { IStock } from '../../stock/stock.model';
 
 export type PartialUpdateOrder = Partial<IOrder> & Pick<IOrder, 'id'>;
 
@@ -30,7 +32,7 @@ export class OrderService {
   protected http = inject(HttpClient);
   protected applicationConfigService = inject(ApplicationConfigService);
 
-  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/orders');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/client/basket');
 
   create(order: NewOrder): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(order);
@@ -57,15 +59,147 @@ export class OrderService {
       .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    return this.http
-      .get<RestOrder[]>(this.resourceUrl, { params: options, observe: 'response' })
-      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  query(req?: any): Observable<IOrder> | undefined {
+    const token = window.sessionStorage['id_storage'];
+    if (!token) {
+      const basket = window.sessionStorage['basket'];
+      const order = basket ? (JSON.parse(basket) as IOrder) : undefined;
+      return order ? of(order) : undefined;
+    } else {
+      const options = createRequestOption(req);
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.get<IOrder>(this.resourceUrl, { params: options, headers, observe: 'response' }).pipe(
+        map(response => response.body as IOrder), // On extrait le corps de la réponse
+      );
+    }
   }
 
-  delete(id: number): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  delete(stock: IStock, quantity: number): Observable<HttpResponse<{}>> | undefined {
+    const token = window.sessionStorage['id_storage'];
+    if (!token) {
+      this.deleteClotheToOrder(stock, quantity);
+      window.console.log('Token vide');
+      return;
+    } else {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      const body = { quantite: quantity };
+      return this.http.delete(this.applicationConfigService.getEndpointFor(`api/basket/${stock.id}`), {
+        headers,
+        body,
+        observe: 'response',
+        responseType: 'text',
+      });
+    }
+  }
+
+  add(stock: IStock): Observable<object> | undefined {
+    const token = window.sessionStorage['id_storage'];
+    if (!token) {
+      this.addClotheToOrder(stock);
+      window.console.log('Token vide');
+      return;
+    } else {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.post(
+        this.applicationConfigService.getEndpointFor(`api/basket/${stock.id}`),
+        {},
+        {
+          headers,
+          observe: 'response',
+        },
+      );
+    }
+  }
+
+  addClotheToOrder(stock: IStock): void {
+    const existingOrder = window.sessionStorage.getItem('basket'); // Utilise getItem pour lire sessionStorage
+    let order: IOrder;
+
+    if (existingOrder) {
+      try {
+        order = JSON.parse(existingOrder) as IOrder;
+        window.console.log(order);
+        order.orderLines = order.orderLines ?? [];
+      } catch (error) {
+        console.error('Erreur lors du parsing du panier :', error);
+        order = { id: Date.now(), status: 'BASKET', date: dayjs(), orderLines: [], amount: 0 } as IOrder;
+      }
+    } else {
+      order = {
+        id: Date.now(),
+        status: 'BASKET',
+        date: dayjs(),
+        orderLines: [],
+        amount: 0,
+      } as IOrder;
+    }
+
+    const existingOrderLine = order.orderLines?.find(
+      line => line.stockDTO?.id === stock.id && line.stockDTO.color === stock.color && line.stockDTO.size === stock.size,
+    );
+
+    if (existingOrderLine) {
+      existingOrderLine.quantity = (existingOrderLine.quantity ?? 0) + 1;
+      existingOrderLine.amountline = (existingOrderLine.quantity ?? 0) * (stock.clotheDTO?.price ?? 0);
+    } else {
+      const orderLine: IOrderLine = {
+        id: Date.now(),
+        quantity: 1,
+        amountline: stock.clotheDTO?.price ?? 0,
+        stockDTO: stock,
+      };
+      window.console.log('laaaaaaaaaaaaaaa', stock);
+      order.orderLines?.push(orderLine);
+    }
+
+    order.amount = order.orderLines?.reduce((total, line) => total + (line.amountline ?? 0), 0);
+    window.sessionStorage.setItem('basket', JSON.stringify(order));
+    window.console.log('Panier mis à jour :', order);
+  }
+
+  deleteClotheToOrder(stock: IStock, quantity: number): void {
+    const existingOrder = window.sessionStorage.getItem('basket');
+    let order: IOrder;
+
+    if (existingOrder) {
+      try {
+        order = JSON.parse(existingOrder) as IOrder;
+        window.console.log(order);
+        order.orderLines = order.orderLines ?? [];
+      } catch (error) {
+        console.error('Erreur lors du parsing du panier :', error);
+        order = { id: Date.now(), status: 'BASKET', date: dayjs(), orderLines: [], amount: 0 } as IOrder;
+      }
+      const existingOrderLine = order.orderLines?.find(
+        line => line.stockDTO?.id === stock.id && line.stockDTO.color === stock.color && line.stockDTO.size === stock.size,
+      );
+
+      if (existingOrderLine) {
+        const newQuantity = (existingOrderLine.quantity ?? 0) - quantity;
+
+        if (newQuantity <= 0) {
+          order.orderLines = order.orderLines?.filter(
+            line => line.stockDTO?.id !== stock.id || line.stockDTO.color !== stock.color || line.stockDTO.size !== stock.size,
+          );
+        } else {
+          existingOrderLine.quantity = (existingOrderLine.quantity ?? 0) - quantity;
+          existingOrderLine.amountline = (existingOrderLine.amountline ?? 0) - quantity * (stock.clotheDTO?.price ?? 0);
+        }
+      }
+
+      order.amount = (order.amount ?? 0) - (stock.clotheDTO?.price ?? 0) * quantity;
+      window.sessionStorage.setItem('basket', JSON.stringify(order));
+    }
+  }
+  validateBasket(id: number): Observable<object> {
+    const existingOrder = window.sessionStorage.getItem('basket') ?? '';
+    if (existingOrder) {
+      const order = JSON.parse(existingOrder) as IOrder;
+      window.console.log('iciiiiiiiiiiiiiiiiiiiiiiiiiii', order);
+      return this.http.post(`${this.resourceUrl}/validate/0`, order, { observe: 'response' });
+    } else {
+      return this.http.post(`${this.resourceUrl}/validate/${id}`, {}, { observe: 'response' });
+    }
   }
 
   getOrderIdentifier(order: Pick<IOrder, 'id'>): number {
