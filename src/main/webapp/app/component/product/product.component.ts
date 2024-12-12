@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { IStock } from '../../entities/stock/stock.model';
 import { StockService } from '../../entities/stock/service/stock.service';
 import { ClotheService } from '../../entities/clothe/service/clothe.service';
@@ -11,7 +11,7 @@ import { IClothe } from '../../entities/clothe/clothe.model';
 @Component({
   selector: 'jhi-product',
   standalone: true,
-  imports: [CommonModule, NgOptimizedImage],
+  imports: [CommonModule],
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss',
 })
@@ -152,7 +152,7 @@ export default class ProductComponent implements OnInit {
   }
 
   getImageUrl(index: number): string {
-    return `${this.baseUrl}/${this.product!.id}/${this.productSelectedColor}/${this.baseFileName}${index}.png`;
+    return `${this.baseUrl}/${this.product!.id}/${this.productSelectedColor}/${this.baseFileName}${index}.webp`;
   }
 
   selectSize(selectedSize: Size): void {
