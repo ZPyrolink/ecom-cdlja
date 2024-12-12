@@ -65,7 +65,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
         "AND (:types is NULL OR s.clothe.type IN :types) " +
         "AND (:theme is NULL OR UPPER(s.clothe.theme) IN :theme) "
     )
-    Page<Stock> getStocksByFiltersAndSearch(
+    List<Stock> getStocksByFiltersAndSearch(
         @Param("sizes") List<Size> sizes,
         @Param("colors") List<Color> colors,
         @Param("minPrice") Float minPrice,
@@ -73,7 +73,6 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
         @Param("genders") List<Gender> genders,
         @Param("types") List<Type> types,
         @Param("theme") List<String> theme,
-        String keyword,
-        Pageable pageable
+        String keyword
     );
 }

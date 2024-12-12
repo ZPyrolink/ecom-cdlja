@@ -291,17 +291,7 @@ public class ClotheResource {
             : filters.getThemes();
         List<String> theme = (themeMin == null) ? null : themeMin.stream().map(String::toUpperCase).collect(Collectors.toList());
 
-        Page<Stock> stocks = stockRepository.getStocksByFiltersAndSearch(
-            sizes,
-            colors,
-            minPrice,
-            maxPrice,
-            genders,
-            types,
-            theme,
-            keyWord,
-            pageable
-        );
+        List<Stock> stocks = stockRepository.getStocksByFiltersAndSearch(sizes, colors, minPrice, maxPrice, genders, types, theme, keyWord);
         Set<Long> addedClotheIds = new HashSet<>();
 
         // Filtrer et mapper les stocks en ClotheDTO uniquement si l'identifiant n'est pas encore dans la liste
